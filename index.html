@@ -205,6 +205,8 @@
     {label:'보스 전투',src:'assets/ebon-crown/boss-combat.webp'},
     {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'}
   ];
+  const ebonCover=document.querySelector('.project-visual img[alt^="EBON CROWN"]');
+  ebonCover.src=ebonScenes[3].src;ebonCover.alt='EBON CROWN 불꽃 스킬 게임 화면';
   function openProjectDetail(card){
     const title=card.querySelector('.project-content h3').textContent;
     projectDialog.querySelector('#project-dialog-title').textContent=title;
