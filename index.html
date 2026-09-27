@@ -182,7 +182,7 @@
   const projectHighlights={
     'EBON CROWN':['Actor Component로 전투·스태미나·성장·UI의 책임을 분리했습니다.','Data Asset과 FPrimaryAssetId로 아이템 설정과 무기별 강화 상태를 관리했습니다.','Delegate 이벤트로 상태 변경을 전달하고 필요한 UI가 갱신되도록 구성했습니다.','스킬 이펙트에 Object Pool을 적용해 반복적인 Actor 생성·제거를 줄였습니다.','플레이어 진입 시에만 레벨 사전 로드를 요청하고 트리거의 Tick을 비활성화했습니다.'],
     'EXCUTE':['Animation Notify로 실제 무기가 휘둘러지는 구간에만 공격 Trace를 실행했습니다.','공격 한 번에 감지한 대상을 기록해 동일 대상에게 피해가 중복 적용되지 않도록 처리했습니다.','패링 성공 시 적의 공격과 AI를 중단한 뒤 경직 종료 후 전투 상태로 복귀시켰습니다.','Behavior Tree와 Blackboard로 일반 적의 탐지·연속 공격·후퇴와 보스 패턴을 구성했습니다.','AOE Indicator로 보스 범위 공격의 위치와 실행 시점을 미리 보여 주도록 구현했습니다.'],
-    'PROJECT_SMILE':['선택한 게임 화면을 Render Target으로 캡처하고 비동기 HTTP 요청으로 분석 서버에 보냈습니다.','화면 분석과 퍼즐 정보 검색, 힌트 생성을 연결했습니다.','서버가 반환한 JSON 힌트를 파싱해 게임 UI에 표시했습니다.'],
+    'PROJECT_SMILE':['플레이어가 선택한 화면 영역을 Render Target으로 캡처하고 메모리에서 이미지로 압축했습니다.','Unreal HTTP 모듈로 이미지와 플레이 상태를 Flask AI 서버에 비동기로 전송했습니다.','LLaVA 장면 분석과 RAG 퍼즐 검색, 단계별 힌트 생성을 하나의 파이프라인으로 연결했습니다.','서버의 JSON 응답을 검증·파싱해 조사 일지와 힌트 UI에 표시했습니다.','AI 요청 중 Loading UI와 중복 요청 제한, 실패·비정상 응답 처리를 구현했습니다.'],
     'SLAP SQUAD':['TCP로 수신한 패킷을 해석해 클라이언트의 상태와 UI에 반영했습니다.','로비·방 입장·캐릭터 선택·게임 시작 흐름을 구현했습니다.','원격 플레이어의 공격을 애니메이션 타격 시점에 맞춰 표시했습니다.'],
     'TANK BLITZ':['DirectX 11로 모델 렌더링 파이프라인과 HLSL 조명을 구현했습니다.','알파 맵으로 텍스처를 혼합하고 노멀 맵을 조명 계산에 반영했습니다.','스켈레탈 애니메이션과 월드 좌표 기반 AABB 충돌을 구현했습니다.']
   };
@@ -215,6 +215,20 @@
     {title:'보스 범위 공격을 피하기 어려운 문제',problem:'범위 공격이 예고 없이 즉시 실행돼 플레이어가 범위와 타이밍을 파악하기 어려웠습니다.',solution:'실제 공격 전에 AOE Indicator를 생성해 범위와 충전 시간을 표시했습니다.',result:'플레이어가 공격을 인지하고 회피할 수 있는 대응 시간을 제공했습니다.'}
   ];
   const excuteReflection='그래픽 디자이너와 협업하며 구현 정확도뿐 아니라 플레이어가 공격을 어떻게 인지하고 대응하는지도 함께 고려하게 되었습니다. 타격 시점, 패링 경직, 범위 공격의 전조를 조정하면서 전투의 재미는 판정 로직과 시각적 피드백이 같은 흐름으로 맞물릴 때 만들어진다는 점을 느꼈습니다. 또한 상태를 강제로 바꾸는 기능에서는 Animation만 전환하는 데 그치지 않고 기존 판정과 AI, 복구 시점까지 하나의 흐름으로 정리해야 안정적인 전투를 만들 수 있다는 점을 배웠습니다.';
+  const smileDeepDive=[
+    {heading:'플레이어가 지정하는 화면 분석 영역',body:'UCaptureSelection Widget에서 방향키로 분석 영역의 크기를 조절하고 최소·최대 범위를 제한했습니다. 화면 전체를 항상 보내지 않고 플레이어가 중요하다고 판단한 부분만 선택하게 해 불필요한 이미지 정보를 줄이고 분석 대상을 명확하게 만들었습니다.'},
+    {heading:'Render Target 캡처와 메모리 이미지 변환',body:'선택 영역의 Widget 좌표를 Viewport와 Render Target 크기 비율에 맞춰 Pixel 좌표로 변환했습니다. 캡처한 Pixel Data는 디스크에 저장하지 않고 메모리에서 PNG 또는 JPEG Byte Array로 압축해 HTTP 요청에 바로 포함했습니다.'},
+    {heading:'Unreal과 Flask AI 서버의 비동기 통신',body:'Unreal HTTP 모듈로 화면 이미지, 현재 구역, 힌트 요청 횟수, 체류 시간과 퍼즐 진행 상태를 POST /predict에 전달했습니다. 비동기 Callback에서 상태 코드와 응답을 확인해 AI 추론 중에도 게임의 메인 스레드가 멈추지 않도록 구성했습니다.'},
+    {heading:'장면 분석·RAG 검색·단계별 힌트 파이프라인',body:'LLaVA가 선택 화면을 분석하고, RAG가 현재 구역과 관련된 퍼즐 문서를 검색하며, 요청 횟수와 체류 시간을 반영해 힌트 단계를 결정합니다. 처음부터 정답을 제공하지 않고 관찰 유도에서 구체적인 행동 안내로 정보량이 점진적으로 늘어나도록 설계했습니다.'},
+    {heading:'JSON 검증과 조사 일지 UI',body:'AI 응답을 역할별 JSON 필드로 구조화하고 필수 값과 자료형을 검사한 뒤 조사 일지와 힌트 UI에 반영했습니다. 파싱에 실패하거나 근거가 부족하면 잘못된 데이터를 적용하지 않고 Fallback 결과와 오류 UI를 사용하도록 처리했습니다.'},
+    {heading:'격자 인벤토리와 상호작용 오브젝트',body:'아이템의 가로·세로 크기와 점유 셀을 검사하는 3×3 격자 인벤토리를 구현했습니다. 문서, 아이템, 문, 전등과 퓨즈 상자 등은 AInteractableActor 기반으로 공통 흐름을 사용하고, 아이템 ID 확인과 제거 기능을 퍼즐 조건에 연결했습니다.'}
+  ];
+  const smileIssues=[
+    {title:'AI가 화면에 없는 오브젝트를 힌트에 포함하는 문제',problem:'모델이 현재 화면과 퍼즐 데이터에 존재하지 않는 오브젝트나 해결 방법을 생성할 수 있었습니다.',solution:'화면에서 확인 가능한 정보와 RAG 데이터만 사용하도록 프롬프트를 제한하고, 역할별 JSON 형식과 필수 필드를 검증한 뒤 근거가 부족하면 Fallback 결과를 사용했습니다.',result:'게임 데이터와 관련 없는 힌트가 노출될 가능성을 줄이고 클라이언트에서 응답을 안정적으로 처리할 수 있게 됐습니다.'},
+    {title:'AI 응답 대기 중 게임이 멈춘 것처럼 보이는 문제',problem:'추론 시간이 길어지면 플레이어가 입력이 처리되지 않거나 게임이 멈춘 것으로 느낄 수 있었습니다.',solution:'HTTP 요청을 비동기로 처리하고 Loading Widget을 표시했으며, 응답 전 중복 요청을 제한하고 성공·실패·파싱 오류에서 Loading 상태를 종료했습니다.',result:'대기 상태를 명확하게 전달하고 중복 요청으로 서버와 UI 상태가 꼬이는 문제를 줄였습니다.'},
+    {title:'해상도에 따라 선택 화면과 캡처 범위가 달라지는 문제',problem:'Widget 좌표와 Render Target Pixel 좌표가 다른 기준을 사용해 해상도나 화면 비율에 따라 분석 영역이 어긋났습니다.',solution:'현재 Viewport와 Render Target 크기의 비율로 좌표와 크기를 변환하고 캡처 범위가 경계를 벗어나지 않도록 보정했습니다.',result:'해상도가 달라져도 사용자가 선택한 영역과 서버로 전송되는 이미지 영역이 최대한 일치하도록 개선했습니다.'}
+  ];
+  const smileReflection='생성형 AI를 게임에 연결하면서 좋은 결과를 만드는 것만큼 결과의 근거와 형식, 대기 시간과 실패 상황을 함께 설계하는 일이 중요하다는 점을 배웠습니다. 모델 출력은 항상 일정하지 않기 때문에 입력 범위를 제한하고 JSON 검증과 Fallback을 마련해야 게임 시스템 안에서 안정적으로 사용할 수 있었습니다. 또한 UI 좌표부터 이미지 변환, HTTP 통신, 서버 추론과 결과 표시까지 이어지는 전체 흐름을 구현하며 서로 다른 시스템 사이의 데이터 기준과 상태를 명확히 맞추는 습관을 갖게 되었습니다.';
   const ebonScenes=[
     {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'},
     {label:'보스 전투',src:'assets/ebon-crown/boss-combat.webp'},
@@ -227,17 +241,25 @@
     {label:'맵 탐색',src:'assets/excute/exploration.webp'},
     {label:'보스 전투',src:'assets/excute/boss-combat.webp'}
   ];
+  const smileScenes=[
+    {label:'타이틀 화면',src:'assets/project-smile/title.webp'},
+    {label:'상황 분석',src:'assets/project-smile/analysis.webp'},
+    {label:'실험 기록',src:'assets/project-smile/document.webp'},
+    {label:'몬스터 추격',src:'assets/project-smile/monster.webp'}
+  ];
   const ebonCover=document.querySelector('.project-visual img[alt^="EBON CROWN"]');
   ebonCover.src=ebonScenes[0].src;ebonCover.alt='EBON CROWN 불꽃 스킬 게임 화면';
   const excuteCover=document.querySelector('.project-visual img[alt^="EXCUTE"]');
   excuteCover.src=excuteScenes[0].src;excuteCover.alt='EXCUTE RIM CAVE 게임 화면';
+  const smileCover=document.querySelector('.project-visual img[alt^="PROJECT_SMILE"]');
+  smileCover.src=smileScenes[0].src;smileCover.alt='PROJECT_SMILE 타이틀 게임 화면';
   function openProjectDetail(card){
     const title=card.querySelector('.project-content h3').textContent;
     projectDialog.querySelector('#project-dialog-title').textContent=title;
     projectDialog.querySelector('.project-dialog-date').textContent=card.querySelector('.project-date').textContent;
     projectDialog.querySelector('.project-dialog-genre').textContent=card.querySelector('.project-genre').textContent;
     const cover=card.querySelector('.project-visual img'),media=projectDialog.querySelector('.project-dialog-media'),detailImage=media.querySelector('img');
-    const detailContent=title==='EBON CROWN'?{scenes:ebonScenes,deepDive:ebonDeepDive,issues:ebonIssues,reflection:ebonReflection}:title==='EXCUTE'?{scenes:excuteScenes,deepDive:excuteDeepDive,issues:excuteIssues,reflection:excuteReflection}:null;
+    const detailContent=title==='EBON CROWN'?{scenes:ebonScenes,deepDive:ebonDeepDive,issues:ebonIssues,reflection:ebonReflection}:title==='EXCUTE'?{scenes:excuteScenes,deepDive:excuteDeepDive,issues:excuteIssues,reflection:excuteReflection}:title==='PROJECT_SMILE'?{scenes:smileScenes,deepDive:smileDeepDive,issues:smileIssues,reflection:smileReflection}:null;
     projectDialog.classList.toggle('is-expanded-detail',Boolean(detailContent));
     media.classList.toggle('is-project-gallery',Boolean(detailContent));media.querySelector('.ebon-gallery')?.remove();
     detailImage.src=cover.src;detailImage.alt=cover.alt;
