@@ -184,7 +184,7 @@
     'EXCUTE':['Animation Notify로 실제 무기가 휘둘러지는 구간에만 공격 Trace를 실행했습니다.','공격 한 번에 감지한 대상을 기록해 동일 대상에게 피해가 중복 적용되지 않도록 처리했습니다.','패링 성공 시 적의 공격과 AI를 중단한 뒤 경직 종료 후 전투 상태로 복귀시켰습니다.','Behavior Tree와 Blackboard로 일반 적의 탐지·연속 공격·후퇴와 보스 패턴을 구성했습니다.','AOE Indicator로 보스 범위 공격의 위치와 실행 시점을 미리 보여 주도록 구현했습니다.'],
     'PROJECT_SMILE':['플레이어가 선택한 화면 영역을 Render Target으로 캡처하고 메모리에서 이미지로 압축했습니다.','Unreal HTTP 모듈로 이미지와 플레이 상태를 Flask AI 서버에 비동기로 전송했습니다.','LLaVA 장면 분석과 RAG 퍼즐 검색, 단계별 힌트 생성을 하나의 파이프라인으로 연결했습니다.','서버의 JSON 응답을 검증·파싱해 조사 일지와 힌트 UI에 표시했습니다.','AI 요청 중 Loading UI와 중복 요청 제한, 실패·비정상 응답 처리를 구현했습니다.'],
     'SLAP SQUAD':['TCP로 수신한 메시지를 타입별 Handler에 전달해 로그인·로비·방·게임 기능을 분리했습니다.','Login → Lobby → Room → Game → Result로 이어지는 멀티플레이 클라이언트 흐름을 구현했습니다.','로컬 입력과 원격 패킷의 처리 경로를 구분하고 플레이어 이동·회전·애니메이션을 동기화했습니다.','검·둔기·활·레이저·마법 등 캐릭터별 공격을 공통 WeaponSystem과 개별 스크립트로 구성했습니다.','서버 공격 결과에 따라 피격·체력·사망 상태와 시각적 피드백을 갱신했습니다.'],
-    'TANK BLITZ':['DirectX 11로 모델 렌더링 파이프라인과 HLSL 조명을 구현했습니다.','알파 맵으로 텍스처를 혼합하고 노멀 맵을 조명 계산에 반영했습니다.','스켈레탈 애니메이션과 월드 좌표 기반 AABB 충돌을 구현했습니다.']
+    'TANK BLITZ':['DirectX 11의 Device·Context·Swap Chain부터 Render Target과 Depth Stencil까지 렌더링 기반을 구성했습니다.','WVP 변환과 HLSL Shader를 연결해 Ambient·Diffuse·Specular 조명과 최대 4개의 Point Light를 구현했습니다.','Normal Map과 다중 Texture Blending으로 적은 Polygon에서도 지형의 표면 질감과 재질 변화를 표현했습니다.','Assimp로 OBJ·FBX와 Skeletal Animation을 불러오고 Model·Texture·Shader 자원의 역할을 분리했습니다.','변환된 모델의 8개 꼭짓점으로 World AABB를 다시 계산해 Projectile과 Object의 충돌을 처리했습니다.']
   };
   const ebonDeepDive=[
     {heading:'Actor Component로 플레이어 책임 분리',body:'UPlayerCombatComponent가 공격·장착을, UPlayerStaminaComponent가 행동 자원을, UPlayerStatComponent가 성장 수치를 맡습니다. 상호작용·세이브 포인트·인벤토리·UI도 별도 컴포넌트로 분리해 Character 클래스에 기능이 쌓이던 문제를 줄이고, 변경할 때 확인해야 하는 코드 범위를 좁혔습니다.'},
@@ -243,6 +243,21 @@
     {title:'공격 동작과 서버 판정 결과의 적용 시점',problem:'클라이언트의 공격 Animation과 서버가 전달한 피격 결과가 별도로 처리되면 다른 플레이어에게 보이는 전투 흐름이 어긋날 수 있습니다.',solution:'공격 입력에서 Animation과 공격 패킷을 함께 시작하고, 결과 패킷에서 대상의 피해·체력·사망과 시각적 피드백을 갱신하도록 흐름을 연결했습니다.',result:'서버 판정을 기준으로 게임 상태를 유지하면서 로컬과 원격 화면에 공격 반응을 일관되게 표시할 수 있게 됐습니다.'}
   ];
   const slapReflection='서버 프로그래머와 그래픽 디자이너가 함께 참여한 프로젝트를 진행하며 클라이언트는 화면을 보여 주는 역할을 넘어 여러 직군의 결과를 하나의 플레이 흐름으로 연결하는 지점이라는 점을 배웠습니다. 네트워크 메시지와 UI, 캐릭터 Animation과 전투 상태를 맞추는 과정에서 기능별 책임과 데이터가 적용되는 시점을 명확히 나누는 것이 협업과 유지보수에 큰 영향을 준다는 점을 느꼈습니다. 이후에는 새 기능을 빠르게 붙이는 것뿐 아니라 다른 팀원이 변경하기 쉬운 경계와 예측 가능한 데이터 흐름을 먼저 고민하게 되었습니다.';
+  const tankDeepDive=[
+    {heading:'DirectX 11 렌더링 기반 구성',body:'Device와 Device Context, Swap Chain을 생성하고 Back Buffer에 연결된 Render Target View와 Depth Stencil View를 구성했습니다. Frame마다 화면과 깊이 Buffer를 초기화한 뒤 Object를 그려 Present하는 기본 렌더링 흐름을 직접 구현했습니다.'},
+    {heading:'WVP 변환과 HLSL 조명',body:'Model의 Local 좌표를 World, View, Projection 행렬로 Clip Space까지 변환하고 Constant Buffer를 통해 Shader에 전달했습니다. Ambient·Diffuse·Specular 계산과 최대 4개의 Point Light를 HLSL에 구현해 위치와 재질에 따른 명암을 표현했습니다.'},
+    {heading:'Normal Mapping과 Texture Blending',body:'Tangent Space의 Normal Map을 조명 계산에 반영해 Polygon을 늘리지 않고 지형 표면의 굴곡을 표현했습니다. 여러 Texture와 Alpha 값을 혼합해 하나의 Mesh 안에서도 지면 재질이 자연스럽게 바뀌도록 구성했습니다.'},
+    {heading:'모델·Texture·Shader 자원 구조',body:'Assimp로 OBJ와 FBX 모델, Material과 Skeletal Animation 데이터를 불러왔습니다. 공통 Model Loading 코드는 BaseModel과 ModelLoader로 모으고 RMModel·RMTexture·RMShader가 GPU 자원을 소유하도록 분리해 중복 생성과 해제를 줄였습니다.'},
+    {heading:'Skeletal Animation 재생',body:'Bone 계층과 Key Frame의 위치·회전·크기를 시간에 맞춰 보간하고 Parent Transform을 누적해 최종 Bone Matrix를 계산했습니다. 계산한 행렬을 Vertex Shader에 전달해 전차와 Character Animation을 Mesh에 반영했습니다.'},
+    {heading:'Camera·Projectile·충돌과 UI',body:'이동과 회전이 가능한 Camera, 발사 방향으로 진행하는 Projectile, World Space AABB 충돌을 구현했습니다. FPS·CPU 사용률·탄약 수와 조준점 같은 UI를 함께 표시해 장면 상태와 조작 결과를 바로 확인할 수 있도록 했습니다.'}
+  ];
+  const tankIssues=[
+    {title:'모델마다 반복되는 Loading·Rendering 코드',problem:'Object별로 Buffer와 Texture, Shader 생성 코드를 따로 작성하면서 같은 처리와 자원 해제 코드가 반복됐습니다.',solution:'공통 흐름을 BaseModel과 ModelLoader로 옮기고 Model·Texture·Shader 자원을 별도 Resource Manager가 소유하도록 분리했습니다.',result:'새 모델을 추가할 때 중복 코드를 줄이고 자원의 생성·공유·해제 위치를 명확히 할 수 있게 됐습니다.'},
+    {title:'변환 후 실제 위치와 맞지 않는 충돌 영역',problem:'Local 좌표에서 만든 AABB를 그대로 사용하면 이동·회전·크기 변경 뒤 화면의 모델과 충돌 범위가 어긋났습니다.',solution:'Local AABB의 8개 꼭짓점을 World Matrix로 변환한 뒤 최솟값과 최댓값을 다시 계산해 World AABB를 만들었습니다.',result:'장면에 배치된 모델의 현재 위치와 크기에 맞춰 Projectile 충돌을 판정할 수 있게 됐습니다.'},
+    {title:'Camera 이동 시 가까워지는 Skybox',problem:'Skybox가 고정된 위치에 있으면 Camera가 이동하면서 배경의 경계에 가까워지고 공간이 유한하게 보였습니다.',solution:'매 Frame Skybox를 Camera 위치로 이동시키고 방향 Vector로 Cube Map을 Sampling하도록 구성했습니다.',result:'Camera가 이동해도 배경이 일정한 거리의 환경처럼 유지되도록 만들었습니다.'},
+    {title:'지형 세부 표현을 위한 Polygon 비용',problem:'표면의 요철을 Geometry로만 표현하면 Vertex와 Polygon 수가 빠르게 늘어났습니다.',solution:'Tangent와 Bitangent를 계산하고 Normal Map의 값을 World Space 조명 계산에 반영했습니다.',result:'Mesh 복잡도를 크게 늘리지 않고도 빛에 반응하는 세부 표면을 표현할 수 있게 됐습니다.'}
+  ];
+  const tankReflection='상용 Engine이 자동으로 처리해 주던 화면 출력 과정을 직접 구성하면서 하나의 Frame이 Resource 생성, 좌표 변환, Shader 계산과 충돌 판정을 거쳐 완성된다는 점을 구체적으로 이해하게 되었습니다. 특히 같은 시각적 결과라도 Geometry를 늘리는 방법과 Shader에서 표현하는 방법은 비용과 품질이 다르고, 좌표계와 자원 소유 구조가 흐려지면 작은 기능도 오류와 중복으로 이어진다는 점을 느꼈습니다. 이후에는 기능이 동작하는지만 확인하기보다 어느 단계에서 계산되고 어떤 자원을 사용하는지까지 생각하며 구현하게 되었습니다.';
   const ebonScenes=[
     {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'},
     {label:'보스 전투',src:'assets/ebon-crown/boss-combat.webp'},
@@ -267,6 +282,13 @@
     {label:'마이페이지',src:'assets/slap-squad/mypage.webp'},
     {label:'게임 전투',src:'assets/slap-squad/battle.webp'}
   ];
+  const tankScenes=[
+    {label:'조작 안내',src:'assets/tank-blitz/controls.webp'},
+    {label:'조명 적용 장면',src:'assets/tank-blitz/lighting.webp'},
+    {label:'야간 조명 장면',src:'assets/tank-blitz/night-lighting.webp'},
+    {label:'전차와 캐릭터',src:'assets/tank-blitz/tank-scene.webp'},
+    {label:'조준과 사격',src:'assets/tank-blitz/aiming.webp'}
+  ];
   const ebonCover=document.querySelector('.project-visual img[alt^="EBON CROWN"]');
   ebonCover.src=ebonScenes[0].src;ebonCover.alt='EBON CROWN 불꽃 스킬 게임 화면';
   const excuteCover=document.querySelector('.project-visual img[alt^="EXCUTE"]');
@@ -275,13 +297,15 @@
   smileCover.src=smileScenes[0].src;smileCover.alt='PROJECT_SMILE 타이틀 게임 화면';
   const slapCover=document.querySelector('.project-visual img[alt^="SLAP SQUAD"]');
   slapCover.src=slapScenes[0].src;slapCover.alt='SLAP SQUAD 로그인 게임 화면';
+  const tankCover=document.querySelector('.project-visual img[alt^="TANK BLITZ"]');
+  tankCover.src=tankScenes[0].src;tankCover.alt='TANK BLITZ 조작 안내 화면';
   function openProjectDetail(card){
     const title=card.querySelector('.project-content h3').textContent;
     projectDialog.querySelector('#project-dialog-title').textContent=title;
     projectDialog.querySelector('.project-dialog-date').textContent=card.querySelector('.project-date').textContent;
     projectDialog.querySelector('.project-dialog-genre').textContent=card.querySelector('.project-genre').textContent;
     const cover=card.querySelector('.project-visual img'),media=projectDialog.querySelector('.project-dialog-media'),detailImage=media.querySelector('img');
-    const detailContent=title==='EBON CROWN'?{scenes:ebonScenes,deepDive:ebonDeepDive,issues:ebonIssues,reflection:ebonReflection}:title==='EXCUTE'?{scenes:excuteScenes,deepDive:excuteDeepDive,issues:excuteIssues,reflection:excuteReflection}:title==='PROJECT_SMILE'?{scenes:smileScenes,deepDive:smileDeepDive,issues:smileIssues,reflection:smileReflection}:title==='SLAP SQUAD'?{scenes:slapScenes,deepDive:slapDeepDive,issues:slapIssues,reflection:slapReflection}:null;
+    const detailContent=title==='EBON CROWN'?{scenes:ebonScenes,deepDive:ebonDeepDive,issues:ebonIssues,reflection:ebonReflection}:title==='EXCUTE'?{scenes:excuteScenes,deepDive:excuteDeepDive,issues:excuteIssues,reflection:excuteReflection}:title==='PROJECT_SMILE'?{scenes:smileScenes,deepDive:smileDeepDive,issues:smileIssues,reflection:smileReflection}:title==='SLAP SQUAD'?{scenes:slapScenes,deepDive:slapDeepDive,issues:slapIssues,reflection:slapReflection}:title==='TANK BLITZ'?{scenes:tankScenes,deepDive:tankDeepDive,issues:tankIssues,reflection:tankReflection}:null;
     projectDialog.classList.toggle('is-expanded-detail',Boolean(detailContent));
     media.classList.toggle('is-project-gallery',Boolean(detailContent));media.querySelector('.ebon-gallery')?.remove();
     detailImage.src=cover.src;detailImage.alt=cover.alt;
