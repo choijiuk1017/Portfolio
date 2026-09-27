@@ -183,7 +183,7 @@
     'EBON CROWN':['Actor Component로 전투·스태미나·성장·UI의 책임을 분리했습니다.','Data Asset과 FPrimaryAssetId로 아이템 설정과 무기별 강화 상태를 관리했습니다.','Delegate 이벤트로 상태 변경을 전달하고 필요한 UI가 갱신되도록 구성했습니다.','스킬 이펙트에 Object Pool을 적용해 반복적인 Actor 생성·제거를 줄였습니다.','플레이어 진입 시에만 레벨 사전 로드를 요청하고 트리거의 Tick을 비활성화했습니다.'],
     'EXCUTE':['Animation Notify로 실제 무기가 휘둘러지는 구간에만 공격 Trace를 실행했습니다.','공격 한 번에 감지한 대상을 기록해 동일 대상에게 피해가 중복 적용되지 않도록 처리했습니다.','패링 성공 시 적의 공격과 AI를 중단한 뒤 경직 종료 후 전투 상태로 복귀시켰습니다.','Behavior Tree와 Blackboard로 일반 적의 탐지·연속 공격·후퇴와 보스 패턴을 구성했습니다.','AOE Indicator로 보스 범위 공격의 위치와 실행 시점을 미리 보여 주도록 구현했습니다.'],
     'PROJECT_SMILE':['플레이어가 선택한 화면 영역을 Render Target으로 캡처하고 메모리에서 이미지로 압축했습니다.','Unreal HTTP 모듈로 이미지와 플레이 상태를 Flask AI 서버에 비동기로 전송했습니다.','LLaVA 장면 분석과 RAG 퍼즐 검색, 단계별 힌트 생성을 하나의 파이프라인으로 연결했습니다.','서버의 JSON 응답을 검증·파싱해 조사 일지와 힌트 UI에 표시했습니다.','AI 요청 중 Loading UI와 중복 요청 제한, 실패·비정상 응답 처리를 구현했습니다.'],
-    'SLAP SQUAD':['TCP로 수신한 패킷을 해석해 클라이언트의 상태와 UI에 반영했습니다.','로비·방 입장·캐릭터 선택·게임 시작 흐름을 구현했습니다.','원격 플레이어의 공격을 애니메이션 타격 시점에 맞춰 표시했습니다.'],
+    'SLAP SQUAD':['TCP로 수신한 메시지를 타입별 Handler에 전달해 로그인·로비·방·게임 기능을 분리했습니다.','Login → Lobby → Room → Game → Result로 이어지는 멀티플레이 클라이언트 흐름을 구현했습니다.','로컬 입력과 원격 패킷의 처리 경로를 구분하고 플레이어 이동·회전·애니메이션을 동기화했습니다.','검·둔기·활·레이저·마법 등 캐릭터별 공격을 공통 WeaponSystem과 개별 스크립트로 구성했습니다.','서버 공격 결과에 따라 피격·체력·사망 상태와 시각적 피드백을 갱신했습니다.'],
     'TANK BLITZ':['DirectX 11로 모델 렌더링 파이프라인과 HLSL 조명을 구현했습니다.','알파 맵으로 텍스처를 혼합하고 노멀 맵을 조명 계산에 반영했습니다.','스켈레탈 애니메이션과 월드 좌표 기반 AABB 충돌을 구현했습니다.']
   };
   const ebonDeepDive=[
@@ -229,6 +229,20 @@
     {title:'해상도에 따라 선택 화면과 캡처 범위가 달라지는 문제',problem:'Widget 좌표와 Render Target Pixel 좌표가 다른 기준을 사용해 해상도나 화면 비율에 따라 분석 영역이 어긋났습니다.',solution:'현재 Viewport와 Render Target 크기의 비율로 좌표와 크기를 변환하고 캡처 범위가 경계를 벗어나지 않도록 보정했습니다.',result:'해상도가 달라져도 사용자가 선택한 영역과 서버로 전송되는 이미지 영역이 최대한 일치하도록 개선했습니다.'}
   ];
   const smileReflection='생성형 AI를 게임에 연결하면서 좋은 결과를 만드는 것만큼 결과의 근거와 형식, 대기 시간과 실패 상황을 함께 설계하는 일이 중요하다는 점을 배웠습니다. 모델 출력은 항상 일정하지 않기 때문에 입력 범위를 제한하고 JSON 검증과 Fallback을 마련해야 게임 시스템 안에서 안정적으로 사용할 수 있었습니다. 또한 UI 좌표부터 이미지 변환, HTTP 통신, 서버 추론과 결과 표시까지 이어지는 전체 흐름을 구현하며 서로 다른 시스템 사이의 데이터 기준과 상태를 명확히 맞추는 습관을 갖게 되었습니다.';
+  const slapDeepDive=[
+    {heading:'로그인부터 결과까지 이어지는 게임 흐름',body:'서버 인증 후 Lobby, Room, Game, Result를 거쳐 다시 Lobby로 돌아오는 전체 흐름을 구현했습니다. 각 화면에서 사용자 목록, 채팅, 방 생성·입장, 플레이어 준비 상태, 게임 시작과 보상 데이터를 서버 응답에 맞춰 갱신했습니다.'},
+    {heading:'메시지 타입 기반 네트워크 처리 구조',body:'NetworkConnector는 TCP 연결과 송수신, 메시지 타입 파싱을 담당하고 실제 기능 처리는 등록된 IMessageHandler에 전달하도록 구성했습니다. Login, Lobby, Room, Game Receiver가 필요한 메시지만 구독하게 해 네트워크 연결부와 게임 로직의 결합을 줄였습니다.'},
+    {heading:'Sender·Receiver·System 역할 분리',body:'기능별로 Sender는 서버 요청, Receiver는 응답 해석, System은 UI와 게임 상태 반영을 맡았습니다. 새로운 요청이나 서버 메시지가 추가될 때 연결부 전체를 수정하지 않고 해당 기능의 처리 코드만 확장할 수 있도록 구조를 나눴습니다.'},
+    {heading:'로컬·원격 플레이어 동기화',body:'로컬 플레이어는 입력과 이동을 즉시 반영한 뒤 필요한 상태를 서버에 전송하고, 원격 플레이어는 수신 패킷을 기반으로 위치·회전·Animation 상태를 갱신했습니다. 두 처리 경로를 구분하면서도 CharacterSystem과 WeaponSystem을 함께 사용하도록 구성했습니다.'},
+    {heading:'캐릭터별 무기 전투 시스템',body:'검, 둔기, 쇠스랑, 활, 레이저, 마법과 고유 공격을 개별 스크립트로 분리했습니다. 공격 입력 시 무기 Animation과 패킷 전송을 연결하고, 서버의 공격 결과를 받은 뒤 대상의 피격·체력·사망 상태와 효과를 반영했습니다.'},
+    {heading:'게임 오브젝트와 커뮤니케이션 기능',body:'풍선 획득과 사용, 맵 오브젝트 상호작용, 이모티콘 공유를 게임 상태와 네트워크 메시지에 연결했습니다. 로비 채팅과 사용자 목록, 캐릭터·아이템 UI를 함께 구현해 전투 전후의 멀티플레이 경험이 이어지도록 구성했습니다.'}
+  ];
+  const slapIssues=[
+    {title:'네트워크 연결 코드에 기능별 처리가 집중되는 문제',problem:'수신 메시지를 NetworkConnector에서 직접 처리하면 로그인·로비·방·게임 기능이 한곳에 얽혀 새 메시지를 추가하기 어려워집니다.',solution:'메시지 타입을 파싱한 뒤 등록된 IMessageHandler로 전달하고, 기능별 Sender·Receiver·System으로 책임을 분리했습니다.',result:'연결부를 유지한 채 필요한 기능의 Handler만 추가하거나 수정할 수 있는 구조를 만들었습니다.'},
+    {title:'로컬 입력과 원격 플레이어 행동이 섞이는 문제',problem:'로컬 입력 처리와 서버에서 받은 원격 상태를 같은 경로에서 다루면 다른 플레이어에게 입력이 적용되거나 Animation 상태가 충돌할 수 있습니다.',solution:'로컬 플레이어는 입력 기반 Controller를 사용하고 원격 플레이어는 수신 패킷으로 상태를 갱신하도록 경로를 구분했습니다.',result:'플레이어 소유권에 맞는 이동·회전·공격 처리를 유지하면서 공통 캐릭터와 무기 시스템을 재사용할 수 있게 됐습니다.'},
+    {title:'공격 동작과 서버 판정 결과의 적용 시점',problem:'클라이언트의 공격 Animation과 서버가 전달한 피격 결과가 별도로 처리되면 다른 플레이어에게 보이는 전투 흐름이 어긋날 수 있습니다.',solution:'공격 입력에서 Animation과 공격 패킷을 함께 시작하고, 결과 패킷에서 대상의 피해·체력·사망과 시각적 피드백을 갱신하도록 흐름을 연결했습니다.',result:'서버 판정을 기준으로 게임 상태를 유지하면서 로컬과 원격 화면에 공격 반응을 일관되게 표시할 수 있게 됐습니다.'}
+  ];
+  const slapReflection='서버 프로그래머와 그래픽 디자이너가 함께 참여한 프로젝트를 진행하며 클라이언트는 화면을 보여 주는 역할을 넘어 여러 직군의 결과를 하나의 플레이 흐름으로 연결하는 지점이라는 점을 배웠습니다. 네트워크 메시지와 UI, 캐릭터 Animation과 전투 상태를 맞추는 과정에서 기능별 책임과 데이터가 적용되는 시점을 명확히 나누는 것이 협업과 유지보수에 큰 영향을 준다는 점을 느꼈습니다. 이후에는 새 기능을 빠르게 붙이는 것뿐 아니라 다른 팀원이 변경하기 쉬운 경계와 예측 가능한 데이터 흐름을 먼저 고민하게 되었습니다.';
   const ebonScenes=[
     {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'},
     {label:'보스 전투',src:'assets/ebon-crown/boss-combat.webp'},
@@ -247,19 +261,27 @@
     {label:'실험 기록',src:'assets/project-smile/document.webp'},
     {label:'몬스터 추격',src:'assets/project-smile/monster.webp'}
   ];
+  const slapScenes=[
+    {label:'로그인 화면',src:'assets/slap-squad/login.webp'},
+    {label:'로비 화면',src:'assets/slap-squad/lobby.webp'},
+    {label:'마이페이지',src:'assets/slap-squad/mypage.webp'},
+    {label:'게임 전투',src:'assets/slap-squad/battle.webp'}
+  ];
   const ebonCover=document.querySelector('.project-visual img[alt^="EBON CROWN"]');
   ebonCover.src=ebonScenes[0].src;ebonCover.alt='EBON CROWN 불꽃 스킬 게임 화면';
   const excuteCover=document.querySelector('.project-visual img[alt^="EXCUTE"]');
   excuteCover.src=excuteScenes[0].src;excuteCover.alt='EXCUTE RIM CAVE 게임 화면';
   const smileCover=document.querySelector('.project-visual img[alt^="PROJECT_SMILE"]');
   smileCover.src=smileScenes[0].src;smileCover.alt='PROJECT_SMILE 타이틀 게임 화면';
+  const slapCover=document.querySelector('.project-visual img[alt^="SLAP SQUAD"]');
+  slapCover.src=slapScenes[0].src;slapCover.alt='SLAP SQUAD 로그인 게임 화면';
   function openProjectDetail(card){
     const title=card.querySelector('.project-content h3').textContent;
     projectDialog.querySelector('#project-dialog-title').textContent=title;
     projectDialog.querySelector('.project-dialog-date').textContent=card.querySelector('.project-date').textContent;
     projectDialog.querySelector('.project-dialog-genre').textContent=card.querySelector('.project-genre').textContent;
     const cover=card.querySelector('.project-visual img'),media=projectDialog.querySelector('.project-dialog-media'),detailImage=media.querySelector('img');
-    const detailContent=title==='EBON CROWN'?{scenes:ebonScenes,deepDive:ebonDeepDive,issues:ebonIssues,reflection:ebonReflection}:title==='EXCUTE'?{scenes:excuteScenes,deepDive:excuteDeepDive,issues:excuteIssues,reflection:excuteReflection}:title==='PROJECT_SMILE'?{scenes:smileScenes,deepDive:smileDeepDive,issues:smileIssues,reflection:smileReflection}:null;
+    const detailContent=title==='EBON CROWN'?{scenes:ebonScenes,deepDive:ebonDeepDive,issues:ebonIssues,reflection:ebonReflection}:title==='EXCUTE'?{scenes:excuteScenes,deepDive:excuteDeepDive,issues:excuteIssues,reflection:excuteReflection}:title==='PROJECT_SMILE'?{scenes:smileScenes,deepDive:smileDeepDive,issues:smileIssues,reflection:smileReflection}:title==='SLAP SQUAD'?{scenes:slapScenes,deepDive:slapDeepDive,issues:slapIssues,reflection:slapReflection}:null;
     projectDialog.classList.toggle('is-expanded-detail',Boolean(detailContent));
     media.classList.toggle('is-project-gallery',Boolean(detailContent));media.querySelector('.ebon-gallery')?.remove();
     detailImage.src=cover.src;detailImage.alt=cover.alt;
