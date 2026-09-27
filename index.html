@@ -177,7 +177,7 @@
 
   const projectDialog=document.getElementById('project-dialog');
   const projectHighlights={
-    'EBON CROWN':['Actor Component로 전투·스태미나·성장·UI의 책임을 분리했습니다.','Data Asset과 FPrimaryAssetId로 아이템 설정과 무기별 강화 상태를 관리했습니다.','Delegate 이벤트로 상태 변경을 전달하고 필요한 UI가 갱신되도록 구성했습니다.','스킬 이펙트에 Object Pool을 적용해 반복적인 Actor 생성·제거를 줄였습니다.'],
+    'EBON CROWN':['Actor Component로 전투·스태미나·성장·UI의 책임을 분리했습니다.','Data Asset과 FPrimaryAssetId로 아이템 설정과 무기별 강화 상태를 관리했습니다.','Delegate 이벤트로 상태 변경을 전달하고 필요한 UI가 갱신되도록 구성했습니다.','스킬 이펙트에 Object Pool을 적용해 반복적인 Actor 생성·제거를 줄였습니다.','플레이어 진입 시에만 레벨 사전 로드를 요청하고 트리거의 Tick을 비활성화했습니다.'],
     'EXCUTE':['Animation Notify로 타격 구간을 제어하고 동일 대상의 중복 피격을 방지했습니다.','패링 성공 시 몬스터의 공격과 AI를 중단한 뒤 경직 종료 후 전투 상태로 복귀시켰습니다.','Line Trace와 Overlap으로 공격 범위 표시 및 충돌 판정을 구현했습니다.'],
     'PROJECT_SMILE':['선택한 게임 화면을 Render Target으로 캡처하고 비동기 HTTP 요청으로 분석 서버에 보냈습니다.','화면 분석과 퍼즐 정보 검색, 힌트 생성을 연결했습니다.','서버가 반환한 JSON 힌트를 파싱해 게임 UI에 표시했습니다.'],
     'SLAP SQUAD':['TCP로 수신한 패킷을 해석해 클라이언트의 상태와 UI에 반영했습니다.','로비·방 입장·캐릭터 선택·게임 시작 흐름을 구현했습니다.','원격 플레이어의 공격을 애니메이션 타격 시점에 맞춰 표시했습니다.'],
@@ -189,7 +189,8 @@
     {heading:'애니메이션에 맞춘 전투 처리',body:'콤보 입력은 Timer로 추가 입력 가능 구간을 관리하고, Montage가 끝나면 단계를 초기화합니다. 피해 판정은 입력 순간이 아니라 AnimNotify_BaseAttackCheck와 AnimNotify_SkillAttackCheck 시점에 실행합니다. 무기 HitBox도 Notify로 타격 구간에서만 켜고 꺼, 화면에 보이는 타격과 실제 판정을 맞췄습니다.'},
     {heading:'Task·Service로 분리한 몬스터와 보스 AI',body:'Behavior Tree에서 탐지·공격 확률·체력 정보는 Service로 갱신하고, 접근 후 공격·주변 이동·후퇴·휴식은 Task로 구성했습니다. 보스는 이 구조를 확장해 전용 패턴과 체력 상태에 따른 행동을 연결했습니다. 판단에 쓰는 정보와 실행 동작을 분리해 패턴 조건을 수정하기 쉽게 만들었습니다.'},
     {heading:'Delegate 기반 상태 전달과 UI 갱신',body:'플레이어 상태가 바뀔 때마다 여러 게임 클래스가 Widget을 직접 찾아 수정하던 의존성을 줄이기 위해 상태 변경 이벤트를 전달했습니다. UPlayerUIComponent와 관련 Widget이 이벤트를 받아 필요한 표시를 갱신하도록 분리해 UI 변경이 전투·능력치 코드에 퍼지지 않게 했습니다.'},
-    {heading:'반복되는 스킬 이펙트의 생성 비용 관리',body:'빈번한 스킬 이펙트에 Object Pool을 적용했습니다. 이펙트 Actor를 미리 생성하고 비활성 객체를 재사용한 뒤 풀로 반환해 반복적인 SpawnActor·Destroy 호출을 줄였습니다. SkillEffectPool의 기본 크기는 20개이며, PlayerCombatComponent 내부 이펙트 풀은 기본 10개로 설정했습니다.'}
+    {heading:'반복되는 스킬 이펙트의 생성 비용 관리',body:'빈번한 스킬 이펙트에 Object Pool을 적용했습니다. 이펙트 Actor를 미리 생성하고 비활성 객체를 재사용한 뒤 풀로 반환해 반복적인 SpawnActor·Destroy 호출을 줄였습니다. SkillEffectPool의 기본 크기는 20개이며, PlayerCombatComponent 내부 이펙트 풀은 기본 10개로 설정했습니다.'},
+    {heading:'레벨 이동을 위한 사전 로드 트리거',body:'LevelPreloadTrigger는 매 프레임 Tick을 사용하지 않고 플레이어가 Box Trigger에 닿을 때만 동작합니다. 이때 LoadStreamLevel을 비차단 방식으로 호출해 이동 전에 대상 레벨의 로드를 시작합니다. 필요할 때만 로딩을 요청하는 방식으로 전환 과정의 대기와 상시 갱신 비용을 함께 고려했습니다.'}
   ];
   const ebonIssues=[
     {title:'반복되는 스킬 이펙트의 생성·제거',problem:'전투 중 이펙트를 매번 생성하고 제거하면 객체 생성·해제 비용이 반복됩니다.',solution:'이펙트를 미리 생성한 Object Pool에서 비활성 객체를 꺼내 재생하고, 종료 후 제거하지 않고 풀에 반환하도록 바꿨습니다.',result:'반복적인 SpawnActor와 Destroy 호출을 줄이고 이펙트의 재사용 시점을 관리할 수 있게 됐습니다.'},
