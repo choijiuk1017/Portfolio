@@ -198,15 +198,15 @@
     {title:'반복되는 스킬 이펙트의 생성·제거',problem:'전투 중 이펙트를 매번 생성하고 제거하면 객체 생성·해제 비용이 반복됩니다.',solution:'이펙트를 미리 생성한 Object Pool에서 비활성 객체를 꺼내 재생하고, 종료 후 제거하지 않고 풀에 반환하도록 바꿨습니다.',result:'반복적인 SpawnActor와 Destroy 호출을 줄이고 이펙트의 재사용 시점을 관리할 수 있게 됐습니다.'},
     {title:'공격 동작과 피해 판정의 시점 차이',problem:'공격 입력 직후 판정을 실행하면 화면에 보이는 무기 타격 동작보다 먼저 피해가 적용됩니다.',solution:'Animation Notify가 발생한 구간에서 공격 판정을 실행하고 무기 HitBox를 활성화·비활성화하도록 연결했습니다.',result:'애니메이션의 타격 구간과 실제 판정 시점을 맞추고, 공격 구간 바깥의 불필요한 충돌을 줄였습니다.'}
   ];
-  const ebonReflection='플레이 동작을 만드는 일과 늘어나는 기능을 유지할 수 있게 설계하는 일은 함께 가야 한다는 점을 배웠습니다. 컴포넌트와 Data Asset으로 수정 범위를 줄이고, Delegate로 상태 전달을 분리했습니다. 전투에서는 시각적 타격 시점뿐 아니라 반복 생성되는 이펙트의 비용까지 고려해 Object Pool을 적용했습니다. 이후에도 체감에 의존하지 않고 프로파일링 수치로 병목과 개선 효과를 확인하는 습관을 키우고자 합니다.';
+  const ebonReflection='플레이 동작을 만드는 일과 늘어나는 기능을 유지할 수 있게 설계하는 일은 함께 가야 한다는 점을 배웠습니다. 컴포넌트와 Data Asset으로 수정 범위를 줄이고, Delegate로 상태 전달을 분리했습니다. 반복되는 이펙트를 구현하면서 눈에 보이는 동작을 완성하는 것에 그치지 않고, 같은 기능이 계속 실행될 때 발생하는 비용까지 생각해야 한다는 점을 느꼈습니다. 이후에는 기능을 구현할 때 반복 횟수와 객체의 생명 주기도 함께 살피며 더 효율적인 구조를 고민하게 되었습니다.';
   const ebonScenes=[
-    {label:'인벤토리',src:'assets/ebon-crown/inventory.webp'},
-    {label:'탐색 장면',src:'assets/ebon-crown/exploration.webp'},
+    {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'},
     {label:'보스 전투',src:'assets/ebon-crown/boss-combat.webp'},
-    {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'}
+    {label:'탐색 장면',src:'assets/ebon-crown/exploration.webp'},
+    {label:'인벤토리',src:'assets/ebon-crown/inventory.webp'}
   ];
   const ebonCover=document.querySelector('.project-visual img[alt^="EBON CROWN"]');
-  ebonCover.src=ebonScenes[3].src;ebonCover.alt='EBON CROWN 불꽃 스킬 게임 화면';
+  ebonCover.src=ebonScenes[0].src;ebonCover.alt='EBON CROWN 불꽃 스킬 게임 화면';
   function openProjectDetail(card){
     const title=card.querySelector('.project-content h3').textContent;
     projectDialog.querySelector('#project-dialog-title').textContent=title;
@@ -219,16 +219,15 @@
     if(title==='EBON CROWN'){
       const gallery=document.createElement('div');gallery.className='ebon-gallery';gallery.setAttribute('aria-label','EBON CROWN 게임 장면');
       const stage=document.createElement('figure');stage.className='ebon-gallery-stage';
-      const stageImage=document.createElement('img');stageImage.alt='EBON CROWN 불꽃 전투 게임 화면';
-      const caption=document.createElement('figcaption');stage.append(stageImage,caption);
+      const stageImage=document.createElement('img');stageImage.alt='EBON CROWN 게임 화면';stage.append(stageImage);
       const strip=document.createElement('div');strip.className='ebon-gallery-strip';strip.setAttribute('aria-label','장면 선택');
       const thumbs=ebonScenes.map((scene,index)=>{
         const thumb=document.createElement('button');thumb.type='button';thumb.className='ebon-gallery-thumb';thumb.setAttribute('aria-label',scene.label+' 보기');
         const picture=document.createElement('img');picture.src=scene.src;picture.alt='';thumb.append(picture);
         thumb.addEventListener('click',()=>selectScene(index));strip.append(thumb);return thumb;
       });
-      function selectScene(index){const scene=ebonScenes[index];stageImage.src=scene.src;stageImage.alt='EBON CROWN '+scene.label+' 게임 화면';caption.textContent=scene.label;thumbs.forEach((thumb,i)=>thumb.setAttribute('aria-pressed',String(i===index)))}
-      gallery.append(stage,strip);media.append(gallery);selectScene(3);
+      function selectScene(index){const scene=ebonScenes[index];stageImage.src=scene.src;stageImage.alt='EBON CROWN '+scene.label+' 게임 화면';thumbs.forEach((thumb,i)=>thumb.setAttribute('aria-pressed',String(i===index)))}
+      gallery.append(stage,strip);media.append(gallery);selectScene(0);
     }
     projectDialog.querySelector('.project-dialog-facts').replaceChildren(card.querySelector('.project-facts').cloneNode(true));
     projectDialog.querySelector('.project-dialog-tags').replaceChildren(card.querySelector('.tags').cloneNode(true));
