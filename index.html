@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#10131b">
   <meta name="description" content="게임 플레이의 동작과 흐름을 코드로 구현하는 개발자 최지욱의 포트폴리오">
   <title>최지욱 | Game Programmer</title>
+  <script>if('scrollRestoration' in history)history.scrollRestoration='manual';scrollTo(0,0)</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -134,6 +135,29 @@
     .ebon-gallery-thumb:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.ebon-gallery-thumb img{display:block;width:100%;height:100%;object-fit:cover}
     .project-dialog-deep-dive .ebon-issue{padding:17px 0}.ebon-issue-row{display:grid;grid-template-columns:48px 1fr;gap:10px;margin-top:10px}.ebon-issue-row strong{font:700 12px var(--sans);color:#a6c9ff;padding-top:3px}.ebon-issue-row p{margin:0}.project-dialog-deep-dive .ebon-reflection{font-size:14px;line-height:1.95;color:#c3d2e1;max-width:75ch}
     @media(max-width:600px){.ebon-gallery{padding:6px}.ebon-gallery-strip{gap:4px;margin-top:5px}.ebon-gallery-stage figcaption{bottom:7px;left:8px;font-size:10px;padding:4px 6px}}
+
+    /* Project index: large visual, compact information and icon-only stack row. */
+    .projects{grid-template-columns:repeat(2,minmax(0,1fr));gap:76px 38px;align-items:start}
+    .project{display:flex;flex-direction:column;min-height:0;background:transparent;border:0;overflow:visible}
+    .project:hover{border-color:transparent;transform:translateY(-3px)}
+    .project-visual{width:100%;min-height:0;aspect-ratio:16/9;padding:20px;border:1px solid #344154;border-radius:12px;background:#0a0d13;box-shadow:0 18px 45px #0003}
+    .project-visual img{border-radius:11px;object-position:center}.project-visual:has(img):after{border-radius:11px;background:linear-gradient(0deg,#060911b8,transparent 42%)}
+    .project-visual .visual-label{font-size:10px;color:#d8e5f6}
+    .project-content{padding:20px 2px 0;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-auto-rows:auto;column-gap:20px;align-items:start}
+    .project-content h3{grid-column:1;grid-row:1;margin:0;font-size:clamp(21px,2vw,28px);line-height:1.25;letter-spacing:-.045em}
+    .project p.project-date{grid-column:1/-1;grid-row:2;margin:11px 0 10px;color:#8bbaff}
+    .project p.project-genre{grid-column:1/-1;grid-row:3;margin:0 0 17px;color:#c8d2df;font-size:13px;line-height:1.7}
+    .project-facts{grid-column:1/-1;grid-row:4;gap:7px;padding-top:15px;border-top:1px solid #ffffff12;font-size:12px;line-height:1.65}
+    .project-facts>div{grid-template-columns:64px minmax(0,1fr);gap:10px}.project-facts dt{color:#a8caff}
+    .project-detail-trigger{grid-column:2;grid-row:1;align-self:center;margin:0;padding:5px 0;border:0;background:none;color:#9eacbe;font:500 12px var(--sans);white-space:nowrap}
+    .project-detail-trigger:hover,.project-detail-trigger:focus-visible{background:none;border:0;color:#dce9fa}.project-detail-trigger span{font-size:15px}
+    .project-content>.tags{display:none}
+    .project-stack-icons{grid-column:1/-1;grid-row:5;display:flex;align-items:center;gap:10px;margin-top:18px;min-height:38px}
+    .stack-icon{position:relative;display:grid;place-items:center;width:38px;height:38px;border:1px solid #ffffff28;border-radius:50%;background:#151b25;color:#e9f2ff;box-shadow:inset 0 0 0 1px #0004;transition:transform .2s,border-color .2s,background .2s}
+    .stack-icon:hover{transform:translateY(-2px);border-color:#8bbaff;background:#1d2735}.stack-icon img{display:block;width:22px;height:22px;object-fit:contain}.stack-icon b{font:700 9px var(--mono);letter-spacing:-.06em}.stack-icon[data-tone="light"]{background:#eef3fa}.stack-icon[data-tone="light"]:hover{background:#fff}
+    .project-actions{grid-column:1/-1;grid-row:6;margin:15px 0 0;padding:0;gap:18px}.project-actions a{font-size:10px;color:#9fbce8}
+    @media(max-width:800px){.projects{grid-template-columns:1fr;gap:58px}.project-visual{aspect-ratio:16/9}.project-content{padding:17px 1px 0}}
+    @media(max-width:480px){.project-content{padding:16px 0 0;column-gap:12px}.project-detail-trigger{font-size:11px}.stack-icon{width:35px;height:35px}.stack-icon img{width:20px;height:20px}}
   </style>
 </head>
 <body>
@@ -152,7 +176,7 @@
     </div></div></section>
     <section id="contact"><div class="wrap contact"><span class="label">05. GET IN TOUCH</span><h2>더 궁금한 점이 있다면<br>편하게 연락해 주세요.</h2><p>프로젝트와 코드에 대한 자세한 내용은 GitHub에서 확인하실 수 있습니다.</p><a class="button" href="https://github.com/choijiuk1017" target="_blank" rel="noopener noreferrer">GitHub 방문하기 ↗</a><div class="contact-links"><a href="https://github.com/choijiuk1017" target="_blank" rel="noopener noreferrer">GITHUB ↗</a><a href="#home">BACK TO TOP ↑</a></div></div></section>
   </main><dialog id="project-dialog" aria-labelledby="project-dialog-title"><button type="button" class="project-dialog-close" aria-label="프로젝트 상세 닫기">×</button><div class="project-dialog-media"><img alt=""></div><div class="project-dialog-body"><p class="project-dialog-kicker">PROJECT DETAIL</p><h2 id="project-dialog-title"></h2><p class="project-dialog-date"></p><p class="project-dialog-genre"></p><h3>프로젝트 정보</h3><div class="project-dialog-facts"></div><h3>주요 구현</h3><ul class="project-dialog-highlights"></ul><h3>기술 스택</h3><div class="project-dialog-tags"></div><div class="project-dialog-deep-dive" hidden></div><div class="project-dialog-links"></div></div></dialog><dialog id="activity-viewer" aria-label="활동 증빙 자료"><button class="viewer-close" type="button" aria-label="닫기">×</button><img alt=""><p>이미지 바깥을 클릭하거나 Esc를 눌러 닫으실 수 있습니다.</p></dialog><footer>© <span id="year"></span> CHOI JI-UK · GAME CLIENT PORTFOLIO</footer>
-  <script>document.getElementById('year').textContent=new Date().getFullYear();const introLoader=document.querySelector('.intro-loader');const unlockIntroScroll=()=>document.documentElement.classList.remove('intro-lock');introLoader.addEventListener('animationend',event=>{if(event.animationName==='intro-exit')unlockIntroScroll()});setTimeout(unlockIntroScroll,2200);const viewer=document.getElementById('activity-viewer');document.querySelectorAll('.activity-proof').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();viewer.querySelector('img').src=a.querySelector('img').src;viewer.querySelector('img').alt=a.querySelector('img').alt;viewer.showModal()}));viewer.querySelector('.viewer-close').addEventListener('click',()=>viewer.close());viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close()});const menu=document.querySelector('.menu'),links=document.querySelector('.links');menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기')});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','메뉴 열기')}));
+  <script>addEventListener('pageshow',()=>requestAnimationFrame(()=>scrollTo(0,0)));document.getElementById('year').textContent=new Date().getFullYear();const introLoader=document.querySelector('.intro-loader');const unlockIntroScroll=()=>document.documentElement.classList.remove('intro-lock');introLoader.addEventListener('animationend',event=>{if(event.animationName==='intro-exit')unlockIntroScroll()});setTimeout(unlockIntroScroll,2200);const viewer=document.getElementById('activity-viewer');document.querySelectorAll('.activity-proof').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();viewer.querySelector('img').src=a.querySelector('img').src;viewer.querySelector('img').alt=a.querySelector('img').alt;viewer.showModal()}));viewer.querySelector('.viewer-close').addEventListener('click',()=>viewer.close());viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close()});const menu=document.querySelector('.menu'),links=document.querySelector('.links');menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기')});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','메뉴 열기')}));
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   if('IntersectionObserver' in window){
     const targets=document.querySelectorAll('section .section-head, .about-grid > *, .experience-divider, .experience-row, .skill, .project, .contact > *');
@@ -178,6 +202,20 @@
     document.addEventListener('pointermove',e=>{px=e.clientX;py=e.clientY;if(!pointerFrame)pointerFrame=requestAnimationFrame(()=>{light.style.transform=`translate3d(${px}px,${py}px,0)`;light.style.opacity='1';pointerFrame=0})},{passive:true});
     document.documentElement.addEventListener('pointerleave',()=>{light.style.opacity='0'});
   }
+
+  const projectStackSets={
+    'EBON CROWN':[['C++','https://cdn.simpleicons.org/cplusplus/6295CB'],['Unreal Engine 5','https://cdn.simpleicons.org/unrealengine/FFFFFF']],
+    'EXCUTE':[['C++','https://cdn.simpleicons.org/cplusplus/6295CB'],['Unreal Engine 5','https://cdn.simpleicons.org/unrealengine/FFFFFF'],['Blueprint',null,'BP']],
+    'PROJECT_SMILE':[['C++','https://cdn.simpleicons.org/cplusplus/6295CB'],['Unreal Engine 5','https://cdn.simpleicons.org/unrealengine/FFFFFF'],['Python / Flask','https://cdn.simpleicons.org/python/3776AB'],['PyTorch','https://cdn.simpleicons.org/pytorch/EE4C2C'],['Multimodal AI',null,'AI']],
+    'SLAP SQUAD':[['C#','https://cdn.simpleicons.org/csharp/8A4FC7'],['Unity','https://cdn.simpleicons.org/unity/FFFFFF'],['TCP/IP',null,'NET']],
+    'TANK BLITZ':[['C++','https://cdn.simpleicons.org/cplusplus/6295CB'],['DirectX 11',null,'DX11'],['HLSL',null,'HLSL']]
+  };
+  document.querySelectorAll('.project').forEach(card=>{
+    const title=card.querySelector('.project-content h3').textContent,stacks=projectStackSets[title]||[];
+    const row=document.createElement('div');row.className='project-stack-icons';row.setAttribute('aria-label','주요 기술 스택');
+    for(const [label,source,fallback] of stacks){const icon=document.createElement('span');icon.className='stack-icon';icon.title=label;icon.setAttribute('aria-label',label);if(source){const image=document.createElement('img');image.src=source;image.alt='';image.addEventListener('error',()=>{image.remove();const glyph=document.createElement('b');glyph.textContent=fallback||label.slice(0,3);icon.append(glyph)});icon.append(image)}else{const glyph=document.createElement('b');glyph.textContent=fallback;icon.append(glyph)}row.append(icon)}
+    card.querySelector('.project-content').append(row);
+  });
 
   const projectDialog=document.getElementById('project-dialog');
   const projectHighlights={
