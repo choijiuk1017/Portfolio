@@ -259,12 +259,14 @@
   ];
   const tankReflection='상용 Engine이 자동으로 처리해 주던 화면 출력 과정을 직접 구성하면서 하나의 Frame이 Resource 생성, 좌표 변환, Shader 계산과 충돌 판정을 거쳐 완성된다는 점을 구체적으로 이해하게 되었습니다. 특히 같은 시각적 결과라도 Geometry를 늘리는 방법과 Shader에서 표현하는 방법은 비용과 품질이 다르고, 좌표계와 자원 소유 구조가 흐려지면 작은 기능도 오류와 중복으로 이어진다는 점을 느꼈습니다. 이후에는 기능이 동작하는지만 확인하기보다 어느 단계에서 계산되고 어떤 자원을 사용하는지까지 생각하며 구현하게 되었습니다.';
   const ebonScenes=[
+    {label:'타이틀 화면',src:'assets/ebon-crown/title.webp'},
     {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'},
     {label:'보스 전투',src:'assets/ebon-crown/boss-combat.webp'},
     {label:'탐색 장면',src:'assets/ebon-crown/exploration.webp'},
     {label:'인벤토리',src:'assets/ebon-crown/inventory.webp'}
   ];
   const excuteScenes=[
+    {label:'타이틀 화면',src:'assets/excute/title.webp'},
     {label:'RIM CAVE',src:'assets/excute/rim-cave.webp'},
     {label:'일반 전투',src:'assets/excute/combat.webp'},
     {label:'맵 탐색',src:'assets/excute/exploration.webp'},
@@ -274,13 +276,15 @@
     {label:'타이틀 화면',src:'assets/project-smile/title.webp'},
     {label:'상황 분석',src:'assets/project-smile/analysis.webp'},
     {label:'실험 기록',src:'assets/project-smile/document.webp'},
-    {label:'몬스터 추격',src:'assets/project-smile/monster.webp'}
+    {label:'몬스터 추격',src:'assets/project-smile/monster.webp'},
+    {label:'사건 일지',src:'assets/project-smile/case-journal.webp'}
   ];
   const slapScenes=[
     {label:'로그인 화면',src:'assets/slap-squad/login.webp'},
     {label:'로비 화면',src:'assets/slap-squad/lobby.webp'},
     {label:'마이페이지',src:'assets/slap-squad/mypage.webp'},
-    {label:'게임 전투',src:'assets/slap-squad/battle.webp'}
+    {label:'게임 전투',src:'assets/slap-squad/battle.webp'},
+    {label:'상점 화면',src:'assets/slap-squad/shop.webp'}
   ];
   const tankScenes=[
     {label:'조작 안내',src:'assets/tank-blitz/controls.webp'},
@@ -290,9 +294,9 @@
     {label:'조준과 사격',src:'assets/tank-blitz/aiming.webp'}
   ];
   const ebonCover=document.querySelector('.project-visual img[alt^="EBON CROWN"]');
-  ebonCover.src=ebonScenes[0].src;ebonCover.alt='EBON CROWN 불꽃 스킬 게임 화면';
+  ebonCover.src=ebonScenes[0].src;ebonCover.alt='EBON CROWN 타이틀 게임 화면';
   const excuteCover=document.querySelector('.project-visual img[alt^="EXCUTE"]');
-  excuteCover.src=excuteScenes[0].src;excuteCover.alt='EXCUTE RIM CAVE 게임 화면';
+  excuteCover.src=excuteScenes[0].src;excuteCover.alt='EXCUTE 타이틀 게임 화면';
   const smileCover=document.querySelector('.project-visual img[alt^="PROJECT_SMILE"]');
   smileCover.src=smileScenes[0].src;smileCover.alt='PROJECT_SMILE 타이틀 게임 화면';
   const slapCover=document.querySelector('.project-visual img[alt^="SLAP SQUAD"]');
