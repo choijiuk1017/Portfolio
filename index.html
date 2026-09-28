@@ -205,13 +205,17 @@
     document.documentElement.addEventListener('pointerleave',()=>{light.style.opacity='0'});
   }
 
+  const sharedSkillIcons={
+    csharp:document.querySelector('img[alt="C# 로고"]')?.src,
+    directx:document.querySelector('img[alt="DirectX 11 로고"]')?.src
+  };
   const projectStackSets={
     'EBON CROWN':[['C++','https://cdn.simpleicons.org/cplusplus/6295CB'],['Unreal Engine 5','https://cdn.simpleicons.org/unrealengine/FFFFFF']],
     'EXCUTE':[['C++','https://cdn.simpleicons.org/cplusplus/6295CB'],['Unreal Engine 5','https://cdn.simpleicons.org/unrealengine/FFFFFF'],['Blueprint',null,'BP']],
     'PROJECT_SMILE':[['C++','https://cdn.simpleicons.org/cplusplus/6295CB'],['Unreal Engine 5','https://cdn.simpleicons.org/unrealengine/FFFFFF'],['Python / Flask','https://cdn.simpleicons.org/python/3776AB'],['PyTorch','https://cdn.simpleicons.org/pytorch/EE4C2C'],['Multimodal AI',null,'AI']],
-    'SLAP SQUAD':[['C#','https://cdn.simpleicons.org/csharp/8A4FC7'],['Unity','https://cdn.simpleicons.org/unity/FFFFFF'],['TCP/IP',null,'NET']],
-    'KEMET':[['C#','https://cdn.simpleicons.org/csharp/8A4FC7'],['Unity','https://cdn.simpleicons.org/unity/FFFFFF'],['State Pattern',null,'FSM']],
-    'TANK BLITZ':[['C++','https://cdn.simpleicons.org/cplusplus/6295CB'],['DirectX 11',null,'DX11'],['HLSL',null,'HLSL']]
+    'SLAP SQUAD':[['C#',sharedSkillIcons.csharp],['Unity','https://cdn.simpleicons.org/unity/FFFFFF'],['TCP/IP',null,'NET']],
+    'KEMET':[['C#',sharedSkillIcons.csharp],['Unity','https://cdn.simpleicons.org/unity/FFFFFF'],['State Pattern',null,'FSM']],
+    'TANK BLITZ':[['C++','https://cdn.simpleicons.org/cplusplus/6295CB'],['DirectX 11',sharedSkillIcons.directx],['HLSL',null,'HLSL']]
   };
   document.querySelectorAll('.project').forEach(card=>{
     const title=card.querySelector('.project-content h3').textContent,stacks=projectStackSets[title]||[];
@@ -416,3 +420,4 @@
 </script>
 </body>
 </html>
+
