@@ -116,7 +116,7 @@
     .project-dialog-close{position:sticky;z-index:3;top:15px;float:right;margin:15px 15px -60px 0;width:40px;height:40px;border:1px solid #ffffff55;border-radius:50%;background:#10131be8;color:#fff;font-size:26px;line-height:1;cursor:pointer}
     .project-dialog-close:hover{background:#304769}.project-dialog-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,.82fr);align-items:stretch}.project-dialog-media{min-width:0;background:#0c111a;overflow:hidden}.project-dialog-media img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 40%}
     .project-dialog-body{padding:34px 30px 28px;background:linear-gradient(180deg,#1c2a3a,#151e2a)}.project-dialog-kicker{color:var(--accent);font:11px var(--mono);letter-spacing:.16em;margin:0 0 10px}.project-dialog-body h2{font-size:clamp(28px,3vw,42px);line-height:1.1;letter-spacing:-.06em;margin:0 45px 8px 0}.project-dialog-date{font:12px var(--mono);color:var(--accent);margin:0 0 16px}.project-dialog-genre{font-size:14px;line-height:1.75;color:#d4deeb;margin:0 0 20px}.project-dialog-body h3,.project-dialog-summary h3{border-top:1px solid var(--line);padding-top:17px;margin:18px 0 12px;font-size:15px;letter-spacing:-.025em}
-    .project-dialog-facts .project-facts{gap:8px;font-size:12px}.project-dialog-facts .project-facts>div{grid-template-columns:72px 1fr}.project-dialog-summary{padding:0 30px 30px;background:#171e2b}.project-dialog-highlights{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;color:#b8c8d9}.project-dialog-highlights li{padding:14px 15px;border:1px solid #ffffff16;background:#111824}.project-dialog-highlights strong{display:block;color:#dce9fb;font-size:13px;margin-bottom:6px}.project-dialog-highlights span{display:block;font-size:11px;line-height:1.6}.project-dialog-tags .tags{margin:0}.project-dialog-links .project-actions{margin:8px 0 0;padding-top:14px}.project-dialog-links .project-actions a{font-size:10px}
+    .project-dialog-facts .project-facts{gap:8px;font-size:12px}.project-dialog-facts .project-facts>div{grid-template-columns:72px 1fr}.project-dialog-summary{padding:14px 30px 34px;background:#171e2b}.project-dialog-summary h3{font-size:20px;margin-bottom:16px}.project-dialog-highlights{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;color:#b8c8d9}.project-dialog-highlights li{min-height:132px;padding:20px 22px;border:1px solid #ffffff1c;background:#111824}.project-dialog-highlights strong{display:block;color:#edf5ff;font-size:16px;margin-bottom:9px;letter-spacing:-.02em}.project-dialog-highlights span{display:block;font-size:13px;line-height:1.75}.project-dialog-tags .tags{margin:0}.project-dialog-links .project-actions{margin:8px 0 0;padding-top:14px}.project-dialog-links .project-actions a{font-size:10px}
     .project-more-detail{display:flex;align-items:center;justify-content:space-between;width:100%;margin:15px 0 0;padding:14px 17px;border:1px solid #8bbaff66;border-radius:4px;background:#8bbaff12;color:#dceaff;font-weight:700;cursor:pointer;transition:background .2s,border-color .2s}.project-more-detail[hidden]{display:none}.project-more-detail:hover{background:#8bbaff26;border-color:#8bbaff}.project-more-detail span{color:#8bbaff}
     #project-detail-dialog{position:fixed;inset:0;width:min(860px,calc(100% - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;border:1px solid #52627e;border-radius:10px;background:#171e2b;color:var(--text);box-shadow:0 32px 100px #000a;overflow-y:auto;scrollbar-width:none}#project-detail-dialog::-webkit-scrollbar{display:none}#project-detail-dialog::backdrop{background:#050a13cc;backdrop-filter:blur(5px)}#project-detail-dialog[open]{animation:project-dialog-enter .28s cubic-bezier(.22,1,.36,1) both}.project-detail-window-body{padding:42px clamp(23px,5vw,58px) 54px}.project-detail-window-body>h2{font-size:clamp(27px,4vw,42px);margin:0 55px 24px 0;letter-spacing:-.055em}.project-detail-window-content h3{border-top:1px solid var(--line);padding-top:25px;margin:28px 0 14px;font-size:19px}
     @media(max-width:850px){.project-dialog-layout{grid-template-columns:1fr}.project-dialog-body{padding:27px 22px}.project-dialog-summary{padding:0 22px 32px}.project-dialog-highlights{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -316,35 +316,35 @@
   const umlViewerTitle=umlViewer.querySelector('.uml-viewer-head');
   const projectHighlights={
     'EBON CROWN':[
-      {title:'책임 분리',body:'전투·스태미나·성장·UI를 기능 단위로 나눠 변경 범위를 줄였습니다.'},
-      {title:'데이터 중심 설계',body:'아이템 설정과 무기별 강화 상태를 데이터와 식별자로 관리했습니다.'},
-      {title:'전투 판정 동기화',body:'애니메이션의 타격 구간에 맞춰 판정과 무기 충돌을 제어했습니다.'},
-      {title:'AI·성능 관리',body:'행동 트리로 전투 패턴을 구성하고 이펙트 재사용과 레벨 사전 로드를 적용했습니다.'}],
+      {title:'컴포넌트 기반 플레이어 구조',body:'전투, 스태미나, 능력치, 상호작용, UI와 체크포인트 기능을 독립 컴포넌트로 분리했습니다. 입력을 플레이어에서 중재하고 각 기능의 책임과 의존 범위를 제한해 기능 추가와 디버깅이 다른 시스템에 번지지 않도록 설계했습니다.'},
+      {title:'애니메이션과 전투 판정 동기화',body:'공격 몽타주의 유효 프레임에서만 무기 충돌과 추적 판정을 활성화하고, 콤보 입력 창과 스태미나·FP 소비를 같은 흐름으로 연결했습니다. 한 번의 공격에서 중복 피격을 차단해 화면의 모션과 실제 게임 판정이 일치하도록 구현했습니다.'},
+      {title:'데이터 중심 아이템·저장 시스템',body:'아이템의 고정 정보는 데이터 자산으로, 장비·강화·보유 상태는 식별자 기반 런타임 데이터로 분리했습니다. 레벨을 이동해도 장비와 성장 상태를 복원할 수 있도록 저장 데이터와 UI 갱신 흐름을 연결했습니다.'},
+      {title:'AI 실행 구조와 런타임 최적화',body:'행동 트리에서 판단 조건과 실제 행동을 분리해 추적·공격·회피 패턴을 조정하기 쉽게 만들었습니다. 반복 생성되는 이펙트는 풀링하고 다음 레벨을 미리 불러와 전투 중 할당 비용과 화면 전환 대기를 줄였습니다.'}],
     'EXCUTE':[
-      {title:'근접 공격 판정',body:'무기가 실제로 휘둘러지는 구간에만 공격 범위를 검사했습니다.'},
-      {title:'중복 피해 방지',body:'한 번의 공격에서 이미 맞은 대상은 다시 피해를 받지 않도록 관리했습니다.'},
-      {title:'패링 상태 흐름',body:'패링 성공 시 공격과 AI를 중단하고 경직 종료 후 안전하게 복구했습니다.'},
-      {title:'보스 패턴 예고',body:'행동 트리와 범위 표시를 결합해 공격 위치와 실행 시점을 전달했습니다.'}],
+      {title:'프레임 기반 근접 전투 판정',body:'애니메이션 이벤트로 공격 시작과 종료 구간을 지정하고 그 사이에서만 무기 궤적을 추적했습니다. 모션보다 판정이 먼저 발생하거나 늦게 남는 문제를 제거하고, 공격 단위의 피격 목록으로 같은 대상에 대한 중복 피해를 차단했습니다.'},
+      {title:'패링과 경직 상태 전환',body:'패링 성공 시 진행 중인 공격 판정과 애니메이션, AI 행동을 함께 중단한 뒤 경직 상태로 전환했습니다. 종료 이벤트에서 이동과 판단을 순서대로 복구해 공격·피격·사망 상태가 겹치며 제어권이 꼬이는 문제를 방지했습니다.'},
+      {title:'행동 트리 기반 보스 패턴',body:'거리, 방향, 재사용 대기시간과 현재 전투 상태를 조건으로 패턴을 선택하도록 구성했습니다. 판단 로직과 공격 실행을 분리해 패턴 추가 시 기존 분기를 크게 수정하지 않도록 확장성을 확보했습니다.'},
+      {title:'공격 예고와 UI 피드백',body:'광역 공격의 위치와 발동 시간을 월드 표시로 먼저 전달하고, 상호작용 가능 거리와 진행 상태를 UI에 반영했습니다. AI의 내부 상태를 플레이어가 즉시 이해할 수 있는 시각 정보로 변환했습니다.'}],
     'PROJECT_SMILE':[
-      {title:'선택 영역 캡처',body:'플레이어가 지정한 화면만 캡처해 메모리에서 이미지로 변환했습니다.'},
-      {title:'비동기 AI 통신',body:'이미지와 플레이 상태를 AI 서버에 전송해 게임 중단 없이 응답을 받았습니다.'},
-      {title:'단계별 힌트 생성',body:'장면 분석과 퍼즐 문서 검색을 연결해 상황에 맞는 힌트를 생성했습니다.'},
-      {title:'응답 안정성',body:'JSON 검증, 중복 요청 제한과 실패 대응 UI로 예외 상황을 처리했습니다.'}],
+      {title:'화면 선택 영역 캡처 파이프라인',body:'뷰포트 좌표를 렌더 타깃 좌표로 변환해 플레이어가 지정한 영역만 읽고, 메모리에서 전송 가능한 이미지로 압축했습니다. 불필요한 전체 화면 저장과 파일 입출력을 줄여 캡처부터 요청까지 한 흐름으로 처리했습니다.'},
+      {title:'비동기 AI 요청과 게임 스레드 보호',body:'캡처 이미지와 현재 진행 정보를 HTTP 요청으로 묶어 비동기로 전송하고 완료 콜백에서만 UI를 갱신했습니다. 네트워크 응답을 기다리는 동안 입력과 렌더링이 멈추지 않도록 요청 생명주기와 화면 상태를 분리했습니다.'},
+      {title:'플레이 맥락 기반 단계별 힌트',body:'장면 분석 결과와 퍼즐 문서 검색 결과를 결합하고, 진행 단계·경과 시간·기존 요청 횟수를 함께 전달했습니다. 정답을 바로 노출하는 대신 현재 상황에 필요한 정보부터 순차적으로 제공하도록 힌트 강도를 조절했습니다.'},
+      {title:'외부 응답 검증과 실패 복구',body:'응답 JSON의 필수 필드와 타입을 검사한 뒤 유효한 데이터만 게임 상태에 반영했습니다. 중복 요청 제한, 타임아웃과 오류 메시지, 재시도 가능한 UI를 두어 외부 AI 서비스 실패가 플레이 흐름을 깨지 않게 처리했습니다.'}],
     'SLAP SQUAD':[
-      {title:'메시지 처리 분리',body:'수신 메시지를 기능별 처리 흐름으로 나눠 로그인부터 게임까지 연결했습니다.'},
-      {title:'멀티플레이 동기화',body:'로컬 입력과 원격 상태를 구분해 이동·회전·애니메이션을 동기화했습니다.'},
-      {title:'공통 무기 구조',body:'여러 캐릭터의 공격 규칙을 공통 흐름과 개별 동작으로 나눴습니다.'},
-      {title:'서버 판정 반영',body:'공격 결과를 기준으로 피격·체력·사망과 시각적 피드백을 갱신했습니다.'}],
+      {title:'패킷 수신과 기능 처리 분리',body:'TCP 수신 데이터의 경계를 복원해 완전한 메시지 단위로 해석하고, 로그인·로비·매칭·게임 메시지를 각각의 처리 흐름으로 전달했습니다. 네트워크 입출력과 게임 로직의 결합을 줄여 메시지 추가와 오류 추적이 쉽도록 구성했습니다.'},
+      {title:'로컬·원격 캐릭터 동기화',body:'로컬 입력은 서버에 전달하고 서버가 보낸 위치·회전·행동 상태를 원격 캐릭터에 반영했습니다. 소유 캐릭터와 원격 캐릭터의 갱신 경로를 구분해 입력 충돌을 막고 애니메이션 상태가 이동 결과와 맞도록 연결했습니다.'},
+      {title:'확장 가능한 무기 동작 구조',body:'공격 시작, 재사용 대기, 판정 요청과 연출 갱신은 공통 흐름으로 묶고 무기별 사거리와 동작은 개별 구현으로 분리했습니다. 캐릭터나 무기를 추가할 때 네트워크 처리와 공통 전투 규칙을 다시 작성하지 않도록 설계했습니다.'},
+      {title:'서버 판정 기반 전투 피드백',body:'클라이언트는 공격 의도를 전송하고 서버가 확정한 결과로 피격, 체력, 사망 상태를 갱신했습니다. 확정 상태를 애니메이션·이펙트·UI에 일관되게 반영해 참가자마다 다른 전투 결과가 보이는 문제를 줄였습니다.'}],
     'KEMET':[
-      {title:'캐릭터 공통 구조',body:'플레이어와 몬스터가 공유하는 체력·피격·사망 규칙을 통합했습니다.'},
-      {title:'콤보와 패링',body:'입력·애니메이션·공격 판정을 연결하고 패링 성공 시 그로기를 적용했습니다.'},
-      {title:'상태 기반 AI',body:'순찰·추적·공격·그로기·사망을 독립된 상태와 전환 조건으로 구성했습니다.'},
-      {title:'몬스터 확장',body:'돌진·소환·마법형 몬스터를 필요한 상태 조합으로 확장했습니다.'}],
+      {title:'공통 캐릭터 생명주기',body:'플레이어와 몬스터가 공유하는 체력, 피해, 경직, 사망 처리를 공통 계층에 모으고 조작과 AI만 분리했습니다. 피해 규칙 수정이 모든 캐릭터에 동일하게 적용되도록 해 중복 코드와 상태 불일치를 줄였습니다.'},
+      {title:'입력·애니메이션 기반 콤보와 패링',body:'입력 가능 구간을 애니메이션 이벤트로 열고 닫아 연속 공격을 연결했으며, 실제 타격 구간에서만 충돌을 검사했습니다. 패링 성공 결과를 피해 취소와 그로기 전환까지 하나의 상태 흐름으로 묶었습니다.'},
+      {title:'명시적인 적 AI 상태 전환',body:'순찰, 추적, 공격, 그로기와 사망을 독립 상태로 구성하고 진입·실행·종료 책임을 나눴습니다. 상태를 바꿀 때 진행 중 행동을 정리하도록 해 피격 중 공격하거나 사망 후 이동하는 충돌을 방지했습니다.'},
+      {title:'조합 가능한 몬스터 패턴',body:'공통 감지와 이동 흐름 위에 돌진, 소환, 원거리 마법 같은 행동을 필요한 상태 조합으로 확장했습니다. 거대한 조건문 대신 교체 가능한 행동 단위를 사용해 새로운 몬스터를 추가할 때 기존 AI에 미치는 영향을 줄였습니다.'}],
     'TANK BLITZ':[
-      {title:'렌더링 기반',body:'화면 출력과 깊이 처리를 포함한 DirectX 11 렌더링 흐름을 구성했습니다.'},
-      {title:'조명과 표면 표현',body:'행렬 변환, 다중 광원, 노멀 매핑과 텍스처 혼합을 셰이더에 구현했습니다.'},
-      {title:'모델·애니메이션',body:'모델 파일과 골격 애니메이션을 불러오고 그래픽 자원 역할을 분리했습니다.'},
-      {title:'충돌과 게임 기능',body:'월드 좌표 충돌 영역, 투사체, 카메라와 상태 UI를 직접 구현했습니다.'}]
+      {title:'DirectX 11 렌더링 파이프라인',body:'디바이스와 컨텍스트, 스왑 체인, 렌더 타깃·깊이 버퍼를 초기화하고 프레임 단위 갱신과 출력 순서를 구성했습니다. 그래픽 자원의 생성·바인딩·해제를 역할별로 분리해 렌더 상태 누수와 수명 관리 문제를 줄였습니다.'},
+      {title:'좌표 변환과 HLSL 셰이딩',body:'월드·뷰·투영 행렬을 셰이더 상수로 전달하고 다중 광원, 노멀 매핑과 텍스처 혼합을 픽셀 단계에서 계산했습니다. CPU의 게임 상태와 GPU 렌더 데이터가 매 프레임 일관되게 갱신되도록 버퍼 갱신 흐름을 설계했습니다.'},
+      {title:'모델 로딩과 골격 애니메이션',body:'모델의 메시·재질·텍스처와 본 계층을 읽어 렌더 자원으로 변환하고, 키프레임 보간 결과를 본 행렬 팔레트로 전달했습니다. 자원 데이터와 재생 상태를 분리해 여러 객체가 같은 모델을 재사용할 수 있도록 구성했습니다.'},
+      {title:'게임 루프와 충돌 시스템 통합',body:'월드 좌표의 충돌 영역과 투사체 이동을 프레임 갱신에 연결하고 충돌 결과를 체력, 애니메이션과 UI에 반영했습니다. 카메라·입력·시뮬레이션·렌더링 순서를 고정해 프레임마다 일관된 게임 상태를 출력했습니다.'}]
   };
   const projectDiagrams={
     'EBON CROWN':[['플레이어','전투·스태미나·성장','UI·저장'],['아이템 데이터','인벤토리·강화','세이브 데이터'],['행동 트리','몬스터·보스 AI','전투 결과']],
