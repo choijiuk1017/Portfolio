@@ -132,15 +132,18 @@
     #project-dialog.is-expanded-detail{width:min(1280px,calc(100% - 32px))}
     @media(max-width:600px){#project-dialog.is-expanded-detail{width:100%}}
     .project-dialog-media.is-project-gallery{height:auto;aspect-ratio:auto;background:#08090c}.project-dialog-media.is-project-gallery>img{display:none}
-    .ebon-gallery{padding:13px;background:#0b0e15}.ebon-gallery-stage{position:relative;margin:0;background:#08090c;overflow:hidden;border-radius:5px}
-    .ebon-gallery-stage img{display:block;width:100%;height:auto;object-fit:contain}
+    .ebon-gallery{padding:13px;background:#0b0e15}.ebon-gallery-stage{position:relative;display:grid;place-items:center;width:min(100%,900px);height:min(48vh,430px);margin:0 auto;background:#08090c;overflow:hidden;border-radius:5px}
+    .ebon-gallery-stage img{display:block;width:100%;height:100%;object-fit:contain}
     .ebon-gallery-stage figcaption{color:#fff;background:#0b142bdb;border:1px solid #ffffff38;padding:7px 11px;font:12px var(--mono)}
-    .ebon-gallery-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:10px}
-    .ebon-gallery-thumb{border:2px solid transparent;border-radius:5px;padding:0;background:#172234;cursor:pointer;overflow:hidden;aspect-ratio:500/286;opacity:.62;transition:opacity .2s,border-color .2s,transform .2s}
+    .ebon-gallery-strip{display:flex;gap:9px;margin-top:10px;padding:0 0 8px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#5d7da8 #0b0e15}
+    .ebon-gallery-strip::-webkit-scrollbar{height:7px}.ebon-gallery-strip::-webkit-scrollbar-track{background:#0b0e15}.ebon-gallery-strip::-webkit-scrollbar-thumb{background:#5d7da8;border-radius:10px}
+    .ebon-gallery-thumb{flex:0 0 clamp(150px,20vw,230px);border:2px solid transparent;border-radius:5px;padding:0;background:#172234;cursor:pointer;overflow:hidden;aspect-ratio:500/286;scroll-snap-align:start;opacity:.62;transition:opacity .2s,border-color .2s,transform .2s}
     .ebon-gallery-thumb:hover{opacity:1;transform:translateY(-2px)}.ebon-gallery-thumb[aria-pressed="true"]{opacity:1;border-color:var(--accent)}
     .ebon-gallery-thumb:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.ebon-gallery-thumb img{display:block;width:100%;height:100%;object-fit:cover}
     .project-dialog-deep-dive .ebon-issue{padding:17px 0}.ebon-issue-row{display:grid;grid-template-columns:48px 1fr;gap:10px;margin-top:10px}.ebon-issue-row strong{font:700 12px var(--sans);color:#a6c9ff;padding-top:3px}.ebon-issue-row p{margin:0}.project-dialog-deep-dive .ebon-reflection{font-size:14px;line-height:1.95;color:#c3d2e1;max-width:75ch}
-    @media(max-width:600px){.ebon-gallery{padding:6px}.ebon-gallery-strip{gap:4px;margin-top:5px}.ebon-gallery-stage figcaption{bottom:7px;left:8px;font-size:10px;padding:4px 6px}}
+    .ebon-uml-set{display:grid;gap:12px;margin:5px 0 28px}.ebon-uml-panel{border:1px solid #8bbaff45;background:#101722}.ebon-uml-panel summary{padding:15px 17px;color:#dce9fb;font-weight:700;cursor:pointer;list-style:none}.ebon-uml-panel summary::-webkit-details-marker{display:none}.ebon-uml-panel summary:after{content:"＋";float:right;color:#8bbaff}.ebon-uml-panel[open] summary:after{content:"－"}
+    .ebon-uml-canvas{padding:8px 16px 18px;overflow-x:auto}.ebon-uml-system{min-width:700px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}.ebon-uml-package{position:relative;padding:34px 10px 11px;border:1px solid #7186a455;background:#0d1420}.ebon-uml-package>strong{position:absolute;top:10px;left:11px;color:#8bbaff;font:700 10px var(--mono);letter-spacing:.12em}.ebon-uml-stack{display:grid;gap:8px}.ebon-uml-class{border:1px solid #849aba88;background:#182337;color:#dce9fb}.ebon-uml-class b{display:block;padding:8px 9px;border-bottom:1px solid #849aba55;font:700 11px var(--mono)}.ebon-uml-class span{display:block;padding:7px 9px;color:#aabbd0;font:10px/1.55 var(--mono);white-space:pre-line}.ebon-uml-arrow{display:flex;align-items:center;gap:7px;color:#92baff;font:9px var(--mono)}.ebon-uml-arrow:before,.ebon-uml-arrow:after{content:"";height:1px;flex:1;background:#57769e}.ebon-uml-relations{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ebon-uml-relations span{padding:9px;border:1px dashed #7392ba66;color:#adbed2;text-align:center;font:10px/1.5 var(--mono)}.ebon-player-uml{min-width:700px;display:grid;grid-template-columns:1fr 44px 1.35fr 44px 1fr;gap:8px;align-items:center}.ebon-player-uml .ebon-uml-package{height:100%}.ebon-player-connector{color:#8bbaff;text-align:center;font:18px var(--mono)}
+    @media(max-width:600px){.ebon-gallery{padding:6px}.ebon-gallery-stage{height:min(34vh,260px)}.ebon-gallery-strip{gap:5px;margin-top:6px}.ebon-gallery-thumb{flex-basis:135px}.ebon-gallery-stage figcaption{bottom:7px;left:8px;font-size:10px;padding:4px 6px}}
 
     /* Project index: large visual, compact information and icon-only stack row. */
     .projects{grid-template-columns:repeat(2,minmax(0,1fr));gap:76px 38px;align-items:start}
@@ -343,6 +346,35 @@
     'KEMET':[['공통 캐릭터 규칙','플레이어','몬스터'],['몬스터 상태 관리','순찰·추적·공격','그로기·사망'],['공격 입력','콤보·패링','전투 결과']],
     'TANK BLITZ':[['모델·텍스처 자원','렌더링 파이프라인','HLSL 셰이더'],['월드 변환','충돌 영역 계산','투사체 판정'],['골격 데이터','키 프레임 보간','캐릭터 애니메이션']]
   };
+  const ebonOverallUml=[
+    {label:'PLAYER',classes:[
+      {name:'APlayerCharacter',detail:'입력·상태 중계\nIAnimationAttackInterface\nIInventoryInterface'},
+      {name:'Player Components',detail:'Combat · Stamina · Stat\nUI · Interaction · SavePoint'},
+      {name:'UInventoryComponent',detail:'장비·소비·기타 분류\n장착 상태 변경 이벤트'}]},
+    {label:'DATA / SAVE',classes:[
+      {name:'UTPRItemData',detail:'Primary Asset ID\n아이템 정적 데이터'},
+      {name:'UInventoryItem',detail:'수량·장착·강화 단계'},
+      {name:'UTPRGameInstance',detail:'진행 상태 수집·복원'},
+      {name:'UTPRSaveGame',detail:'능력치·아이템·보스\n체크포인트 저장'}]},
+    {label:'COMBAT AI / WORLD',classes:[
+      {name:'AEnemyAIController',detail:'Behavior Tree 실행'},
+      {name:'BT Service / Task',detail:'탐지·체력 갱신\n공격·후퇴·패턴 실행'},
+      {name:'Enemy / Boss',detail:'피격·보상·보스 패턴'},
+      {name:'World Systems',detail:'Skill Effect Pool\nLevel Preload Trigger'}]}
+  ];
+  const ebonPlayerUml=[
+    {label:'INTERFACES',classes:[
+      {name:'IAnimationAttackInterface',detail:'타격 검사\nHitBox On / Off\n회피 시작·종료'},
+      {name:'IInventoryInterface',detail:'장착·해제\n무기 정보 표시'}]},
+    {label:'PLAYER OWNER',classes:[
+      {name:'APlayerCharacter',detail:'입력 바인딩\n컴포넌트 소유\nDelegate 상태 전달'},
+      {name:'State Data',detail:'Attributes · DerivedStats\nCombatStats · Currency'}]},
+    {label:'COMPOSED COMPONENTS',classes:[
+      {name:'UPlayerCombatComponent',detail:'콤보·스킬·무기·이펙트'},
+      {name:'UPlayerStaminaComponent',detail:'소모·회복·달리기'},
+      {name:'UPlayerStatComponent',detail:'파생 능력치 재계산'},
+      {name:'UI / Interaction / SavePoint',detail:'표시·상호작용·체크포인트'}]}
+  ];
   const ebonDeepDive=[
     {heading:'Actor Component로 플레이어 책임 분리',body:'전투·장착, 행동 자원, 성장 수치를 각각 독립된 기능 영역이 맡도록 나눴습니다. 상호작용·세이브 포인트·인벤토리·UI도 별도 컴포넌트로 분리해 Character 클래스에 기능이 쌓이던 문제를 줄이고, 변경할 때 확인해야 하는 코드 범위를 좁혔습니다.'},
     {heading:'데이터와 로직을 분리한 아이템·성장 구조',body:'무기·포션·스킬의 정적 설정을 Data Asset에 정의하고 공통 처리 로직에서 참조하도록 구성했습니다. 새 아이템이나 밸런스 수치 변경 시 코드를 반복 수정하지 않아도 됩니다. 무기별 강화 단계는 고유 아이템 식별자를 키로 관리해 SaveGame에 보관하고, 장착·레벨업 이후 파생 능력치를 다시 계산합니다.'},
@@ -486,6 +518,33 @@
   kemetCover.src=kemetScenes[0].src;kemetCover.alt='KEMET 타이틀 게임 화면';
   const tankCover=document.querySelector('.project-visual img[alt^="TANK BLITZ"]');
   tankCover.src=tankScenes[0].src;tankCover.alt='TANK BLITZ 조작 안내 화면';
+  function createUmlClass(item){
+    const card=document.createElement('div');card.className='ebon-uml-class';
+    const name=document.createElement('b');name.textContent=item.name;
+    const detail=document.createElement('span');detail.textContent=item.detail;
+    card.append(name,detail);return card;
+  }
+  function createUmlPackage(data){
+    const packageBox=document.createElement('div');packageBox.className='ebon-uml-package';
+    const label=document.createElement('strong');label.textContent=data.label;
+    const stack=document.createElement('div');stack.className='ebon-uml-stack';
+    data.classes.forEach((item,index)=>{stack.append(createUmlClass(item));if(index<data.classes.length-1){const arrow=document.createElement('div');arrow.className='ebon-uml-arrow';arrow.textContent='uses';stack.append(arrow)}});
+    packageBox.append(label,stack);return packageBox;
+  }
+  function createEbonUmlPanel(title,data,type){
+    const panel=document.createElement('details');panel.className='ebon-uml-panel';
+    const summary=document.createElement('summary');summary.textContent=title;
+    const canvas=document.createElement('div');canvas.className='ebon-uml-canvas';
+    const diagram=document.createElement('div');diagram.className=type==='player'?'ebon-player-uml':'ebon-uml-system';
+    if(type==='player'){
+      data.forEach((group,index)=>{diagram.append(createUmlPackage(group));if(index<data.length-1){const connector=document.createElement('div');connector.className='ebon-player-connector';connector.textContent=index===0?'▷':'◆';diagram.append(connector)}});
+    }else{
+      data.forEach(group=>diagram.append(createUmlPackage(group)));
+      const relations=document.createElement('div');relations.className='ebon-uml-relations';
+      ['Player ◆→ Components','Inventory → Item Data / Save','AI Controller → Behavior Tree → Enemy'].forEach(text=>{const item=document.createElement('span');item.textContent=text;relations.append(item)});diagram.append(relations);
+    }
+    canvas.append(diagram);panel.append(summary,canvas);return panel;
+  }
   function openProjectDetail(card){
     const title=card.querySelector('.project-content h3').textContent;
     projectDialog.querySelector('#project-dialog-title').textContent=title;
@@ -518,8 +577,14 @@
     moreDetailButton.hidden=!detailContent;detailWindowContent.replaceChildren();
     if(detailContent){
       projectDetailDialog.querySelector('#project-detail-window-title').textContent=title+' 세부 개발 과정';
-      const diagram=document.createElement('details');diagram.className='project-uml';const diagramSummary=document.createElement('summary');diagramSummary.textContent='시스템 구조 다이어그램 보기';const diagramBody=document.createElement('div');diagramBody.className='uml-diagram';
-      for(const nodes of projectDiagrams[title]){const row=document.createElement('div');row.className='uml-row';nodes.forEach((label,index)=>{const node=document.createElement('span');node.className='uml-node';node.textContent=label;row.append(node);if(index<nodes.length-1){const arrow=document.createElement('span');arrow.className='uml-arrow';arrow.textContent='→';row.append(arrow)}});diagramBody.append(row)}diagram.append(diagramSummary,diagramBody);detailWindowContent.append(diagram);
+      if(title==='EBON CROWN'){
+        const umlSet=document.createElement('div');umlSet.className='ebon-uml-set';
+        umlSet.append(createEbonUmlPanel('전체 시스템 UML 보기',ebonOverallUml,'overall'),createEbonUmlPanel('플레이어 핵심 구조 UML 보기',ebonPlayerUml,'player'));
+        detailWindowContent.append(umlSet);
+      }else{
+        const diagram=document.createElement('details');diagram.className='project-uml';const diagramSummary=document.createElement('summary');diagramSummary.textContent='시스템 구조 다이어그램 보기';const diagramBody=document.createElement('div');diagramBody.className='uml-diagram';
+        for(const nodes of projectDiagrams[title]){const row=document.createElement('div');row.className='uml-row';nodes.forEach((label,index)=>{const node=document.createElement('span');node.className='uml-node';node.textContent=label;row.append(node);if(index<nodes.length-1){const arrow=document.createElement('span');arrow.className='uml-arrow';arrow.textContent='→';row.append(arrow)}});diagramBody.append(row)}diagram.append(diagramSummary,diagramBody);detailWindowContent.append(diagram);
+      }
       const heading=document.createElement('h3');heading.textContent='구현 내용';detailWindowContent.append(heading);
       for(const item of detailContent.deepDive){const section=document.createElement('section');const h4=document.createElement('h4');h4.textContent=item.heading;const paragraph=document.createElement('p');paragraph.textContent=item.body;section.append(h4,paragraph);detailWindowContent.append(section)}
       const issueHeading=document.createElement('h3');issueHeading.textContent='개발 이슈';detailWindowContent.append(issueHeading);
