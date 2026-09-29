@@ -161,16 +161,23 @@
     @media(max-width:480px){.project-content{padding:16px 0 0;column-gap:12px}.project-detail-trigger{font-size:11px}.stack-icon{width:35px;height:35px}.stack-icon img{width:20px;height:20px}}
     /* Intro summary: the first viewport now works as a compact portfolio overview. */
     .hero{padding:34px 0 30px;align-items:stretch}
-    .hero-grid{grid-template-columns:minmax(0,.86fr) minmax(520px,1.14fr);gap:clamp(34px,5vw,76px);align-items:center}
+    .hero-grid{grid-template-columns:1fr;align-items:center}
     .hero-grid>.hero-art{display:none}
     .hero-copy{min-width:0}
     .hero h1{font-size:clamp(46px,5.35vw,76px);margin:18px 0 16px}
     .hero p{font-size:15px;line-height:1.75;max-width:560px;margin:0}
     .hero .actions{margin-top:24px}
-    .hero-overview{align-self:center;display:grid;grid-template-columns:1.08fr .92fr;gap:12px;position:relative;z-index:2}
+    .hero-overview{align-self:center;display:grid;grid-template-columns:250px minmax(0,1fr);gap:18px;position:relative;z-index:2;width:100%}
     .overview-card{border:1px solid #91bdf12b;background:linear-gradient(145deg,#172235e8,#111a29e8);box-shadow:0 18px 55px #02071138;padding:20px;min-width:0;backdrop-filter:blur(10px);color:inherit;text-decoration:none;transition:transform .2s,border-color .2s,background .2s}
     .overview-card:hover{transform:translateY(-3px);border-color:#8bbaff70;background:linear-gradient(145deg,#1b2940ed,#142033ed)}
-    .overview-card--wide{grid-column:1/-1;display:grid;grid-template-columns:92px minmax(0,1fr) minmax(210px,.9fr);align-items:center;gap:18px;padding:21px 22px}
+    .overview-profile{grid-row:1/3;padding:0;overflow:hidden;display:flex;flex-direction:column}
+    .overview-profile .hero-art{display:block;width:100%;height:300px;margin:0;max-width:none;overflow:hidden;border:0;border-bottom:1px solid #8bbaff55;border-radius:0;background:#0d1725;box-shadow:none}
+    .overview-profile-info{padding:20px;display:grid;gap:15px}
+    .overview-profile .overview-label{margin:0}
+    .overview-contact{display:grid;gap:0;border-top:1px solid #ffffff16}
+    .overview-contact span{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #ffffff16;color:#aebdd0;font-size:11px}
+    .overview-contact b{color:#7990aa;font:9px var(--mono);letter-spacing:.08em}
+    .overview-contact a{color:#dce7f4;text-decoration:none;text-align:right;overflow-wrap:anywhere}
     .overview-card--wide .overview-label{grid-column:1/-1;margin-bottom:-6px}
     .overview-card--wide .hero-art{display:block;width:92px;height:118px;margin:0;max-width:none;overflow:hidden;border:1px solid #8bbaff55;border-radius:4px;background:#0d1725;box-shadow:none}
     .overview-card--wide .hero-art:before,.overview-card--wide .hero-art:after{display:none}
@@ -181,10 +188,10 @@
     .overview-points{list-style:none;padding:0;margin:0;display:grid;gap:9px}
     .overview-points li{position:relative;padding-left:14px;color:#bdcad9;font-size:13px;line-height:1.5}
     .overview-points li:before{content:"";position:absolute;left:0;top:.68em;width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px #8bbaff99}
-    .overview-activities{grid-column:1/-1;padding:18px 20px}.overview-activity-list{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#ffffff18;border:1px solid #ffffff18}.overview-activity{background:#111b2a;padding:14px}.overview-activity time{display:block;color:#8bbaff;font:10px var(--mono);margin-bottom:7px}.overview-activity strong{display:block;color:#edf4fc;font-size:13px;margin-bottom:5px}.overview-activity small{display:block;color:#91a2b6;font-size:11px;line-height:1.45}
-    .overview-skill-icons{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.overview-skill{display:grid;justify-items:center;gap:7px;color:#aebdd0;font:9px var(--mono);text-align:center}.overview-skill .skill-logo-frame{width:39px;height:39px;padding:5px}.overview-projects{display:grid;gap:8px}.overview-projects strong{color:#f0f5fb;font-size:14px}.overview-projects span{color:#91a2b6;font-size:11px;line-height:1.55}.overview-arrow{position:absolute;right:16px;top:14px;color:#8bbaff;font:12px var(--mono)}.overview-card{position:relative}
+    .overview-activities{padding:18px 20px}.overview-activity-list{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#ffffff18;border:1px solid #ffffff18}.overview-activity{background:#111b2a;padding:14px}.overview-activity time{display:block;color:#8bbaff;font:10px var(--mono);margin-bottom:7px}.overview-activity strong{display:block;color:#edf4fc;font-size:13px;margin-bottom:5px}.overview-activity small{display:block;color:#91a2b6;font-size:11px;line-height:1.45}
+    .overview-skills{align-self:start}.overview-skill-icons{display:flex;align-items:center;gap:16px;min-height:50px}.overview-skill{display:block}.overview-skill .skill-logo-frame{width:43px;height:43px;padding:5px}.overview-arrow{position:absolute;right:16px;top:14px;color:#8bbaff;font:12px var(--mono)}.overview-card{position:relative}
     @media(max-width:1000px){.hero{min-height:auto;padding:70px 0}.hero-grid{grid-template-columns:1fr;gap:38px}.hero-overview{width:100%}}
-    @media(max-width:620px){.hero{padding:48px 0 40px}.hero h1{font-size:clamp(42px,13vw,62px)}.hero-overview{grid-template-columns:1fr}.overview-card--wide{grid-column:auto;grid-template-columns:82px minmax(0,1fr)}.overview-card--wide .overview-label{grid-column:1/-1;margin-bottom:0}.overview-card--wide .hero-art{width:82px;height:105px}.overview-activities{grid-column:auto}.overview-activity-list{grid-template-columns:1fr}.overview-skill-icons{grid-template-columns:repeat(4,1fr)}.hero .actions{gap:9px}.hero .button{padding:13px 15px}}
+    @media(max-width:720px){.hero{padding:48px 0 40px}.hero-overview{grid-template-columns:1fr}.overview-profile{grid-row:auto}.overview-profile .hero-art{height:min(112vw,440px)}.overview-activity-list{grid-template-columns:1fr}.overview-skill-icons{flex-wrap:wrap}.hero .actions{gap:9px}.hero .button{padding:13px 15px}}
   </style>
 </head>
 <body>
@@ -206,23 +213,31 @@
   </main><dialog id="project-dialog" aria-labelledby="project-dialog-title"><button type="button" class="project-dialog-close" aria-label="프로젝트 상세 닫기">×</button><div class="project-dialog-media"><img alt=""></div><div class="project-dialog-body"><p class="project-dialog-kicker">PROJECT DETAIL</p><h2 id="project-dialog-title"></h2><p class="project-dialog-date"></p><p class="project-dialog-genre"></p><h3>프로젝트 정보</h3><div class="project-dialog-facts"></div><h3>주요 구현</h3><ul class="project-dialog-highlights"></ul><h3>기술 스택</h3><div class="project-dialog-tags"></div><div class="project-dialog-deep-dive" hidden></div><div class="project-dialog-links"></div></div></dialog><dialog id="activity-viewer" aria-label="활동 증빙 자료"><button class="viewer-close" type="button" aria-label="닫기">×</button><img alt=""><p>이미지 바깥을 클릭하거나 Esc를 눌러 닫으실 수 있습니다.</p></dialog><footer>© <span id="year"></span> CHOI JI-UK · GAME CLIENT PORTFOLIO</footer>
   <script>
   const heroGrid=document.querySelector('.hero-grid');
-  heroGrid.firstElementChild.classList.add('hero-copy');
-  heroGrid.insertAdjacentHTML('beforeend',`<aside class="hero-overview" aria-label="포트폴리오 핵심 요약">
-    <a class="overview-card overview-card--wide overview-card--accent" href="#about">
-      <span class="overview-label">PROFILE</span><span class="overview-arrow">ABOUT ↘</span>
-      <p class="overview-name">최지욱<em>CHOI JI-UK · GAME CLIENT PROGRAMMER</em></p>
-    </a>
+  heroGrid.firstElementChild.remove();
+  heroGrid.insertAdjacentHTML('beforeend',`<aside class="hero-overview" aria-label="최지욱 포트폴리오 요약">
+    <div class="overview-card overview-profile overview-card--accent" role="link" tabindex="0" data-href="#about">
+      <div class="overview-profile-info">
+        <span class="overview-label">PROFILE</span><span class="overview-arrow">ABOUT ↘</span>
+        <p class="overview-name">최지욱<em>CHOI JI-UK · GAME CLIENT PROGRAMMER</em></p>
+        <div class="overview-contact">
+          <span><b>EMAIL</b><a href="mailto:jiuk5192@gmail.com">jiuk5192@gmail.com</a></span>
+          <span><b>PHONE</b><a href="tel:+821088615192">010-8861-5192</a></span>
+        </div>
+      </div>
+    </div>
     <a class="overview-card overview-activities" href="#activities"><span class="overview-label">ACTIVITIES / 주요 활동</span><span class="overview-arrow">MORE ↘</span><div class="overview-activity-list">
       <div class="overview-activity"><time>2021 — 2022</time><strong>I2P × O2CUBE</strong><small>교내 게임 개발 동아리 활동<br>2022년 기획 팀장·기획 학술회 진행</small></div>
       <div class="overview-activity"><time>2026.05</time><strong>한국게임학회 춘계학술발표대회</strong><small>멀티모달 AI 기반 게임 퍼즐 힌트 생성 시스템 포스터 논문 발표</small></div>
       <div class="overview-activity"><time>2021 · 2022 · 2025</time><strong>홍익대학교 게임학부 공모전</strong><small>기획 부문 우수상 2회<br>프로토타입 부문 우수상 1회</small></div>
     </div></a>
-    <a class="overview-card" href="#skills"><span class="overview-label">SKILLS / 기술</span><span class="overview-arrow">MORE ↘</span><div class="overview-skill-icons"></div></a>
-    <a class="overview-card" href="#projects"><span class="overview-label">PROJECTS / 프로젝트</span><span class="overview-arrow">MORE ↘</span><div class="overview-projects"><strong>6 GAME PROJECTS</strong><span>Unreal Engine 액션 RPG · Unity 멀티플레이·2D 액션 · DirectX 11 그래픽스</span></div></a>
+    <a class="overview-card overview-skills" href="#skills"><span class="overview-label">SKILLS</span><span class="overview-arrow">MORE ↘</span><div class="overview-skill-icons"></div></a>
   </aside>`);
-  document.querySelector('.overview-card--wide .overview-label').after(document.querySelector('.hero-grid>.hero-art'));
-  const overviewSkillNames=['C++','Unreal Engine 5','Unity / C#','DirectX 11 / HLSL'];
-  document.querySelectorAll('#skills .skill').forEach((skill,index)=>{if(index>=overviewSkillNames.length)return;const item=document.createElement('span');item.className='overview-skill';const logos=skill.querySelector('.skill-logos').cloneNode(true);item.append(logos,document.createTextNode(overviewSkillNames[index]));document.querySelector('.overview-skill-icons').append(item)});
+  document.querySelector('.overview-profile').prepend(document.querySelector('.hero-grid>.hero-art'));
+  const overviewProfile=document.querySelector('.overview-profile');
+  const openOverviewProfile=()=>document.querySelector(overviewProfile.dataset.href).scrollIntoView({behavior:'smooth'});
+  overviewProfile.addEventListener('click',event=>{if(!event.target.closest('a'))openOverviewProfile()});
+  overviewProfile.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openOverviewProfile()}});
+  document.querySelectorAll('#skills .skill').forEach(skill=>{const item=document.createElement('span');item.className='overview-skill';item.append(skill.querySelector('.skill-logos').cloneNode(true));document.querySelector('.overview-skill-icons').append(item)});
   addEventListener('pageshow',()=>requestAnimationFrame(()=>scrollTo(0,0)));document.getElementById('year').textContent=new Date().getFullYear();const introLoader=document.querySelector('.intro-loader');const unlockIntroScroll=()=>document.documentElement.classList.remove('intro-lock');introLoader.addEventListener('animationend',event=>{if(event.animationName==='intro-exit')unlockIntroScroll()});setTimeout(unlockIntroScroll,2200);const viewer=document.getElementById('activity-viewer');document.querySelectorAll('.activity-proof').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();viewer.querySelector('img').src=a.querySelector('img').src;viewer.querySelector('img').alt=a.querySelector('img').alt;viewer.showModal()}));viewer.querySelector('.viewer-close').addEventListener('click',()=>viewer.close());viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close()});const menu=document.querySelector('.menu'),links=document.querySelector('.links');menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기')});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','메뉴 열기')}));
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   if('IntersectionObserver' in window){
