@@ -1154,6 +1154,14 @@ Projectile --> Collider : collision query`]
     'KEMET':['https://github.com/choijiuk1017/Kemet/blob/main/Assets/Scripts/Core/Unit/Unit.cs','https://github.com/choijiuk1017/Kemet/blob/main/Assets/Scripts/Core/Unit/Player/Seth.cs','https://github.com/choijiuk1017/Kemet/blob/main/Assets/Scripts/Core/Unit/Player/Seth.cs','https://github.com/choijiuk1017/Kemet/tree/main/Assets/Scripts/Core/Unit/Monster/FSM','https://github.com/choijiuk1017/Kemet/tree/main/Assets/Scripts/Core/Unit/Monster','https://github.com/choijiuk1017/Kemet/blob/main/Assets/Scripts/SceneMoveDoor.cs'],
     'TANK BLITZ':['https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/DeviceManager.cpp','https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/data/lightShader.hlsl','https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/data/bumpmapShader.hlsl','https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/ModelLoader.cpp','https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/Animation.cpp','https://github.com/choijiuk1017/Computer_Graphics/tree/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework']
   };
+  const projectIssueSelection={
+    'EBON CROWN':[3,4],
+    'EXCUTE':[2],
+    'PROJECT_SMILE':[0,2],
+    'SLAP SQUAD':[0],
+    'KEMET':[2,3],
+    'TANK BLITZ':[1,2]
+  };
   const ebonScenes=[
     {label:'타이틀 화면',src:'assets/ebon-crown/title-clean.png'},
     {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'},
@@ -1280,6 +1288,7 @@ Projectile --> Collider : collision query`]
       const heading=document.createElement('h3');heading.textContent='구현 내용';detailWindowContent.append(heading);
       const implementationGrid=document.createElement('div');implementationGrid.className='detail-implementation-grid';
       detailContent.deepDive.forEach((item,index)=>{const section=document.createElement('section');section.className='detail-implementation-card';section.id='detail-step-'+index;const h4=document.createElement('h4');h4.textContent=String(index+1).padStart(2,'0')+' · '+item.heading;const paragraph=document.createElement('p');paragraph.textContent=item.body;const codeLink=document.createElement('a');codeLink.className='detail-code-link';codeLink.href=projectCodeLinks[title][index];codeLink.target='_blank';codeLink.rel='noopener noreferrer';codeLink.textContent='GitHub에서 관련 코드 보기 ↗';section.append(h4,paragraph,codeLink);implementationGrid.append(section)});detailWindowContent.append(implementationGrid);
+      const selectedIssues=projectIssueSelection[title].map(index=>detailContent.issues[index]);const issueHeading=document.createElement('h3');issueHeading.textContent='개발 이슈';detailWindowContent.append(issueHeading);const issueGrid=document.createElement('div');issueGrid.className='detail-issue-grid';for(const issue of selectedIssues){const section=document.createElement('section');section.className='ebon-issue';const h4=document.createElement('h4');h4.textContent=issue.title;section.append(h4);for(const [label,value] of [['문제',issue.problem],['해결',issue.solution],['결과',issue.result]]){const row=document.createElement('div');row.className='ebon-issue-row';const strong=document.createElement('strong');strong.textContent=label;const text=document.createElement('p');text.textContent=value;row.append(strong,text);section.append(row)}issueGrid.append(section)}detailWindowContent.append(issueGrid);
       const reflectionHeading=document.createElement('h3');reflectionHeading.textContent='개발 후 느낀 점';const reflection=document.createElement('p');reflection.className='ebon-reflection';reflection.textContent=detailContent.reflection;detailWindowContent.append(reflectionHeading,reflection);
     }
     projectDialog.scrollTop=0;projectDialog.showModal();requestAnimationFrame(()=>{projectDialog.scrollTop=0;projectDialog.querySelector('.project-dialog-close').focus({preventScroll:true})});
