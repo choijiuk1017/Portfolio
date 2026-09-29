@@ -346,14 +346,6 @@
       {title:'모델 로딩과 골격 애니메이션',body:'모델의 메시·재질·텍스처와 본 계층을 읽어 렌더 자원으로 변환하고, 키프레임 보간 결과를 본 행렬 팔레트로 전달했습니다. 자원 데이터와 재생 상태를 분리해 여러 객체가 같은 모델을 재사용할 수 있도록 구성했습니다.'},
       {title:'게임 루프와 충돌 시스템 통합',body:'월드 좌표의 충돌 영역과 투사체 이동을 프레임 갱신에 연결하고 충돌 결과를 체력, 애니메이션과 UI에 반영했습니다. 카메라·입력·시뮬레이션·렌더링 순서를 고정해 프레임마다 일관된 게임 상태를 출력했습니다.'}]
   };
-  const projectDiagrams={
-    'EBON CROWN':[['플레이어','전투·스태미나·성장','UI·저장'],['아이템 데이터','인벤토리·강화','세이브 데이터'],['행동 트리','몬스터·보스 AI','전투 결과']],
-    'EXCUTE':[['플레이어 입력','애니메이션·공격 판정','피해 결과'],['패링 판정','경직 상태','AI 복구'],['행동 트리','보스 패턴','범위 공격 예고']],
-    'PROJECT_SMILE':[['화면 영역 선택','이미지 캡처','비동기 전송'],['장면 분석','퍼즐 문서 검색','단계별 힌트'],['JSON 검증','조사 일지','힌트 UI']],
-    'SLAP SQUAD':[['입력·UI','TCP 클라이언트','게임 서버'],['수신 메시지','기능별 처리','게임 상태'],['서버 판정','캐릭터 상태','화면 피드백']],
-    'KEMET':[['공통 캐릭터 규칙','플레이어','몬스터'],['몬스터 상태 관리','순찰·추적·공격','그로기·사망'],['공격 입력','콤보·패링','전투 결과']],
-    'TANK BLITZ':[['모델·텍스처 자원','렌더링 파이프라인','HLSL 셰이더'],['월드 변환','충돌 영역 계산','투사체 판정'],['골격 데이터','키 프레임 보간','캐릭터 애니메이션']]
-  };
   const ebonOverallUml=`classDiagram
 direction LR
 class APlayerCharacter {
@@ -705,6 +697,364 @@ UPlayerUIComponent *-- UInventoryWidget
 UPlayerUIComponent *-- USavePointMenu
 UPlayerUIComponent *-- UDialogueWidget
 UPlayerUIComponent *-- UWeaponUpgradeWidget`;
+  const projectUmlPanels={
+    'EXCUTE':[
+      ['전투·패링 시스템 UML 보기',`classDiagram
+direction LR
+class PlayerCharacter {
+  +HandleAttackInput()
+  +HandleParryInput()
+  +ApplyDamage()
+}
+class CombatComponent {
+  -CurrentCombo
+  -HitActors
+  +BeginAttackWindow()
+  +TraceWeaponPath()
+  +EndAttackWindow()
+}
+class AnimationController {
+  +PlayAttackMontage()
+  +OnAttackNotify()
+  +OnMontageEnded()
+}
+class ParryComponent {
+  -ParryWindowOpen
+  +EvaluateIncomingHit()
+  +TriggerStagger()
+}
+class EnemyCharacter {
+  +ReceiveHit()
+  +EnterStagger()
+  +RecoverState()
+}
+class DamageResolver {
+  +CalculateDamage()
+  +ApplyHitResult()
+}
+PlayerCharacter *-- CombatComponent
+PlayerCharacter *-- ParryComponent
+CombatComponent --> AnimationController : attack timing
+CombatComponent --> DamageResolver : valid hit
+ParryComponent --> EnemyCharacter : interrupt and stagger
+DamageResolver --> EnemyCharacter : confirmed damage`],
+      ['적·보스 AI 시스템 UML 보기',`classDiagram
+direction LR
+class EnemyController {
+  +StartLogic()
+  +PauseLogic()
+  +ResumeLogic()
+}
+class BehaviorTree {
+  +EvaluateBranch()
+}
+class CombatService {
+  +UpdateTargetDistance()
+  +UpdatePatternCondition()
+}
+class AttackTask {
+  +ExecuteAttack()
+  +FinishTask()
+}
+class RetreatTask {
+  +SelectRetreatPoint()
+}
+class BossCharacter {
+  -CurrentPhase
+  -PatternCooldown
+  +SelectPattern()
+  +EnterNextPhase()
+}
+class AreaIndicator {
+  +ShowRange()
+  +UpdateCharge()
+  +ActivateDamage()
+}
+EnemyController *-- BehaviorTree
+BehaviorTree *-- CombatService
+BehaviorTree *-- AttackTask
+BehaviorTree *-- RetreatTask
+AttackTask --> BossCharacter : execute pattern
+BossCharacter *-- AreaIndicator : telegraph AOE
+BossCharacter --> EnemyController : pause on stagger`]
+    ],
+    'PROJECT_SMILE':[
+      ['클라이언트·AI 힌트 시스템 UML 보기',`classDiagram
+direction LR
+class SelectionOverlay {
+  +BeginSelection()
+  +UpdateSelectionRect()
+  +ConfirmSelection()
+}
+class ScreenCaptureService {
+  +ConvertViewportCoordinates()
+  +ReadRenderTarget()
+  +CompressImage()
+}
+class HintRequestClient {
+  -RequestInFlight
+  +BuildPayload()
+  +SendAsync()
+  +HandleResponse()
+}
+class PlayContext {
+  +PuzzleStep
+  +ElapsedTime
+  +RequestCount
+}
+class ResponseValidator {
+  +ValidateSchema()
+  +ParseHint()
+}
+class HintUIController {
+  +ShowLoading()
+  +PresentHint()
+  +ShowRetry()
+}
+SelectionOverlay --> ScreenCaptureService : selected region
+ScreenCaptureService --> HintRequestClient : compressed image
+HintRequestClient o-- PlayContext : request context
+HintRequestClient --> ResponseValidator : response JSON
+ResponseValidator --> HintUIController : validated result`],
+      ['멀티모달 분석·RAG 처리 흐름 UML 보기',`sequenceDiagram
+actor Player
+participant UI as Hint UI
+participant Client as Game Client
+participant API as Flask API
+participant Vision as Scene Analyzer
+participant Search as Puzzle Document Search
+participant Model as Hint Generator
+Player->>UI: 화면 영역 선택 및 힌트 요청
+UI->>Client: 요청 시작
+Client->>Client: 선택 영역 캡처·압축
+Client->>API: 이미지와 플레이 맥락 전송
+API->>Vision: 장면 분석 요청
+Vision-->>API: 객체·상황 정보
+API->>Search: 현재 퍼즐 관련 문서 검색
+Search-->>API: 근거 문서
+API->>Model: 장면·문서·진행 단계 전달
+Model-->>API: 단계별 힌트 JSON
+API-->>Client: 비동기 응답
+Client->>Client: 스키마 검증
+Client-->>UI: 힌트 또는 재시도 상태 표시`]
+    ],
+    'SLAP SQUAD':[
+      ['멀티플레이 클라이언트 구조 UML 보기',`classDiagram
+direction LR
+class InputController {
+  +CollectMovement()
+  +RequestAttack()
+}
+class NetworkClient {
+  -ReceiveBuffer
+  +Connect()
+  +SendPacket()
+  +ReceiveBytes()
+}
+class PacketAssembler {
+  +AppendBytes()
+  +ExtractCompletePacket()
+}
+class MessageDispatcher {
+  +DispatchByType()
+}
+class LobbyHandler
+class MatchHandler
+class GameStateHandler
+class RemoteCharacterController {
+  +ApplyTransform()
+  +ApplyActionState()
+}
+InputController --> NetworkClient : input command
+NetworkClient *-- PacketAssembler
+PacketAssembler --> MessageDispatcher : complete packet
+MessageDispatcher --> LobbyHandler
+MessageDispatcher --> MatchHandler
+MessageDispatcher --> GameStateHandler
+GameStateHandler --> RemoteCharacterController : server state`],
+      ['서버 판정 전투 동기화 UML 보기',`sequenceDiagram
+actor Player
+participant Input as Local Input
+participant Client as TCP Client
+participant Server as Game Server
+participant State as Client State
+participant View as Animation · UI
+Player->>Input: 이동 또는 공격 입력
+Input->>Client: 명령 패킷 생성
+Client->>Server: 입력 의도 전송
+Server->>Server: 이동·공격·피격 판정
+Server-->>Client: 확정 상태 브로드캐스트
+Client->>State: 캐릭터별 상태 갱신
+State->>View: 위치·회전·행동·체력 반영
+View-->>Player: 동기화된 전투 피드백`]
+    ],
+    'KEMET':[
+      ['캐릭터·전투 시스템 UML 보기',`classDiagram
+direction LR
+class CharacterBase {
+  -Health
+  -CurrentState
+  +ReceiveDamage()
+  +EnterStagger()
+  +Die()
+}
+class PlayerCharacter {
+  +ReadCombatInput()
+  +RequestCombo()
+  +RequestParry()
+}
+class MonsterCharacter {
+  +ExecuteState()
+  +ChangeState()
+}
+class CombatController {
+  -ComboIndex
+  -HitTargets
+  +OpenInputWindow()
+  +OpenHitWindow()
+  +ResolveParry()
+}
+class AnimationEvents {
+  +OnComboWindow()
+  +OnHitWindow()
+  +OnAnimationFinished()
+}
+class DamagePolicy {
+  +EvaluateHit()
+  +ApplyResult()
+}
+CharacterBase <|-- PlayerCharacter
+CharacterBase <|-- MonsterCharacter
+PlayerCharacter *-- CombatController
+CombatController --> AnimationEvents : timing
+CombatController --> DamagePolicy : hit or parry
+DamagePolicy --> CharacterBase : damage state`],
+      ['몬스터 상태 패턴 UML 보기',`classDiagram
+direction LR
+class MonsterState {
+  <<interface>>
+  +Enter()
+  +Update()
+  +Exit()
+}
+class StateMachine {
+  -CurrentState
+  +ChangeState()
+  +UpdateState()
+}
+class PatrolState
+class ChaseState
+class AttackState
+class ChargeState
+class SummonState
+class MagicState
+class GroggyState
+class DeadState
+MonsterState <|.. PatrolState
+MonsterState <|.. ChaseState
+MonsterState <|.. AttackState
+MonsterState <|.. ChargeState
+MonsterState <|.. SummonState
+MonsterState <|.. MagicState
+MonsterState <|.. GroggyState
+MonsterState <|.. DeadState
+StateMachine o-- MonsterState : active state
+StateMachine --> PatrolState : target lost
+StateMachine --> ChaseState : target detected
+StateMachine --> AttackState : in range
+StateMachine --> GroggyState : parried
+StateMachine --> DeadState : health depleted`]
+    ],
+    'TANK BLITZ':[
+      ['DirectX 11 렌더링 구조 UML 보기',`classDiagram
+direction LR
+class GraphicsDevice {
+  +Device
+  +DeviceContext
+  +SwapChain
+  +Initialize()
+  +Present()
+}
+class RenderPipeline {
+  +BeginFrame()
+  +BindPipelineState()
+  +DrawScene()
+  +EndFrame()
+}
+class RenderTarget {
+  +ColorBuffer
+  +DepthStencil
+}
+class ResourceManager {
+  +LoadMesh()
+  +LoadTexture()
+  +CreateShader()
+}
+class ModelRenderer {
+  +UpdateConstantBuffer()
+  +DrawMesh()
+}
+class ShaderProgram {
+  +VertexShader
+  +PixelShader
+}
+class Camera {
+  +ViewMatrix
+  +ProjectionMatrix
+}
+GraphicsDevice *-- RenderTarget
+GraphicsDevice --> RenderPipeline
+RenderPipeline --> ModelRenderer
+ResourceManager o-- ModelRenderer : shared resources
+ModelRenderer *-- ShaderProgram
+ModelRenderer --> Camera : view and projection`],
+      ['골격 애니메이션·게임 루프 UML 보기',`classDiagram
+direction LR
+class GameLoop {
+  +ProcessInput()
+  +UpdateSimulation()
+  +ResolveCollision()
+  +Render()
+}
+class Scene {
+  +GameObjects
+  +Update()
+  +Render()
+}
+class GameObject {
+  +Transform
+  +Update()
+  +Render()
+}
+class Tank
+class Projectile
+class Collider {
+  +WorldBounds
+  +Intersects()
+}
+class Skeleton {
+  +BoneHierarchy
+  +BuildPalette()
+}
+class AnimationClip {
+  +Keyframes
+  +SamplePose()
+}
+class Animator {
+  +CurrentTime
+  +InterpolatePose()
+}
+GameLoop --> Scene
+Scene o-- GameObject
+GameObject <|-- Tank
+GameObject <|-- Projectile
+GameObject *-- Collider
+Tank *-- Animator
+Animator --> AnimationClip
+Animator --> Skeleton : bone matrices
+Projectile --> Collider : collision query`]
+    ]
+  };
   const ebonDeepDive=[
     {heading:'Actor Component로 플레이어 책임 분리',body:'전투·장착, 행동 자원, 성장 수치를 각각 독립된 기능 영역이 맡도록 나눴습니다. 상호작용·세이브 포인트·인벤토리·UI도 별도 컴포넌트로 분리해 Character 클래스에 기능이 쌓이던 문제를 줄이고, 변경할 때 확인해야 하는 코드 범위를 좁혔습니다.'},
     {heading:'데이터와 로직을 분리한 아이템·성장 구조',body:'무기·포션·스킬의 정적 설정을 Data Asset에 정의하고 공통 처리 로직에서 참조하도록 구성했습니다. 새 아이템이나 밸런스 수치 변경 시 코드를 반복 수정하지 않아도 됩니다. 무기별 강화 단계는 고유 아이템 식별자를 키로 관리해 SaveGame에 보관하고, 장착·레벨업 이후 파생 능력치를 다시 계산합니다.'},
@@ -854,7 +1204,7 @@ UPlayerUIComponent *-- UWeaponUpgradeWidget`;
     svg.removeAttribute('height');svg.setAttribute('width',String(Math.max(1100,Math.ceil(viewWidth))));
     umlViewerTitle.textContent=title;umlViewerCanvas.replaceChildren(svg);umlViewerCanvas.scrollTo(0,0);umlViewer.showModal();
   }
-  function createEbonUmlPanel(title,source){
+  function createProjectUmlPanel(title,source){
     const panel=document.createElement('details');panel.className='ebon-uml-panel';
     const summary=document.createElement('summary');summary.textContent=title;
     const wrap=document.createElement('div');wrap.className='ebon-mermaid-wrap';
@@ -899,17 +1249,18 @@ UPlayerUIComponent *-- UWeaponUpgradeWidget`;
       if(title==='EBON CROWN'){
         const umlSet=document.createElement('div');umlSet.className='ebon-uml-set';
         umlSet.append(
-          createEbonUmlPanel('전체 시스템 UML 보기',ebonOverallUml),
-          createEbonUmlPanel('플레이어·전투 시스템 UML 보기',ebonPlayerUml),
-          createEbonUmlPanel('적·보스 AI 시스템 UML 보기',ebonAiUml),
-          createEbonUmlPanel('아이템·인벤토리·저장 시스템 UML 보기',ebonDataUml),
-          createEbonUmlPanel('애니메이션·스킬 이펙트 시스템 UML 보기',ebonAnimationUml),
-          createEbonUmlPanel('월드·NPC·UI 시스템 UML 보기',ebonWorldUml)
+          createProjectUmlPanel('전체 시스템 UML 보기',ebonOverallUml),
+          createProjectUmlPanel('플레이어·전투 시스템 UML 보기',ebonPlayerUml),
+          createProjectUmlPanel('적·보스 AI 시스템 UML 보기',ebonAiUml),
+          createProjectUmlPanel('아이템·인벤토리·저장 시스템 UML 보기',ebonDataUml),
+          createProjectUmlPanel('애니메이션·스킬 이펙트 시스템 UML 보기',ebonAnimationUml),
+          createProjectUmlPanel('월드·NPC·UI 시스템 UML 보기',ebonWorldUml)
         );
         detailWindowContent.append(umlSet);
       }else{
-        const diagram=document.createElement('details');diagram.className='project-uml';const diagramSummary=document.createElement('summary');diagramSummary.textContent='시스템 구조 다이어그램 보기';const diagramBody=document.createElement('div');diagramBody.className='uml-diagram';
-        for(const nodes of projectDiagrams[title]){const row=document.createElement('div');row.className='uml-row';nodes.forEach((label,index)=>{const node=document.createElement('span');node.className='uml-node';node.textContent=label;row.append(node);if(index<nodes.length-1){const arrow=document.createElement('span');arrow.className='uml-arrow';arrow.textContent='→';row.append(arrow)}});diagramBody.append(row)}diagram.append(diagramSummary,diagramBody);detailWindowContent.append(diagram);
+        const umlSet=document.createElement('div');umlSet.className='ebon-uml-set';
+        for(const [panelTitle,source] of projectUmlPanels[title])umlSet.append(createProjectUmlPanel(panelTitle,source));
+        detailWindowContent.append(umlSet);
       }
       const heading=document.createElement('h3');heading.textContent='구현 내용';detailWindowContent.append(heading);
       for(const item of detailContent.deepDive){const section=document.createElement('section');const h4=document.createElement('h4');h4.textContent=item.heading;const paragraph=document.createElement('p');paragraph.textContent=item.body;section.append(h4,paragraph);detailWindowContent.append(section)}
