@@ -124,7 +124,7 @@
     @media(prefers-reduced-motion:reduce){#project-dialog[open]{animation:none}}
 
     .project-dialog-deep-dive[hidden]{display:none}.project-dialog-deep-dive section{padding:15px 0 16px;border:0;border-bottom:1px solid var(--line)}.project-dialog-deep-dive section:last-child{border-bottom:0}.project-dialog-deep-dive h4{font-size:15px;color:#dce9fb;margin:0 0 9px}.project-dialog-deep-dive p{font-size:13px;line-height:1.9;color:#aebed0;margin:0;max-width:75ch}
-    .detail-overview{margin:0 0 24px;padding:20px;border:1px solid #8bbaff38;background:#111824}.detail-overview>strong{display:block;margin-bottom:13px;color:#8bbaff;font:11px var(--mono);letter-spacing:.12em}.detail-overview-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.detail-overview-nav button{min-height:54px;padding:11px 13px;border:1px solid #ffffff14;background:#171f2d;color:#dce9fb;text-align:left;font-size:12px;line-height:1.45;cursor:pointer;transition:border-color .2s,background .2s}.detail-overview-nav button:hover{border-color:#8bbaff88;background:#1d2a3c}.detail-implementation-grid,.detail-issue-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.project-detail-window-content section.detail-implementation-card,.project-detail-window-content section.ebon-issue{padding:20px;border:1px solid #ffffff16;background:#111824}.project-detail-window-content h4{font-size:16px;color:#e8f1ff;margin:0 0 10px}.project-detail-window-content p{font-size:13px;line-height:1.85;color:#aebed0;margin:0}.detail-implementation-card{scroll-margin-top:24px;display:flex;flex-direction:column}.detail-implementation-card:target{border-color:#8bbaff}.detail-code-link{align-self:flex-start;margin-top:auto;padding-top:16px;color:#8bbaff;font:11px var(--mono);border-bottom:1px solid #8bbaff66}.detail-code-link:hover{color:#d7e8ff;border-color:#d7e8ff}.detail-issue-grid .ebon-issue{display:flex;flex-direction:column}
+    .detail-overview{margin:0 0 24px;padding:20px;border:1px solid #8bbaff38;background:#111824}.detail-overview>strong{display:block;margin-bottom:13px;color:#8bbaff;font:11px var(--mono);letter-spacing:.12em}.detail-overview-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.detail-overview-nav button{min-height:54px;padding:11px 13px;border:1px solid #ffffff14;background:#171f2d;color:#dce9fb;text-align:left;font-size:12px;line-height:1.45;cursor:pointer;transition:border-color .2s,background .2s}.detail-overview-nav button:hover{border-color:#8bbaff88;background:#1d2a3c}.detail-implementation-grid,.detail-issue-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.project-detail-window-content section.detail-implementation-card,.project-detail-window-content section.ebon-issue{padding:20px;border:1px solid #ffffff16;background:#111824}.project-detail-window-content h4{font-size:16px;color:#e8f1ff;margin:0 0 10px}.project-detail-window-content p{font-size:13px;line-height:1.85;color:#aebed0;margin:0}.detail-implementation-card{scroll-margin-top:24px;display:flex;flex-direction:column}.detail-implementation-card:target{border-color:#8bbaff}.detail-code-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:auto;padding-top:16px}.detail-code-link{color:#8bbaff;font:11px var(--mono);border-bottom:1px solid #8bbaff66}.detail-code-link:hover{color:#d7e8ff;border-color:#d7e8ff}.detail-issue-grid .ebon-issue{display:flex;flex-direction:column}
     .project-uml{margin:5px 0 28px;border:1px solid #8bbaff45;background:#101722}.project-uml summary{padding:15px 17px;color:#dce9fb;font-weight:700;cursor:pointer;list-style:none}.project-uml summary::-webkit-details-marker{display:none}.project-uml summary:after{content:"＋";float:right;color:#8bbaff}.project-uml[open] summary:after{content:"－"}.uml-diagram{padding:5px 17px 19px;display:grid;gap:9px}.uml-row{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}.uml-node{min-width:120px;padding:10px 12px;border:1px solid #8bbaff55;background:#192437;color:#dce9fb;text-align:center;font:11px var(--mono)}.uml-arrow{color:#8bbaff;font-size:15px}
     @media(max-width:600px){.project-dialog-highlights{grid-template-columns:1fr}.uml-node{min-width:100px;flex:1}.uml-arrow{transform:rotate(90deg)}}
 
@@ -310,6 +310,8 @@
     for(const [label,source,fallback] of stacks){const icon=document.createElement('span');icon.className='stack-icon';icon.title=label;icon.setAttribute('aria-label',label);if(source){const image=document.createElement('img');image.src=source;image.alt='';image.addEventListener('error',()=>{image.remove();const glyph=document.createElement('b');glyph.textContent=fallback||label.slice(0,3);icon.append(glyph)});icon.append(image)}else{const glyph=document.createElement('b');glyph.textContent=fallback;icon.append(glyph)}row.append(icon)}
     card.querySelector('.project-content').append(row);
   });
+  const smileClientSource=document.querySelector('.project a[href="https://github.com/choijiuk1017/Project_Smile"]');
+  if(smileClientSource){smileClientSource.querySelector('span').textContent='CLIENT SOURCE ↗';const aiSource=smileClientSource.cloneNode(true);aiSource.href='https://github.com/choijiuk1017/Project_Smile_AI';aiSource.querySelector('span').textContent='AI SERVER ↗';smileClientSource.after(aiSource)}
 
   const projectDialog=document.getElementById('project-dialog');
   const projectDetailDialog=document.getElementById('project-detail-dialog');
@@ -330,8 +332,8 @@
     'PROJECT_SMILE':[
       {title:'화면 선택 영역 캡처 파이프라인',body:'뷰포트 좌표를 렌더 타깃 좌표로 변환해 플레이어가 지정한 영역만 읽고, 메모리에서 전송 가능한 이미지로 압축했습니다. 불필요한 전체 화면 저장과 파일 입출력을 줄여 캡처부터 요청까지 한 흐름으로 처리했습니다.'},
       {title:'비동기 AI 요청과 게임 스레드 보호',body:'캡처 이미지와 현재 진행 정보를 HTTP 요청으로 묶어 비동기로 전송하고 완료 콜백에서만 UI를 갱신했습니다. 네트워크 응답을 기다리는 동안 입력과 렌더링이 멈추지 않도록 요청 생명주기와 화면 상태를 분리했습니다.'},
-      {title:'플레이 맥락 기반 단계별 힌트',body:'장면 분석 결과와 퍼즐 문서 검색 결과를 결합하고, 진행 단계·경과 시간·기존 요청 횟수를 함께 전달했습니다. 정답을 바로 노출하는 대신 현재 상황에 필요한 정보부터 순차적으로 제공하도록 힌트 강도를 조절했습니다.'},
-      {title:'외부 응답 검증과 실패 복구',body:'응답 JSON의 필수 필드와 타입을 검사한 뒤 유효한 데이터만 게임 상태에 반영했습니다. 중복 요청 제한, 타임아웃과 오류 메시지, 재시도 가능한 UI를 두어 외부 AI 서비스 실패가 플레이 흐름을 깨지 않게 처리했습니다.'}],
+      {title:'LangGraph·RAG·LoRA 힌트 생성',body:'LLaVA-OneVision의 장면 설명을 Sentence Transformer로 임베딩하고 구역과 유사도 기준으로 퍼즐 문서를 검색했습니다. LangGraph가 분석·검색·힌트 단계 결정·Gemma LoRA 조사 일지 생성을 순서대로 실행합니다.'},
+      {title:'구조화 응답 검증과 Fallback',body:'모델 출력에서 JSON 객체를 추출하고 필수 필드와 타입을 검사한 뒤 유효한 데이터만 게임에 반영했습니다. 분석·검색·생성·파싱 중 하나가 실패해도 규칙 기반 조사 일지를 반환해 응답 형식을 유지했습니다.'}],
     'SLAP SQUAD':[
       {title:'패킷 수신과 기능 처리 분리',body:'TCP 수신 데이터의 경계를 복원해 완전한 메시지 단위로 해석하고, 로그인·로비·매칭·게임 메시지를 각각의 처리 흐름으로 전달했습니다. 네트워크 입출력과 게임 로직의 결합을 줄여 메시지 추가와 오류 추적이 쉽도록 구성했습니다.'},
       {title:'로컬·원격 캐릭터 동기화',body:'로컬 입력은 서버에 전달하고 서버가 보낸 위치·회전·행동 상태를 원격 캐릭터에 반영했습니다. 소유 캐릭터와 원격 캐릭터의 갱신 경로를 구분해 입력 충돌을 막고 애니메이션 상태가 이동 결과와 맞도록 연결했습니다.'},
@@ -804,9 +806,16 @@ class PlayContext {
   +ElapsedTime
   +RequestCount
 }
-class ResponseValidator {
-  +ValidateSchema()
-  +ParseHint()
+class FlaskInferenceServer {
+  +Predict()
+  +TestRag()
+  +TestGraph()
+}
+class HintGraph {
+  +AnalyzeImage()
+  +RetrieveRag()
+  +DecideHintLevel()
+  +GenerateJournal()
 }
 class HintUIController {
   +ShowLoading()
@@ -816,26 +825,33 @@ class HintUIController {
 SelectionOverlay --> ScreenCaptureService : selected region
 ScreenCaptureService --> HintRequestClient : compressed image
 HintRequestClient o-- PlayContext : request context
-HintRequestClient --> ResponseValidator : response JSON
-ResponseValidator --> HintUIController : validated result`],
+HintRequestClient --> FlaskInferenceServer : POST predict
+FlaskInferenceServer *-- HintGraph
+FlaskInferenceServer --> HintRequestClient : validated JSON or fallback
+HintRequestClient --> HintUIController : parsed result`],
       ['멀티모달 분석·RAG 처리 흐름 UML 보기',`sequenceDiagram
 actor Player
 participant UI as Hint UI
 participant Client as Game Client
 participant API as Flask API
-participant Vision as Scene Analyzer
-participant Search as Puzzle Document Search
-participant Model as Hint Generator
+participant Graph as LangGraph
+participant Vision as LLaVA-OneVision
+participant Search as Sentence Transformer RAG
+participant Model as Gemma + LoRA
 Player->>UI: 화면 영역 선택 및 힌트 요청
 UI->>Client: 요청 시작
 Client->>Client: 선택 영역 캡처·압축
 Client->>API: 이미지와 플레이 맥락 전송
-API->>Vision: 장면 분석 요청
-Vision-->>API: 객체·상황 정보
-API->>Search: 현재 퍼즐 관련 문서 검색
-Search-->>API: 근거 문서
-API->>Model: 장면·문서·진행 단계 전달
-Model-->>API: 단계별 힌트 JSON
+API->>Graph: HintGraph State 생성
+Graph->>Vision: 최대 384px 이미지 분석
+Vision-->>Graph: 장면 설명
+Graph->>Search: 장면 임베딩·area_id 검색
+Search-->>Graph: 상위 문서와 유사도
+Graph->>Graph: 요청 횟수·체류 시간으로 힌트 단계 결정
+Graph->>Model: 장면·RAG·힌트 단계 전달
+Model-->>Graph: 구조화 조사 일지
+Graph->>Graph: JSON 추출·검증 또는 Fallback
+Graph-->>API: 최종 응답 State
 API-->>Client: 비동기 응답
 Client->>Client: 스키마 검증
 Client-->>UI: 힌트 또는 재시도 상태 표시`]
@@ -1091,15 +1107,20 @@ Projectile --> Collider : collision query`]
   const smileDeepDive=[
     {heading:'플레이어가 지정하는 화면 분석 영역',body:'화면 영역 선택 UI에서 방향키로 분석 영역의 크기를 조절하고 최소·최대 범위를 제한했습니다. 화면 전체를 항상 보내지 않고 플레이어가 중요하다고 판단한 부분만 선택하게 해 불필요한 이미지 정보를 줄이고 분석 대상을 명확하게 만들었습니다.'},
     {heading:'Render Target 캡처와 메모리 이미지 변환',body:'선택 영역의 Widget 좌표를 Viewport와 Render Target 크기 비율에 맞춰 Pixel 좌표로 변환했습니다. 캡처한 Pixel Data는 디스크에 저장하지 않고 메모리에서 PNG 또는 JPEG Byte Array로 압축해 HTTP 요청에 바로 포함했습니다.'},
-    {heading:'Unreal과 Flask AI 서버의 비동기 통신',body:'Unreal HTTP 모듈로 화면 이미지, 현재 구역, 힌트 요청 횟수, 체류 시간과 퍼즐 진행 상태를 POST /predict에 전달했습니다. 비동기 Callback에서 상태 코드와 응답을 확인해 AI 추론 중에도 게임의 메인 스레드가 멈추지 않도록 구성했습니다.'},
-    {heading:'장면 분석·RAG 검색·단계별 힌트 파이프라인',body:'LLaVA가 선택 화면을 분석하고, RAG가 현재 구역과 관련된 퍼즐 문서를 검색하며, 요청 횟수와 체류 시간을 반영해 힌트 단계를 결정합니다. 처음부터 정답을 제공하지 않고 관찰 유도에서 구체적인 행동 안내로 정보량이 점진적으로 늘어나도록 설계했습니다.'},
-    {heading:'JSON 검증과 조사 일지 UI',body:'AI 응답을 역할별 JSON 필드로 구조화하고 필수 값과 자료형을 검사한 뒤 조사 일지와 힌트 UI에 반영했습니다. 파싱에 실패하거나 근거가 부족하면 잘못된 데이터를 적용하지 않고 Fallback 결과와 오류 UI를 사용하도록 처리했습니다.'},
+    {heading:'Unreal과 Flask AI 서버의 비동기 통신',body:'Unreal HTTP 모듈에서 선택 이미지, 구역 ID, 힌트 요청 횟수, 구역 체류 시간과 진행 상태를 POST /predict로 전송했습니다. 비동기 Callback에서 상태 코드와 JSON을 확인하고 로딩 UI를 종료해 AI 추론 중에도 게임 메인 스레드와 입력이 멈추지 않도록 구성했습니다.'},
+    {heading:'LangGraph 기반 멀티모달 처리 파이프라인',body:'Flask 서버에서 LLaVA-OneVision 장면 분석, 퍼즐 문서 검색, 힌트 단계 결정, Gemma 조사 일지 생성을 LangGraph Node로 분리했습니다. 각 단계의 입출력을 State에 보관해 전체 추론을 한 함수에 결합하지 않고 단계별 결과를 추적하거나 개별 Node를 테스트할 수 있도록 구성했습니다.'},
+    {heading:'Sentence Transformer 기반 RAG 검색',body:'LLaVA가 만든 장면 설명과 puzzle_docs.json의 검색 문장을 all-MiniLM-L6-v2로 임베딩하고 Cosine Similarity로 상위 문서를 선택했습니다. area_id로 후보를 제한하고 유사도 0.55 미만의 문서는 핵심 근거에서 제외해 다른 구역의 퍼즐 정보가 힌트에 섞이는 문제를 줄였습니다.'},
+    {heading:'Gemma·LoRA 기반 단계별 조사 일지 생성',body:'힌트 요청 횟수와 구역 체류 시간으로 관찰 유도·관계 추론·구체적 방향의 세 단계를 결정했습니다. Gemma에 PEFT LoRA Adapter를 적용해 장면·RAG 근거·힌트 단계에서 title, observation, reasoning, conclusion, hint 필드를 갖는 조사 일지를 생성하도록 미세 조정했습니다.'},
+    {heading:'JSON 추출·검증과 규칙 기반 Fallback',body:'모델 출력 전체를 바로 사용하지 않고 중괄호 범위에서 JSON 객체를 추출한 뒤 필수 필드와 자료형을 검사했습니다. LLaVA 분석, RAG 검색, Gemma 생성이나 파싱이 실패하면 현재 구역과 검색 근거로 최소한의 조사 일지를 구성해 클라이언트가 사용할 응답 형식을 유지했습니다.'},
     {heading:'격자 인벤토리와 상호작용 오브젝트',body:'아이템의 가로·세로 크기와 점유 셀을 검사하는 3×3 격자 인벤토리를 구현했습니다. 문서, 아이템, 문, 전등과 퓨즈 상자 등은 공통 상호작용 기반 구조로 공통 흐름을 사용하고, 아이템 ID 확인과 제거 기능을 퍼즐 조건에 연결했습니다.'}
   ];
   const smileIssues=[
     {title:'AI가 화면에 없는 오브젝트를 힌트에 포함하는 문제',problem:'모델이 현재 화면과 퍼즐 데이터에 존재하지 않는 오브젝트나 해결 방법을 생성할 수 있었습니다.',solution:'화면에서 확인 가능한 정보와 RAG 데이터만 사용하도록 프롬프트를 제한하고, 역할별 JSON 형식과 필수 필드를 검증한 뒤 근거가 부족하면 Fallback 결과를 사용했습니다.',result:'게임 데이터와 관련 없는 힌트가 노출될 가능성을 줄이고 클라이언트에서 응답을 안정적으로 처리할 수 있게 됐습니다.'},
     {title:'AI 응답 대기 중 게임이 멈춘 것처럼 보이는 문제',problem:'추론 시간이 길어지면 플레이어가 입력이 처리되지 않거나 게임이 멈춘 것으로 느낄 수 있었습니다.',solution:'HTTP 요청을 비동기로 처리하고 Loading Widget을 표시했으며, 응답 전 중복 요청을 제한하고 성공·실패·파싱 오류에서 Loading 상태를 종료했습니다.',result:'대기 상태를 명확하게 전달하고 중복 요청으로 서버와 UI 상태가 꼬이는 문제를 줄였습니다.'},
-    {title:'해상도에 따라 선택 화면과 캡처 범위가 달라지는 문제',problem:'Widget 좌표와 Render Target Pixel 좌표가 다른 기준을 사용해 해상도나 화면 비율에 따라 분석 영역이 어긋났습니다.',solution:'현재 Viewport와 Render Target 크기의 비율로 좌표와 크기를 변환하고 캡처 범위가 경계를 벗어나지 않도록 보정했습니다.',result:'해상도가 달라져도 사용자가 선택한 영역과 서버로 전송되는 이미지 영역이 최대한 일치하도록 개선했습니다.'}
+    {title:'해상도에 따라 선택 화면과 캡처 범위가 달라지는 문제',problem:'Widget 좌표와 Render Target Pixel 좌표가 다른 기준을 사용해 해상도나 화면 비율에 따라 분석 영역이 어긋났습니다.',solution:'현재 Viewport와 Render Target 크기의 비율로 좌표와 크기를 변환하고 캡처 범위가 경계를 벗어나지 않도록 보정했습니다.',result:'해상도가 달라져도 사용자가 선택한 영역과 서버로 전송되는 이미지 영역이 최대한 일치하도록 개선했습니다.'},
+    {title:'모델 출력 앞뒤의 문장 때문에 JSON 파싱이 실패하는 문제',problem:'JSON 출력을 지시해도 모델이 Markdown 코드 블록이나 설명 문장을 함께 생성해 Unreal에서 곧바로 파싱할 수 없는 경우가 있었습니다.',solution:'출력 문자열에서 유효한 JSON 객체 범위를 추출하고 필수 필드와 자료형을 검사했으며, 파싱에 실패하면 규칙 기반 Fallback 조사 일지를 반환했습니다.',result:'모델 출력 형식이 흔들려도 클라이언트에 전달되는 응답 구조를 일정하게 유지했습니다.'},
+    {title:'여러 AI 모델로 GPU 메모리와 응답 시간이 증가하는 문제',problem:'이미지 분석 모델과 텍스트 생성 모델을 함께 실행하면서 고해상도 입력과 추가 검증이 GPU 메모리와 대기 시간을 증가시켰습니다.',solution:'입력 이미지 최대 크기를 384로 제한하고 CUDA 환경에서 FP16을 사용했으며, 모델은 서버 시작 시 한 번만 로드하고 추가 검증 단계를 환경에 따라 끌 수 있게 했습니다.',result:'반복적인 모델 로딩 비용을 제거하고 시연 환경의 성능에 맞춰 메모리와 추론 시간을 조절할 수 있게 됐습니다.'},
+    {title:'RAG가 다른 구역의 퍼즐 문서를 선택하는 문제',problem:'장면 설명이 짧거나 불명확하면 의미는 비슷하지만 현재 구역과 관계없는 문서가 검색될 수 있었습니다.',solution:'area_id 필터, 여러 search_scenes, Cosine Similarity와 0.55 임계값을 함께 적용하고 상위 문서를 Context로 구성했습니다.',result:'관련 없는 문서가 핵심 힌트 근거로 선택되는 빈도를 줄이고 검색 품질을 조정할 기준을 마련했습니다.'}
   ];
   const smileReflection='생성형 AI를 게임에 연결하면서 좋은 결과를 만드는 것만큼 결과의 근거와 형식, 대기 시간과 실패 상황을 함께 설계하는 일이 중요하다는 점을 배웠습니다. 모델 출력은 항상 일정하지 않기 때문에 입력 범위를 제한하고 JSON 검증과 Fallback을 마련해야 게임 시스템 안에서 안정적으로 사용할 수 있었습니다. 또한 UI 좌표부터 이미지 변환, HTTP 통신, 서버 추론과 결과 표시까지 이어지는 전체 흐름을 구현하며 서로 다른 시스템 사이의 데이터 기준과 상태를 명확히 맞추는 습관을 갖게 되었습니다.';
   const slapDeepDive=[
@@ -1149,7 +1170,16 @@ Projectile --> Collider : collision query`]
   const projectCodeLinks={
     'EBON CROWN':['https://github.com/choijiuk1017/EBON_CROWN/tree/main/Source/Third_Person_RPG/Component','https://github.com/choijiuk1017/EBON_CROWN/tree/main/Source/Third_Person_RPG/Inventory','https://github.com/choijiuk1017/EBON_CROWN/tree/main/Source/Third_Person_RPG/Animation/AnimNotify','https://github.com/choijiuk1017/EBON_CROWN/tree/main/Source/Third_Person_RPG/Character/BT','https://github.com/choijiuk1017/EBON_CROWN/blob/main/Source/Third_Person_RPG/Component/PlayerUIComponent.cpp','https://github.com/choijiuk1017/EBON_CROWN/tree/main/Source/Third_Person_RPG/Actor/Pool','https://github.com/choijiuk1017/EBON_CROWN/blob/main/Source/Third_Person_RPG/Actor/LevelPreloadTrigger.cpp'],
     'EXCUTE':['https://github.com/choijiuk1017/Excute/blob/main/Source/pixelate_project/Character/EnemyCharacter.cpp','https://github.com/choijiuk1017/Excute/blob/main/Source/pixelate_project/Character/EnemyCharacter.cpp','https://github.com/choijiuk1017/Excute/blob/main/Source/pixelate_project/Character/EnemyCharacter.cpp','https://github.com/choijiuk1017/Excute/tree/main/Source/pixelate_project/BT','https://github.com/choijiuk1017/Excute/blob/main/Source/pixelate_project/Character/BossCharacter.cpp','https://github.com/choijiuk1017/Excute/tree/main/Source/pixelate_project/Actor'],
-    'PROJECT_SMILE':['https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/Widget/CaptureSelection.cpp','https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/Widget/CaptureSelection.cpp','https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/PlayerController/MainPlayerController.cpp','https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/PlayerController/MainPlayerController.cpp','https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/Widget/FileJournalWidget.cpp','https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/Component/InventoryComponent.cpp'],
+    'PROJECT_SMILE':[
+      {url:'https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/Widget/CaptureSelection.cpp',label:'클라이언트 코드 보기 ↗'},
+      {url:'https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/Widget/CaptureSelection.cpp',label:'캡처 코드 보기 ↗'},
+      [{url:'https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/PlayerController/MainPlayerController.cpp',label:'Unreal 요청 코드 ↗'},{url:'https://github.com/choijiuk1017/Project_Smile_AI/blob/main/Server.py',label:'Flask API 코드 ↗'}],
+      {url:'https://github.com/choijiuk1017/Project_Smile_AI/blob/main/Server.py',label:'LangGraph 코드 보기 ↗'},
+      [{url:'https://github.com/choijiuk1017/Project_Smile_AI/blob/main/Server.py',label:'RAG 검색 코드 ↗'},{url:'https://github.com/choijiuk1017/Project_Smile_AI/blob/main/puzzle_docs.json',label:'퍼즐 문서 보기 ↗'}],
+      [{url:'https://github.com/choijiuk1017/Project_Smile_AI/blob/main/train_gemma_lora.py',label:'LoRA 학습 코드 ↗'},{url:'https://github.com/choijiuk1017/Project_Smile_AI/blob/main/Server.py',label:'조사 일지 생성 코드 ↗'}],
+      {url:'https://github.com/choijiuk1017/Project_Smile_AI/blob/main/Server.py',label:'검증·Fallback 코드 ↗'},
+      {url:'https://github.com/choijiuk1017/Project_Smile/blob/main/Source/Project_Smile/Component/InventoryComponent.cpp',label:'인벤토리 코드 보기 ↗'}
+    ],
     'SLAP SQUAD':['https://github.com/choijiuk1017/SLAP_SQUAD/tree/main/Assets/Script','https://github.com/choijiuk1017/SLAP_SQUAD/blob/main/Assets/Script/Network/NetworkConnector.cs','https://github.com/choijiuk1017/SLAP_SQUAD/tree/main/Assets/Script/Lobby','https://github.com/choijiuk1017/SLAP_SQUAD/blob/main/Assets/Script/Game/CharacterSystem.cs','https://github.com/choijiuk1017/SLAP_SQUAD/blob/main/Assets/Script/Game/WeaponSystem.cs','https://github.com/choijiuk1017/SLAP_SQUAD/blob/main/Assets/Script/Game/BalloonSystem.cs'],
     'KEMET':['https://github.com/choijiuk1017/Kemet/blob/main/Assets/Scripts/Core/Unit/Unit.cs','https://github.com/choijiuk1017/Kemet/blob/main/Assets/Scripts/Core/Unit/Player/Seth.cs','https://github.com/choijiuk1017/Kemet/blob/main/Assets/Scripts/Core/Unit/Player/Seth.cs','https://github.com/choijiuk1017/Kemet/tree/main/Assets/Scripts/Core/Unit/Monster/FSM','https://github.com/choijiuk1017/Kemet/tree/main/Assets/Scripts/Core/Unit/Monster','https://github.com/choijiuk1017/Kemet/blob/main/Assets/Scripts/SceneMoveDoor.cs'],
     'TANK BLITZ':['https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/DeviceManager.cpp','https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/data/lightShader.hlsl','https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/data/bumpmapShader.hlsl','https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/ModelLoader.cpp','https://github.com/choijiuk1017/Computer_Graphics/blob/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework/Animation.cpp','https://github.com/choijiuk1017/Computer_Graphics/tree/main/과제/CG2/Computer_Graphics2_PA03_C177038_CJU/Framework']
@@ -1157,7 +1187,7 @@ Projectile --> Collider : collision query`]
   const projectIssueOverlaps={
     'EBON CROWN':new Set([0,1,2,4]),
     'EXCUTE':new Set([0,1,2]),
-    'PROJECT_SMILE':new Set([0,1,2]),
+    'PROJECT_SMILE':new Set([0,1,2,3,5]),
     'SLAP SQUAD':new Set([0,1,2]),
     'KEMET':new Set([0,1]),
     'TANK BLITZ':new Set([0,3])
@@ -1287,7 +1317,7 @@ Projectile --> Collider : collision query`]
       }
       const heading=document.createElement('h3');heading.textContent='구현 내용';detailWindowContent.append(heading);
       const implementationGrid=document.createElement('div');implementationGrid.className='detail-implementation-grid';
-      detailContent.deepDive.forEach((item,index)=>{const section=document.createElement('section');section.className='detail-implementation-card';section.id='detail-step-'+index;const h4=document.createElement('h4');h4.textContent=String(index+1).padStart(2,'0')+' · '+item.heading;const paragraph=document.createElement('p');paragraph.textContent=item.body;const codeLink=document.createElement('a');codeLink.className='detail-code-link';codeLink.href=projectCodeLinks[title][index];codeLink.target='_blank';codeLink.rel='noopener noreferrer';codeLink.textContent='GitHub에서 관련 코드 보기 ↗';section.append(h4,paragraph,codeLink);implementationGrid.append(section)});detailWindowContent.append(implementationGrid);
+      detailContent.deepDive.forEach((item,index)=>{const section=document.createElement('section');section.className='detail-implementation-card';section.id='detail-step-'+index;const h4=document.createElement('h4');h4.textContent=String(index+1).padStart(2,'0')+' · '+item.heading;const paragraph=document.createElement('p');paragraph.textContent=item.body;const links=document.createElement('div');links.className='detail-code-links';const entry=projectCodeLinks[title][index],targets=Array.isArray(entry)?entry:[entry];for(const target of targets){const codeLink=document.createElement('a');codeLink.className='detail-code-link';codeLink.href=typeof target==='string'?target:target.url;codeLink.target='_blank';codeLink.rel='noopener noreferrer';codeLink.textContent=typeof target==='string'?'GitHub에서 관련 코드 보기 ↗':target.label;links.append(codeLink)}section.append(h4,paragraph,links);implementationGrid.append(section)});detailWindowContent.append(implementationGrid);
       const issueHeading=document.createElement('h3');issueHeading.textContent='개발 이슈';detailWindowContent.append(issueHeading);const issueGrid=document.createElement('div');issueGrid.className='detail-issue-grid';detailContent.issues.forEach((issue,index)=>{const section=document.createElement('section');section.className='ebon-issue';const h4=document.createElement('h4');h4.textContent=issue.title;section.append(h4);const rows=projectIssueOverlaps[title].has(index)?[['문제',issue.problem],['결과',issue.result]]:[['문제',issue.problem],['해결',issue.solution],['결과',issue.result]];for(const [label,value] of rows){const row=document.createElement('div');row.className='ebon-issue-row';const strong=document.createElement('strong');strong.textContent=label;const text=document.createElement('p');text.textContent=value;row.append(strong,text);section.append(row)}issueGrid.append(section)});detailWindowContent.append(issueGrid);
       const reflectionHeading=document.createElement('h3');reflectionHeading.textContent='개발 후 느낀 점';const reflection=document.createElement('p');reflection.className='ebon-reflection';reflection.textContent=detailContent.reflection;detailWindowContent.append(reflectionHeading,reflection);
     }
