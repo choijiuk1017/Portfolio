@@ -235,22 +235,6 @@
     @media(max-width:720px){.overview-signature{grid-template-columns:1fr;grid-template-rows:auto auto auto;gap:0}.overview-signature .overview-label,.overview-signature h1{grid-column:1;grid-row:auto}.intro-reel{grid-column:1;grid-row:3;margin-top:24px}.intro-reel-play{width:62px;height:62px;font-size:25px}}
     @media(max-width:1000px){.hero{min-height:auto;padding:70px 0}.hero-grid{grid-template-columns:1fr;gap:38px}.hero-overview{width:100%}}
     @media(max-width:720px){.hero{padding:48px 0 40px}.hero-overview{grid-template-columns:1fr}.overview-signature{grid-column:auto}.overview-profile{grid-row:auto}.overview-profile .hero-art{height:min(112vw,440px)}.overview-activity-list,.overview-award-list{grid-template-columns:1fr}.overview-skill-icons{flex-wrap:wrap}.hero .actions{gap:9px}.hero .button{padding:13px 15px}}
-    /* Mobile intro fills the first screen while preserving the complete video frame. */
-    .intro-reel-fullscreen{position:absolute;right:12px;top:12px;min-height:44px;padding:10px 13px;border:1px solid #ffffff66;border-radius:5px;background:#0b101de6;color:#fff;font-size:12px;cursor:pointer}
-    .intro-reel-fullscreen:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-    .intro-reel video:fullscreen{width:100%;height:100%;aspect-ratio:auto;object-fit:contain;background:#000}
-    .intro-reel video:-webkit-full-screen{width:100%;height:100%;object-fit:contain;background:#000}
-    .intro-reel-status{position:absolute;left:12px;right:12px;bottom:52px;margin:0!important;color:#fff!important;background:#0b101de6;font-size:12px!important;text-align:center}
-    .intro-reel-status:empty{display:none}
-    @media(max-width:800px){
-      .hero{padding:0 0 40px}
-      .overview-signature{grid-template-columns:1fr;grid-template-rows:auto auto auto;gap:0;padding-top:0}
-      .overview-signature .overview-label{grid-column:1;grid-row:2;margin-top:24px}
-      .overview-signature h1{grid-column:1;grid-row:3}
-      .intro-reel{grid-column:1;grid-row:1;width:calc(100% + 46px);height:calc(100vh - 65px);height:calc(100svh - 65px);margin:0 0 0 -23px;border:0;border-radius:0;box-shadow:none;background:#000}
-      .intro-reel video{height:100%;aspect-ratio:auto;object-fit:contain;background:#000}
-      .intro-reel-label{top:16px;max-width:calc(100% - 130px);font-size:9px}
-    }
   </style>
 </head>
 <body>
@@ -309,27 +293,12 @@
     <a class="overview-card overview-skills" href="#skills"><span class="overview-label">SKILLS</span><span class="overview-arrow">MORE ↘</span><div class="overview-skill-icons"></div></a>
     <a class="overview-card overview-project-link" href="#projects"><strong>Projects</strong><i>프로젝트 바로가기 ↘</i></a>
   </aside>`);
-  document.querySelector('.overview-signature').insertAdjacentHTML('beforeend','<div class="intro-reel"><video muted loop playsinline controls preload="auto" poster="assets/ebon-crown/boss-combat.webp" aria-label="게임 프로젝트 하이라이트 영상"><source src="assets/intro-highlight.mp4" type="video/mp4"></video><span class="intro-reel-label">GAMEPLAY HIGHLIGHTS</span><button class="intro-reel-play" type="button" aria-label="하이라이트 영상 재생">▶</button><button class="intro-reel-fullscreen" type="button" aria-label="인트로 영상 전체화면으로 보기">전체화면 ⛶</button><p class="intro-reel-status" role="status" aria-live="polite"></p></div>');
+  document.querySelector('.overview-signature').insertAdjacentHTML('beforeend','<div class="intro-reel"><video muted loop playsinline controls preload="auto" poster="assets/ebon-crown/boss-combat.webp" aria-label="게임 프로젝트 하이라이트 영상"><source src="assets/intro-highlight.mp4" type="video/mp4"></video><span class="intro-reel-label">GAMEPLAY HIGHLIGHTS</span><button class="intro-reel-play" type="button" aria-label="하이라이트 영상 재생">▶</button></div>');
   const introVideo=document.querySelector('.intro-reel video');
   const introPlayButton=document.querySelector('.intro-reel-play');
   introVideo.addEventListener('playing',()=>{introPlayButton.hidden=true});
   introVideo.addEventListener('pause',()=>{introPlayButton.hidden=false});
   introPlayButton.addEventListener('click',()=>introVideo.play().catch(()=>{}));
-  const introFullscreenButton=document.querySelector('.intro-reel-fullscreen');
-  const introVideoStatus=document.querySelector('.intro-reel-status');
-  const enterIntroFullscreen=()=>{
-    if(introVideo.requestFullscreen)return introVideo.requestFullscreen();
-    if(introVideo.webkitEnterFullscreen){introVideo.webkitEnterFullscreen();return Promise.resolve()}
-    if(introVideo.webkitRequestFullscreen){introVideo.webkitRequestFullscreen();return Promise.resolve()}
-    return Promise.reject(new Error('Fullscreen unavailable'));
-  };
-  introFullscreenButton.hidden=!(introVideo.requestFullscreen||introVideo.webkitEnterFullscreen||introVideo.webkitRequestFullscreen);
-  introFullscreenButton.addEventListener('click',()=>{
-    introVideoStatus.textContent='';
-    introVideo.play().catch(()=>{introPlayButton.hidden=false});
-    try{Promise.resolve(enterIntroFullscreen()).catch(()=>{introVideoStatus.textContent='영상 재생 후 전체화면 버튼을 다시 눌러 주세요.'})}
-    catch(error){introVideoStatus.textContent='영상 재생 후 전체화면 버튼을 다시 눌러 주세요.'}
-  });
   introVideo.defaultMuted=true;
   introVideo.muted=true;
   let introVideoStarted=false;
