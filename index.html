@@ -235,6 +235,10 @@
     @media(max-width:720px){.overview-signature{grid-template-columns:1fr;grid-template-rows:auto auto auto;gap:0}.overview-signature .overview-label,.overview-signature h1{grid-column:1;grid-row:auto}.intro-reel{grid-column:1;grid-row:3;margin-top:24px}.intro-reel-play{width:62px;height:62px;font-size:25px}}
     @media(max-width:1000px){.hero{min-height:auto;padding:70px 0}.hero-grid{grid-template-columns:1fr;gap:38px}.hero-overview{width:100%}}
     @media(max-width:720px){.hero{padding:48px 0 40px}.hero-overview{grid-template-columns:1fr}.overview-signature{grid-column:auto}.overview-profile{grid-row:auto}.overview-profile .hero-art{height:min(112vw,440px)}.overview-activity-list,.overview-award-list{grid-template-columns:1fr}.overview-skill-icons{flex-wrap:wrap}.hero .actions{gap:9px}.hero .button{padding:13px 15px}}
+    /* Reserve video height on mobile browsers before metadata is available. */
+    .intro-reel{aspect-ratio:16/9}
+    .intro-reel video{width:100%;height:100%;min-height:0}
+    @media(max-width:720px){.intro-reel{display:block;width:100%;min-height:0}.intro-reel video{display:block;aspect-ratio:16/9;height:auto;visibility:visible}}
   </style>
 </head>
 <body>
@@ -293,16 +297,37 @@
     <a class="overview-card overview-skills" href="#skills"><span class="overview-label">SKILLS</span><span class="overview-arrow">MORE ↘</span><div class="overview-skill-icons"></div></a>
     <a class="overview-card overview-project-link" href="#projects"><strong>Projects</strong><i>프로젝트 바로가기 ↘</i></a>
   </aside>`);
-  document.querySelector('.overview-signature').insertAdjacentHTML('beforeend','<div class="intro-reel"><video muted loop playsinline controls preload="auto" poster="assets/ebon-crown/boss-combat.webp" aria-label="게임 프로젝트 하이라이트 영상"><source src="assets/intro-highlight.mp4" type="video/mp4"></video><span class="intro-reel-label">GAMEPLAY HIGHLIGHTS</span><button class="intro-reel-play" type="button" aria-label="하이라이트 영상 재생">▶</button></div>');
+  document.querySelector('.overview-signature').insertAdjacentHTML('beforeend','<div class="intro-reel"><video autoplay muted loop playsinline webkit-playsinline controls preload="auto" poster="assets/ebon-crown/boss-combat.webp" aria-label="게임 프로젝트 하이라이트 영상"><source src="assets/intro-highlight.mp4" type="video/mp4"></video><span class="intro-reel-label">GAMEPLAY HIGHLIGHTS</span><button class="intro-reel-play" type="button" aria-label="하이라이트 영상 재생">▶</button></div>');
   const introVideo=document.querySelector('.intro-reel video');
   const introPlayButton=document.querySelector('.intro-reel-play');
-  introVideo.addEventListener('playing',()=>{introPlayButton.hidden=true});
-  introVideo.addEventListener('pause',()=>{introPlayButton.hidden=false});
-  introPlayButton.addEventListener('click',()=>introVideo.play().catch(()=>{}));
   introVideo.defaultMuted=true;
   introVideo.muted=true;
-  let introVideoStarted=false;
-  const startIntroVideo=()=>{if(introVideoStarted)return;introVideoStarted=true;introVideo.currentTime=0;introVideo.play().catch(()=>{introVideoStarted=false})};
+  introVideo.playsInline=true;
+  let introVideoRequested=false,introVideoStarting=false,introVideoStarted=false;
+  const playIntroVideo=()=>{
+    if(introVideoStarting||introVideoStarted||introVideo.readyState<2)return;
+    introVideoStarting=true;
+    try{
+      const playback=introVideo.play();
+      if(playback&&typeof playback.catch==='function')playback.catch(()=>{introVideoStarted=false;introPlayButton.hidden=false}).finally(()=>{introVideoStarting=false});
+      else introVideoStarting=false;
+    }catch(error){introVideoStarting=false;introPlayButton.hidden=false}
+  };
+  const startIntroVideo=()=>{introVideoRequested=true;playIntroVideo()};
+  introVideo.addEventListener('playing',()=>{introVideoStarted=true;introPlayButton.hidden=true});
+  introVideo.addEventListener('pause',()=>{introVideoStarted=false;introPlayButton.hidden=false});
+  introVideo.addEventListener('error',()=>{introVideoStarting=false;introVideoStarted=false;introPlayButton.hidden=false});
+  for(const event of ['loadeddata','canplay'])introVideo.addEventListener(event,()=>{if(introVideoRequested)playIntroVideo()});
+  introPlayButton.addEventListener('click',()=>{
+    introVideoRequested=true;introVideoStarted=false;
+    introVideo.muted=true;
+    if(introVideo.error)introVideo.load();
+    // Keep play() inside the tap handler for mobile autoplay restrictions.
+    try{const playback=introVideo.play();if(playback&&typeof playback.catch==='function')playback.catch(()=>{introPlayButton.hidden=false})}
+    catch(error){introPlayButton.hidden=false}
+  });
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&introVideoRequested&&!introVideoStarted&&introVideo.paused)playIntroVideo()});
+  introVideo.load();
   document.querySelector('.overview-profile').prepend(document.querySelector('.hero-grid>.hero-art'));
   const overviewProfile=document.querySelector('.overview-profile');
   const openOverviewProfile=()=>document.querySelector(overviewProfile.dataset.href).scrollIntoView({behavior:'smooth'});
