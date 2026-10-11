@@ -239,53 +239,25 @@
     .intro-reel{aspect-ratio:16/9}
     .intro-reel video{width:100%;height:100%;min-height:0}
     @media(max-width:720px){.intro-reel{display:block;width:100%;min-height:0}.intro-reel video{display:block;aspect-ratio:16/9;height:auto;visibility:visible}}
-    /* Place the introduction, profile and reel together before the supporting details. */
-    .hero{min-height:auto;padding:28px 0 32px}
-    .hero-overview{grid-template-columns:minmax(0,1fr) 282px minmax(0,1.75fr);gap:14px 16px}
-    .overview-signature{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-width:0;padding:0;border:0}
-    .overview-signature .overview-label,.overview-signature h1{grid-column:auto;grid-row:auto}
-    .overview-signature h1{font-size:clamp(43px,3.1vw,58px);line-height:1.08}
-    .intro-reel{grid-column:3;grid-row:1;align-self:center;width:100%}
-    .overview-profile{grid-column:2;grid-row:1;display:grid;grid-template-columns:108px minmax(0,1fr);grid-template-rows:165px 1fr;align-self:stretch;min-width:0}
-    .overview-profile .hero-art{grid-column:1;grid-row:1;width:100%;height:165px;border:0;border-right:1px solid #8bbaff55;animation:none}
-    .overview-profile .hero-art .portrait{width:100%;height:100%;max-height:none;object-fit:cover;object-position:center 18%}
-    .overview-profile-info{display:contents}
-    .overview-profile .overview-label{grid-column:2;grid-row:1;align-self:start;margin:17px 14px}
-    .overview-profile .overview-name{grid-column:2;grid-row:1;align-self:center;margin:0 14px;font-size:27px;line-height:1.1}
-    .overview-profile .overview-name em{margin-top:8px;font-size:10px;line-height:1.4}
-    .overview-profile .overview-contact{grid-column:1/-1;grid-row:2;align-self:start;margin:0 14px 10px}
-    .overview-profile .overview-contact span{grid-template-columns:15px 63px minmax(0,1fr);gap:5px;padding:6px 0;font-size:10px}
-    .overview-profile .overview-contact svg{width:13px;height:13px}.overview-profile .overview-contact b{font-size:8px}
-    .overview-activities{grid-column:1/3;grid-row:2;align-self:stretch}
-    .overview-awards{grid-column:3;grid-row:2;display:flex;flex-direction:column}
-    .overview-award-list{grid-template-columns:1fr;flex:1}.overview-award-list span{display:flex;align-items:center;gap:12px;min-height:36px}.overview-award-list b{margin:0}
-    .overview-skills{grid-column:1/3;grid-row:3;align-self:stretch}
-    .overview-project-link{grid-column:3;grid-row:3;min-height:0}
-    @media(min-width:721px) and (max-width:1000px){
-      .hero{padding:35px 0}
-      .hero-overview{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
-      .overview-signature{grid-column:1;grid-row:1}
-      .overview-signature h1{font-size:clamp(42px,5vw,56px)}
-      .intro-reel{grid-column:2;grid-row:1}
-      .overview-profile{grid-column:1;grid-row:2}
-      .overview-activities{grid-column:2;grid-row:2}
-      .overview-awards{grid-column:1;grid-row:3}
-      .overview-skills{grid-column:2;grid-row:3}
-      .overview-project-link{grid-column:1/-1;grid-row:4;min-height:55px}
-      .overview-award-list{grid-template-columns:repeat(3,minmax(0,1fr))}.overview-award-list span{display:block}
-    }
-    @media(max-width:720px){
-      .hero{padding:38px 0}
-      .hero-overview{grid-template-columns:1fr;gap:14px}
-      .overview-signature,.intro-reel,.overview-profile,.overview-activities,.overview-awards,.overview-skills,.overview-project-link{grid-column:1;grid-row:auto}
-      .overview-signature h1{font-size:clamp(42px,10vw,58px)}
-      .intro-reel{margin:0}
-      .overview-profile{grid-template-columns:112px minmax(0,1fr);grid-template-rows:165px auto}
-      .overview-profile .hero-art{height:165px}
-      .overview-activity-list{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .overview-award-list{grid-template-columns:repeat(3,minmax(0,1fr))}.overview-award-list span{display:block}
-      .overview-project-link{min-height:58px}
-    }
+    /* Preserve the original layout while keeping the reel and profile in view. */
+    .hero{min-height:auto;padding:22px 0 28px}
+    .hero-overview{gap:11px 16px}
+    .overview-signature{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);column-gap:26px;padding:0 0 14px}
+    .overview-signature h1{font-size:clamp(46px,4.3vw,61px);line-height:1.08;white-space:nowrap}
+    .intro-reel{width:min(100%,615px);justify-self:end}
+    .overview-profile{align-self:start}
+    .overview-profile .hero-art{height:190px;animation:none}
+    .overview-profile .hero-art .portrait{width:100%;height:100%;max-height:none;object-fit:contain;background:#fff}
+    .overview-profile-info{padding:14px;gap:9px}
+    .overview-name{font-size:32px}.overview-name em{margin-top:6px;font-size:10px}
+    .overview-contact span{grid-template-columns:15px 54px minmax(0,1fr);gap:5px;padding:6px 0;font-size:10px}
+    .overview-contact svg{width:13px;height:13px}.overview-contact b{font-size:8px}
+    .overview-activities{padding:13px 16px}.overview-activities .overview-label{margin-bottom:9px}
+    .overview-activity{padding:9px 11px}.overview-activity time{margin-bottom:3px}.overview-activity strong{font-size:12px;margin-bottom:3px}.overview-activity small{font-size:10px;line-height:1.35}
+    .overview-awards,.overview-skills{padding:13px 16px}.overview-awards .overview-label,.overview-skills .overview-label{margin-bottom:9px}
+    .overview-award-list span{padding:7px 9px}.overview-project-link{min-height:54px;padding:13px 16px}
+    @media(min-width:721px) and (max-width:1000px){.overview-signature h1{font-size:clamp(43px,5vw,52px)}.intro-reel{width:min(100%,510px)}}
+    @media(max-width:720px){.hero{padding:38px 0}.overview-signature{grid-template-columns:1fr}.overview-signature h1{font-size:clamp(34px,9.5vw,50px)}.intro-reel{width:100%}.overview-profile .hero-art{height:210px}}
   </style>
 </head>
 <body>
@@ -344,7 +316,7 @@
     <a class="overview-card overview-skills" href="#skills"><span class="overview-label">SKILLS</span><span class="overview-arrow">MORE ↘</span><div class="overview-skill-icons"></div></a>
     <a class="overview-card overview-project-link" href="#projects"><strong>Projects</strong><i>프로젝트 바로가기 ↘</i></a>
   </aside>`);
-  document.querySelector('.overview-signature').insertAdjacentHTML('afterend','<div class="intro-reel"><video autoplay muted loop playsinline webkit-playsinline controls preload="auto" poster="assets/ebon-crown/boss-combat.webp" aria-label="게임 프로젝트 하이라이트 영상"><source src="assets/intro-highlight.mp4" type="video/mp4"></video><span class="intro-reel-label">GAMEPLAY HIGHLIGHTS</span><button class="intro-reel-play" type="button" aria-label="하이라이트 영상 재생">▶</button></div>');
+  document.querySelector('.overview-signature').insertAdjacentHTML('beforeend','<div class="intro-reel"><video autoplay muted loop playsinline webkit-playsinline controls preload="auto" poster="assets/ebon-crown/boss-combat.webp" aria-label="게임 프로젝트 하이라이트 영상"><source src="assets/intro-highlight.mp4" type="video/mp4"></video><span class="intro-reel-label">GAMEPLAY HIGHLIGHTS</span><button class="intro-reel-play" type="button" aria-label="하이라이트 영상 재생">▶</button></div>');
   const introVideo=document.querySelector('.intro-reel video');
   const introPlayButton=document.querySelector('.intro-reel-play');
   introVideo.defaultMuted=true;
