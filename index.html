@@ -257,7 +257,34 @@
     .overview-awards,.overview-skills{padding:13px 16px}.overview-awards .overview-label,.overview-skills .overview-label{margin-bottom:9px}
     .overview-award-list span{padding:7px 9px}.overview-project-link{min-height:54px;padding:13px 16px}
     @media(min-width:721px) and (max-width:1000px){.overview-signature h1{font-size:clamp(43px,5vw,52px)}.intro-reel{width:min(100%,510px)}}
-    @media(max-width:720px){.hero{padding:38px 0}.overview-signature{grid-template-columns:1fr;grid-template-rows:auto auto auto}.overview-signature h1{align-self:start;font-size:clamp(34px,9.5vw,50px)}.intro-reel{grid-row:3;width:100%}.overview-profile .hero-art{height:210px;flex:0 0 210px}}
+    @media(max-width:720px){
+      .hero{padding:24px 0 32px}
+      .hero .wrap{padding-left:14px;padding-right:14px}
+      .hero-overview{grid-template-columns:minmax(0,34%) minmax(0,1fr);gap:10px}
+      .overview-signature{grid-column:1/-1;grid-template-columns:minmax(0,43%) minmax(0,57%);grid-template-rows:1fr auto 1fr;gap:0 8px;padding-bottom:10px;min-height:0}
+      .overview-signature .overview-label{grid-column:1;grid-row:1;align-self:end;font-size:10px}
+      .overview-signature h1{grid-column:1;grid-row:2;align-self:center;font-size:clamp(22px,6.1vw,42px);line-height:1.13;letter-spacing:-.055em}
+      .intro-reel{grid-column:2;grid-row:1/4;width:100%;margin:0;align-self:center}
+      .overview-profile{grid-column:1;grid-row:2/4;min-width:0}
+      .overview-profile .hero-art{height:160px;min-height:0;flex:0 0 160px}
+      .overview-profile-info{padding:9px;gap:6px}
+      .overview-name{font-size:20px}.overview-name em{font-size:8px;line-height:1.35}
+      .overview-contact span{display:flex;flex-wrap:wrap;gap:2px 4px;padding:5px 0;font-size:9px}
+      .overview-contact svg{width:11px;height:11px}.overview-contact b{font-size:8px}
+      .overview-contact i,.overview-contact a{flex-basis:100%;text-align:left;font-size:9px;overflow-wrap:anywhere}
+      .overview-activities{grid-column:2;grid-row:2;min-width:0;display:flex;flex-direction:column;padding:10px}
+      .overview-activities .overview-label{margin-bottom:7px;font-size:10px}
+      .overview-activity-list{grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr));flex:1}
+      .overview-activity{padding:6px 8px}
+      .overview-activity time{font-size:9px;margin-bottom:2px}.overview-activity strong{font-size:10px;margin-bottom:2px}.overview-activity small{font-size:9px;line-height:1.2}
+      .overview-awards{grid-column:2;grid-row:3;padding:9px}
+      .overview-awards .overview-label{margin-bottom:6px;font-size:9px}
+      .overview-awards .overview-award-list{gap:4px}
+      .overview-awards .overview-award-list span{padding:5px 4px;font-size:8px}
+      .overview-skills,.overview-project-link{grid-column:1/-1}
+      .overview-award-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+    @media(max-width:380px){.hero-overview{grid-template-columns:minmax(0,36%) minmax(0,1fr)}.overview-signature h1{font-size:clamp(20px,5.8vw,23px)}.overview-activity small{font-size:8px}}
   </style>
 </head>
 <body>
