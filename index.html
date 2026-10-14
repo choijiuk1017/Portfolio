@@ -285,13 +285,14 @@
       .overview-award-list{grid-template-columns:repeat(3,minmax(0,1fr))}
     }
     @media(max-width:380px){.hero-overview{grid-template-columns:minmax(0,36%) minmax(0,1fr)}.overview-signature h1{font-size:clamp(20px,5.8vw,23px)}.overview-activity small{font-size:8px}}
-    /* Keep the same first-screen composition on desktop monitors with different heights. */
+    /* Keep the intro readable on shorter monitors without shrinking its whole width. */
     @media(min-width:721px){
-      .hero .wrap{max-width:min(1230px,calc(112svh - 85px))}
+      .hero .wrap{max-width:1230px}
       .hero{padding-top:clamp(12px,2svh,22px);padding-bottom:clamp(14px,2.5svh,28px)}
-      .hero-overview{grid-template-columns:clamp(188px,21svh,250px) minmax(0,1fr);row-gap:clamp(7px,1svh,11px)}
+      .hero-overview{grid-template-columns:clamp(210px,20vw,250px) minmax(0,1fr);row-gap:clamp(7px,1svh,11px)}
       .overview-signature{padding-bottom:clamp(7px,1.2svh,14px)}
-      .overview-signature h1{font-size:clamp(36px,min(4.3vw,4.8svh),61px)}
+      .overview-signature h1{font-size:clamp(43px,4.3vw,61px)}
+      .intro-reel{width:min(100%,56svh,615px)}
       .overview-profile-info{padding:clamp(9px,1.2svh,14px);gap:clamp(5px,.8svh,9px)}
       .overview-contact span{padding:clamp(3px,.5svh,6px) 0}
       .overview-activities,.overview-awards,.overview-skills{padding:clamp(9px,1.2svh,13px) 16px}
