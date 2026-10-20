@@ -474,8 +474,12 @@
   introVideo.muted=true;
   introVideo.playsInline=true;
   let introVideoRequested=false,introVideoStarting=false,introVideoStarted=false;
+  const introCanPlay=()=>{
+    const rect=introVideo.getBoundingClientRect();
+    return !document.hidden&&!document.querySelector('dialog[open]')&&rect.bottom>0&&rect.top<innerHeight;
+  };
   const playIntroVideo=()=>{
-    if(introVideoStarting||introVideoStarted||introVideo.readyState<2)return;
+    if(introVideoStarting||introVideoStarted||introVideo.readyState<2||!introCanPlay())return;
     introVideoStarting=true;
     try{
       const playback=introVideo.play();
@@ -484,7 +488,7 @@
     }catch(error){introVideoStarting=false;introPlayButton.hidden=false}
   };
   const startIntroVideo=()=>{introVideoRequested=true;playIntroVideo()};
-  introVideo.addEventListener('playing',()=>{introVideoStarted=true;introPlayButton.hidden=true});
+  introVideo.addEventListener('playing',()=>{if(!introCanPlay()){introVideo.pause();return}introVideoStarted=true;introPlayButton.hidden=true});
   introVideo.addEventListener('pause',()=>{introVideoStarted=false;introPlayButton.hidden=false});
   introVideo.addEventListener('error',()=>{introVideoStarting=false;introVideoStarted=false;introPlayButton.hidden=false});
   for(const event of ['loadeddata','canplay'])introVideo.addEventListener(event,()=>{if(introVideoRequested)playIntroVideo()});
@@ -496,7 +500,8 @@
     try{const playback=introVideo.play();if(playback&&typeof playback.catch==='function')playback.catch(()=>{introPlayButton.hidden=false})}
     catch(error){introPlayButton.hidden=false}
   });
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&introVideoRequested&&!introVideoStarted&&introVideo.paused)playIntroVideo()});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)introVideo.pause();else if(introVideoRequested)playIntroVideo()});
+  if('IntersectionObserver' in window)new IntersectionObserver(entries=>{if(entries[0]?.isIntersecting){if(introVideoRequested)playIntroVideo()}else introVideo.pause()},{threshold:0.15}).observe(introVideo);
   introVideo.load();
   document.querySelector('.overview-profile').prepend(document.querySelector('.hero-grid>.hero-art'));
   const overviewProfile=document.querySelector('.overview-profile');
@@ -1603,13 +1608,13 @@ Projectile --> Collider : collision query`]
       const issueHeading=document.createElement('h3');issueHeading.textContent='개발 이슈';detailWindowContent.append(issueHeading);const issueGrid=document.createElement('div');issueGrid.className='detail-issue-grid';detailContent.issues.forEach((issue,index)=>{const section=document.createElement('section');section.className='ebon-issue';const h4=document.createElement('h4');h4.textContent=issue.title;section.append(h4);const rows=projectIssueOverlaps[title].has(index)?[['문제',issue.problem],['결과',issue.result]]:[['문제',issue.problem],['해결',issue.solution],['결과',issue.result]];for(const [label,value] of rows){const row=document.createElement('div');row.className='ebon-issue-row';const strong=document.createElement('strong');strong.textContent=label;const text=document.createElement('p');text.textContent=value;row.append(strong,text);section.append(row)}issueGrid.append(section)});detailWindowContent.append(issueGrid);
       const reflectionHeading=document.createElement('h3');reflectionHeading.textContent='개발 후 느낀 점';const reflection=document.createElement('p');reflection.className='ebon-reflection';reflection.textContent=detailContent.reflection;detailWindowContent.append(reflectionHeading,reflection);
     }
-    projectDialog.scrollTop=0;projectDialog.showModal();requestAnimationFrame(()=>{projectDialog.scrollTop=0;projectDialog.querySelector('.ebon-gallery-stage video:not([hidden])')?.play().catch(()=>{});projectDialog.querySelector('.project-dialog-close').focus({preventScroll:true})});
+    introVideo.pause();projectDialog.scrollTop=0;projectDialog.showModal();requestAnimationFrame(()=>{projectDialog.scrollTop=0;projectDialog.querySelector('.ebon-gallery-stage video:not([hidden])')?.play().catch(()=>{});projectDialog.querySelector('.project-dialog-close').focus({preventScroll:true})});
   }
   document.querySelectorAll('.project').forEach(card=>card.addEventListener('click',event=>{
     if(event.target.closest('a,.project-stack-icons'))return;
     openProjectDetail(card);
   }));
-  projectDialog.addEventListener('close',()=>projectDialog.querySelector('.ebon-gallery-stage video')?.pause());
+  projectDialog.addEventListener('close',()=>{projectDialog.querySelector('.ebon-gallery-stage video')?.pause();if(introVideoRequested)playIntroVideo()});
   projectDialog.querySelector('.project-dialog-close').addEventListener('click',()=>projectDialog.close());
   projectDialog.addEventListener('click',event=>{if(event.target===projectDialog)projectDialog.close()});
   projectDialog.querySelector('.project-more-detail').addEventListener('click',()=>{projectDialog.querySelector('.ebon-gallery-stage video')?.pause();projectDetailDialog.scrollTop=0;projectDetailDialog.showModal()});
