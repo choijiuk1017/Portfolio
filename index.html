@@ -111,7 +111,7 @@
     .project{cursor:pointer}.project-detail-trigger{align-self:flex-start;display:inline-flex;align-items:center;gap:15px;margin-top:22px;padding:11px 16px;border:1px solid #8bbaff77;border-radius:3px;background:#8bbaff15;color:#d9eaff;font:700 12px var(--sans);cursor:pointer;transition:background .2s,border-color .2s}
     .project-detail-trigger:hover,.project-detail-trigger:focus-visible{background:#8bbaff33;border-color:var(--accent)}.project-detail-trigger span{color:var(--accent)}
     #project-dialog{position:fixed;inset:0;width:min(1320px,calc(100% - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;border:1px solid #52627e;border-radius:10px;background:#171e2b;color:var(--text);box-shadow:0 32px 100px #000a;overflow-y:auto;overscroll-behavior:contain}
-    #project-dialog::backdrop{background:#050a13dd;backdrop-filter:blur(7px)}#project-dialog[open]{animation:project-dialog-enter .32s cubic-bezier(.22,1,.36,1)}
+    #project-dialog::backdrop{background:#050a13dd}#project-dialog[open]{animation:project-dialog-enter .32s cubic-bezier(.22,1,.36,1)}
     @keyframes project-dialog-enter{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
     .project-dialog-floating-actions{position:sticky;z-index:5;top:14px;height:0;margin-right:14px;display:flex;justify-content:flex-end;pointer-events:none}.project-dialog-floating-actions>*{pointer-events:auto}
     .project-dialog-close{width:40px;height:40px;border:1px solid #ffffff55;border-radius:50%;background:#10131be8;color:#fff;font-size:26px;line-height:1;cursor:pointer}
@@ -1458,7 +1458,7 @@ Projectile --> Collider : collision query`]
     'TANK BLITZ':new Set([0,3])
   };
   const ebonScenes=[
-    {label:'시네마틱 하이라이트',src:'assets/project-highlights/ebon-crown.mp4?v=3',poster:'assets/ebon-crown/highlight-poster.webp?v=3',type:'video'},
+    {label:'시네마틱 하이라이트',src:'assets/project-highlights/ebon-crown.mp4?v=4',poster:'assets/ebon-crown/highlight-poster.webp?v=4',type:'video'},
     {label:'타이틀 화면',src:'assets/ebon-crown/title-clean.png'},
     {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'},
     {label:'보스 전투',src:'assets/ebon-crown/boss-combat.webp'},
@@ -1547,7 +1547,7 @@ Projectile --> Collider : collision query`]
       const gallery=document.createElement('div');gallery.className='ebon-gallery';gallery.setAttribute('aria-label',title+' 게임 장면');
       const stage=document.createElement('figure');stage.className='ebon-gallery-stage';
       const stageImage=document.createElement('img');stageImage.alt=title+' 게임 화면';
-      const stageVideo=document.createElement('video');stageVideo.controls=true;stageVideo.muted=true;stageVideo.loop=true;stageVideo.playsInline=true;stageVideo.preload='metadata';stageVideo.hidden=true;stageVideo.setAttribute('aria-label',title+' 시네마틱 하이라이트');
+      const stageVideo=document.createElement('video');stageVideo.controls=true;stageVideo.muted=true;stageVideo.loop=true;stageVideo.playsInline=true;stageVideo.preload='auto';stageVideo.hidden=true;stageVideo.setAttribute('aria-label',title+' 시네마틱 하이라이트');
       const videoCaption=document.createElement('span');videoCaption.className='gallery-video-caption';videoCaption.textContent='GAMEPLAY HIGHLIGHTS';videoCaption.hidden=true;
       stageVideo.addEventListener('error',()=>{stageVideo.hidden=true;stageImage.src=stageVideo.poster;stageImage.hidden=false;videoCaption.hidden=true});
       stage.append(stageImage,stageVideo,videoCaption);
