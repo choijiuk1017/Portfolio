@@ -1458,7 +1458,7 @@ Projectile --> Collider : collision query`]
     'TANK BLITZ':new Set([0,3])
   };
   const ebonScenes=[
-    {label:'시네마틱 하이라이트',src:'assets/project-highlights/ebon-crown.mp4?v=4',poster:'assets/ebon-crown/highlight-poster.webp?v=4',type:'video'},
+    {label:'시네마틱 하이라이트',src:'assets/project-highlights/ebon-crown.mp4?v=5',poster:'assets/ebon-crown/highlight-poster.webp?v=5',type:'video'},
     {label:'타이틀 화면',src:'assets/ebon-crown/title-clean.png'},
     {label:'불꽃 스킬',src:'assets/ebon-crown/flame-skill.webp'},
     {label:'보스 전투',src:'assets/ebon-crown/boss-combat.webp'},
@@ -1466,7 +1466,7 @@ Projectile --> Collider : collision query`]
     {label:'인벤토리',src:'assets/ebon-crown/inventory.webp'}
   ];
   const excuteScenes=[
-    {label:'시네마틱 하이라이트',src:'assets/project-highlights/excute.mp4',poster:'assets/excute/boss-combat.webp',type:'video'},
+    {label:'시네마틱 하이라이트',src:'assets/project-highlights/excute.mp4?v=2',poster:'assets/excute/boss-combat.webp',type:'video'},
     {label:'타이틀 화면',src:'assets/excute/title.webp'},
     {label:'RIM CAVE',src:'assets/excute/rim-cave.webp'},
     {label:'일반 전투',src:'assets/excute/combat.webp'},
@@ -1474,7 +1474,7 @@ Projectile --> Collider : collision query`]
     {label:'보스 전투',src:'assets/excute/boss-combat.webp'}
   ];
   const smileScenes=[
-    {label:'시네마틱 하이라이트',src:'assets/project-highlights/project-smile.mp4',poster:'assets/project-smile/monster.webp',type:'video'},
+    {label:'시네마틱 하이라이트',src:'assets/project-highlights/project-smile.mp4?v=2',poster:'assets/project-smile/monster.webp',type:'video'},
     {label:'타이틀 화면',src:'assets/project-smile/title-clean.webp'},
     {label:'상황 분석',src:'assets/project-smile/analysis.webp'},
     {label:'실험 기록',src:'assets/project-smile/document.webp'},
@@ -1482,7 +1482,7 @@ Projectile --> Collider : collision query`]
     {label:'사건 일지',src:'assets/project-smile/case-journal.webp'}
   ];
   const slapScenes=[
-    {label:'시네마틱 하이라이트',src:'assets/project-highlights/slap-squad.mp4',poster:'assets/slap-squad/battle.webp',type:'video'},
+    {label:'시네마틱 하이라이트',src:'assets/project-highlights/slap-squad.mp4?v=2',poster:'assets/slap-squad/battle.webp',type:'video'},
     {label:'로그인 화면',src:'assets/slap-squad/login.webp'},
     {label:'로비 화면',src:'assets/slap-squad/lobby.webp'},
     {label:'마이페이지',src:'assets/slap-squad/mypage.webp'},
@@ -1490,7 +1490,7 @@ Projectile --> Collider : collision query`]
     {label:'상점 화면',src:'assets/slap-squad/shop.webp'}
   ];
   const kemetScenes=[
-    {label:'시네마틱 하이라이트',src:'assets/project-highlights/kemet.mp4',poster:'assets/kemet/boss.webp',type:'video'},
+    {label:'시네마틱 하이라이트',src:'assets/project-highlights/kemet.mp4?v=2',poster:'assets/kemet/boss.webp',type:'video'},
     {label:'타이틀 화면',src:'assets/kemet/title.webp'},
     {label:'일반 전투',src:'assets/kemet/combat.webp'},
     {label:'패링 전투',src:'assets/kemet/parry.webp'},
@@ -1498,7 +1498,7 @@ Projectile --> Collider : collision query`]
     {label:'보스 패링',src:'assets/kemet/boss-parry.webp'}
   ];
   const tankScenes=[
-    {label:'시네마틱 하이라이트',src:'assets/project-highlights/tank-blitz.mp4',poster:'assets/tank-blitz/aiming.webp',type:'video'},
+    {label:'시네마틱 하이라이트',src:'assets/project-highlights/tank-blitz.mp4?v=2',poster:'assets/tank-blitz/aiming.webp',type:'video'},
     {label:'조작 안내',src:'assets/tank-blitz/controls.webp'},
     {label:'조명 적용 장면',src:'assets/tank-blitz/lighting.webp'},
     {label:'야간 조명 장면',src:'assets/tank-blitz/night-lighting.webp'},
@@ -1608,7 +1608,8 @@ Projectile --> Collider : collision query`]
       const issueHeading=document.createElement('h3');issueHeading.textContent='개발 이슈';detailWindowContent.append(issueHeading);const issueGrid=document.createElement('div');issueGrid.className='detail-issue-grid';detailContent.issues.forEach((issue,index)=>{const section=document.createElement('section');section.className='ebon-issue';const h4=document.createElement('h4');h4.textContent=issue.title;section.append(h4);const rows=projectIssueOverlaps[title].has(index)?[['문제',issue.problem],['결과',issue.result]]:[['문제',issue.problem],['해결',issue.solution],['결과',issue.result]];for(const [label,value] of rows){const row=document.createElement('div');row.className='ebon-issue-row';const strong=document.createElement('strong');strong.textContent=label;const text=document.createElement('p');text.textContent=value;row.append(strong,text);section.append(row)}issueGrid.append(section)});detailWindowContent.append(issueGrid);
       const reflectionHeading=document.createElement('h3');reflectionHeading.textContent='개발 후 느낀 점';const reflection=document.createElement('p');reflection.className='ebon-reflection';reflection.textContent=detailContent.reflection;detailWindowContent.append(reflectionHeading,reflection);
     }
-    introVideo.pause();projectDialog.scrollTop=0;projectDialog.showModal();requestAnimationFrame(()=>{projectDialog.scrollTop=0;projectDialog.querySelector('.ebon-gallery-stage video:not([hidden])')?.play().catch(()=>{});projectDialog.querySelector('.project-dialog-close').focus({preventScroll:true})});
+    introVideo.pause();projectDialog.scrollTop=0;projectDialog.showModal();requestAnimationFrame(()=>{projectDialog.scrollTop=0;projectDialog.querySelector('.project-dialog-close').focus({preventScroll:true})});
+    setTimeout(()=>{if(projectDialog.open)projectDialog.querySelector('.ebon-gallery-stage video:not([hidden])')?.play().catch(()=>{})},180);
   }
   document.querySelectorAll('.project').forEach(card=>card.addEventListener('click',event=>{
     if(event.target.closest('a,.project-stack-icons'))return;
