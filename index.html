@@ -467,19 +467,19 @@
       <span class="overview-project"><img src="assets/tank-blitz/tank-scene.webp" alt="" loading="lazy"><span><strong>TANK BLITZ</strong><small>DirectX 11 그래픽스</small></span></span>
     </div></a>
   </aside>`);
-  document.querySelector('.overview-signature').insertAdjacentHTML('beforeend','<div class="intro-reel"><video autoplay muted loop playsinline webkit-playsinline controls preload="auto" poster="assets/ebon-crown/boss-combat.webp" aria-label="게임 프로젝트 하이라이트 영상"><source src="assets/intro-highlight.mp4" type="video/mp4"></video><span class="intro-reel-label">GAMEPLAY HIGHLIGHTS</span><button class="intro-reel-play" type="button" aria-label="하이라이트 영상 재생">▶</button></div>');
+  document.querySelector('.overview-signature').insertAdjacentHTML('beforeend','<div class="intro-reel"><video src="assets/intro-highlight.mp4?v=2" autoplay muted loop playsinline webkit-playsinline controls preload="auto" poster="assets/ebon-crown/boss-combat.webp" aria-label="게임 프로젝트 하이라이트 영상"></video><span class="intro-reel-label">GAMEPLAY HIGHLIGHTS</span><button class="intro-reel-play" type="button" aria-label="하이라이트 영상 재생">▶</button></div>');
   const introVideo=document.querySelector('.intro-reel video');
   const introPlayButton=document.querySelector('.intro-reel-play');
   introVideo.defaultMuted=true;
   introVideo.muted=true;
   introVideo.playsInline=true;
-  let introVideoRequested=false,introVideoStarting=false,introVideoStarted=false;
+  let introVideoRequested=false,introVideoStarting=false,introVideoStarted=false,introFallbackUsed=false;
   const introCanPlay=()=>{
     const rect=introVideo.getBoundingClientRect();
     return !document.hidden&&!document.querySelector('dialog[open]')&&rect.bottom>0&&rect.top<innerHeight;
   };
   const playIntroVideo=()=>{
-    if(introVideoStarting||introVideoStarted||introVideo.readyState<2||!introCanPlay())return;
+    if(introVideoStarting||introVideoStarted||!introCanPlay())return;
     introVideoStarting=true;
     try{
       const playback=introVideo.play();
@@ -488,9 +488,13 @@
     }catch(error){introVideoStarting=false;introPlayButton.hidden=false}
   };
   const startIntroVideo=()=>{introVideoRequested=true;playIntroVideo()};
-  introVideo.addEventListener('playing',()=>{if(!introCanPlay()){introVideo.pause();return}introVideoStarted=true;introPlayButton.hidden=true});
+  introVideo.addEventListener('playing',()=>{if(!introCanPlay()){introVideo.pause();return}introVideoStarted=true});
+  introVideo.addEventListener('timeupdate',()=>{if(!introVideo.paused&&introVideo.currentTime>0.05&&introVideo.videoWidth>0)introPlayButton.hidden=true});
   introVideo.addEventListener('pause',()=>{introVideoStarted=false;introPlayButton.hidden=false});
-  introVideo.addEventListener('error',()=>{introVideoStarting=false;introVideoStarted=false;introPlayButton.hidden=false});
+  introVideo.addEventListener('error',()=>{
+    introVideoStarting=false;introVideoStarted=false;introPlayButton.hidden=false;
+    if(!introFallbackUsed){introFallbackUsed=true;introVideo.src='assets/project-highlights/ebon-crown.mp4?v=6';introVideo.load();introVideoRequested=true}
+  });
   for(const event of ['loadeddata','canplay'])introVideo.addEventListener(event,()=>{if(introVideoRequested)playIntroVideo()});
   introPlayButton.addEventListener('click',()=>{
     introVideoRequested=true;introVideoStarted=false;
@@ -501,7 +505,7 @@
     catch(error){introPlayButton.hidden=false}
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden)introVideo.pause();else if(introVideoRequested)playIntroVideo()});
-  if('IntersectionObserver' in window)new IntersectionObserver(entries=>{if(entries[0]?.isIntersecting){if(introVideoRequested)playIntroVideo()}else introVideo.pause()},{threshold:0.15}).observe(introVideo);
+  if('IntersectionObserver' in window)new IntersectionObserver(entries=>{if(entries[0]?.isIntersecting){if(introVideoRequested)playIntroVideo()}else introVideo.pause()},{threshold:0}).observe(introVideo);
   introVideo.load();
   document.querySelector('.overview-profile').prepend(document.querySelector('.hero-grid>.hero-art'));
   const overviewProfile=document.querySelector('.overview-profile');
