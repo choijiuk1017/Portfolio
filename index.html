@@ -57,12 +57,7 @@
     /* Soft layered movement and staggered entrances. */
     .hero{isolation:isolate;min-height:calc(100svh - 76px);background:#101725}
     .hero:before,.hero:after{display:none}
-    .hero-atmosphere{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-    .hero-atmosphere i{position:absolute;display:block;width:54vw;height:54vw;max-width:800px;max-height:800px;border-radius:50%;filter:blur(75px);opacity:.42}
-    .hero-atmosphere i:nth-child(1){left:-16%;top:-30%;background:#2c65d8}
-    .hero-atmosphere i:nth-child(2){right:-15%;top:0;background:#146e9b;opacity:.28}
-    .hero-atmosphere i:nth-child(3){left:30%;bottom:-70%;background:#4a57b7;opacity:.34}
-    .hero-atmosphere:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--bg),transparent 35%)}
+    .hero-atmosphere{display:none}
     .hero-grid{z-index:1}.hero h1 em{color:var(--accent);background:none}
     .hero-line{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}.hero-line>span{display:block}
     .top{transition:background .3s,box-shadow .3s}.top.is-scrolled{background:#10131bf5;box-shadow:0 6px 28px #0002}
