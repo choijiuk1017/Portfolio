@@ -404,12 +404,13 @@
     }
     /* Compact technology indicators in the intro. */
     .skill-logo-frame--codex img{filter:invert(1)}
-    .overview-project>span{flex:1}
-    .overview-project-stacks{display:flex;align-items:center;gap:4px;margin-top:3px}
+    .overview-project>span:not(.overview-project-stacks){flex:1}
+    .overview-project-stacks{display:flex;align-items:center;gap:4px;margin-left:auto;flex:0 0 auto}
     .overview-project-stack{display:flex;align-items:center;justify-content:center;width:18px;height:18px;flex:0 0 18px;background:#f5f7fb;border:1px solid #ffffff24;border-radius:4px}
     .overview-project .overview-project-stack img{width:14px;height:14px;flex:0 0 auto;object-fit:contain;border-radius:0}
+    @media(max-width:1100px){.overview-project-stacks{display:grid;grid-template-columns:repeat(2,18px)}}
     @media(max-width:720px){
-      .overview-project-stacks{gap:3px}
+      .overview-project-stacks{grid-template-columns:repeat(2,15px);gap:3px}
       .overview-project-stack{width:15px;height:15px;flex-basis:15px;border-radius:3px}
       .overview-project .overview-project-stack img{width:11px;height:11px}
       .overview-skill-icons{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:clamp(5px,1.5vw,12px);max-width:432px}
@@ -587,7 +588,7 @@
       const icon=document.createElement('span');icon.className='overview-project-stack';icon.title=label;icon.setAttribute('role','img');icon.setAttribute('aria-label',label);
       const image=document.createElement('img');image.src=source;image.alt='';image.width=14;image.height=14;icon.append(image);row.append(icon);
     }
-    card.querySelector('strong').parentElement.append(row);
+    card.append(row);
   });
   const projectFilters=document.querySelector('.project-filters');
   const projectFilterButtons=Array.from(projectFilters.querySelectorAll('.project-filter'));
