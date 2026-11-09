@@ -1678,6 +1678,7 @@ Projectile --> Collider : collision query`]
       const overviewNav=document.createElement('nav');overviewNav.className='detail-overview-nav';overviewNav.setAttribute('aria-label','구현 항목 바로가기');
       detailContent.deepDive.forEach((item,index)=>{const button=document.createElement('button');button.type='button';button.textContent=String(index+1).padStart(2,'0')+' · '+item.heading;button.addEventListener('click',()=>document.getElementById('detail-step-'+index)?.scrollIntoView({behavior:'smooth',block:'start'}));overviewNav.append(button)});
       if(projectAiWorkflow[title]){const button=document.createElement('button');button.type='button';button.textContent='AI · 개발 과정에서의 활용';button.addEventListener('click',()=>document.getElementById('detail-ai-workflow')?.scrollIntoView({behavior:'smooth',block:'start'}));overviewNav.append(button)}
+      if(title==='KEMET'){const button=document.createElement('button');button.type='button';button.textContent='PLAYTEST · 외부 플레이 피드백';button.addEventListener('click',()=>document.getElementById('detail-playtest')?.scrollIntoView({behavior:'smooth',block:'start'}));overviewNav.append(button)}
       overview.append(overviewTitle,overviewNav);detailWindowContent.append(overview);
       if(title==='EBON CROWN'){
         const umlSet=document.createElement('div');umlSet.className='ebon-uml-set';
@@ -1712,6 +1713,18 @@ Projectile --> Collider : collision query`]
         detailWindowContent.append(aiHeading,aiGrid);
       }
       const issueHeading=document.createElement('h3');issueHeading.textContent='개발 이슈';detailWindowContent.append(issueHeading);const issueGrid=document.createElement('div');issueGrid.className='detail-issue-grid';detailContent.issues.forEach((issue,index)=>{const section=document.createElement('section');section.className='ebon-issue';const h4=document.createElement('h4');h4.textContent=issue.title;section.append(h4);const rows=projectIssueOverlaps[title].has(index)?[['문제',issue.problem],['결과',issue.result]]:[['문제',issue.problem],['해결',issue.solution],['결과',issue.result]];for(const [label,value] of rows){const row=document.createElement('div');row.className='ebon-issue-row';const strong=document.createElement('strong');strong.textContent=label;const text=document.createElement('p');text.textContent=value;row.append(strong,text);section.append(row)}issueGrid.append(section)});detailWindowContent.append(issueGrid);
+      if(title==='KEMET'){
+        const feedbackHeading=document.createElement('h3');feedbackHeading.id='detail-playtest';feedbackHeading.textContent='외부 플레이 피드백';
+        const feedbackIntro=document.createElement('p');feedbackIntro.className='ebon-reflection';feedbackIntro.textContent='실행 파일을 친구에게 전달하고 직접 플레이한 피드백을 받았습니다. 개발 중에는 익숙하게 사용하던 조작과 진행 방식도 처음 플레이하는 사람에게는 명확하지 않다는 점을 확인했습니다.';
+        const feedbackGrid=document.createElement('div');feedbackGrid.className='detail-issue-grid';
+        const feedbackItems=[
+          {title:'조작 방법과 스테이지 이동 안내',observation:'플레이어가 공격·패링 조작과 다음 스테이지로 이동하는 방법을 질문했습니다. 방향키, 공격·패링·슬라이딩·점프 키와 문에서 상호작용하는 방법을 대화로 안내했습니다.',lesson:'조작과 진행 방법이 게임 안에서 충분히 전달되지 않았음을 확인했습니다. 첫 플레이에서 필요한 조작 안내와 문 상호작용 표시를 개선 과제로 정리했습니다.'},
+          {title:'슬라이딩의 재미와 기믹 전달의 차이',observation:'슬라이딩 동작에는 긍정적인 반응이 있었지만, 슬라이딩을 이용해 기믹을 해결한다는 사실을 알기 전에는 답답하게 느꼈다는 의견을 받았습니다.',lesson:'이동 액션 자체의 재미와 그 활용 방법을 전달하는 안내를 구분해 살펴봐야 한다는 점을 배웠습니다. 특정 행동이 필요한 상황을 알 수 있는 시각적 단서와 연습 구간을 개선 과제로 정리했습니다.'},
+          {title:'낙사 후 다시 플레이할 수 있는 흐름',observation:'당시 전달한 빌드에는 낙사 판정과 복귀 처리가 빠져 있어, 낙사하면 게임을 종료해야 한다고 별도로 안내했습니다.',lesson:'외부에 전달하는 빌드는 정상 진행뿐 아니라 실패했을 때 재시도할 수 있는 흐름까지 점검해야 한다는 과제를 확인했습니다. 낙사 감지와 체크포인트 복귀 처리가 필요한 항목으로 남았습니다.'}
+        ];
+        for(const item of feedbackItems){const section=document.createElement('section');section.className='ebon-issue';const heading=document.createElement('h4');heading.textContent=item.title;section.append(heading);for(const [label,value] of [['관찰',item.observation],['개선 과제',item.lesson]]){const row=document.createElement('div');row.className='ebon-issue-row';const strong=document.createElement('strong');strong.textContent=label;const paragraph=document.createElement('p');paragraph.textContent=value;row.append(strong,paragraph);section.append(row)}feedbackGrid.append(section)}
+        detailWindowContent.append(feedbackHeading,feedbackIntro,feedbackGrid);
+      }
       const reflectionHeading=document.createElement('h3');reflectionHeading.textContent='개발 후 느낀 점';const reflection=document.createElement('p');reflection.className='ebon-reflection';reflection.textContent=detailContent.reflection;detailWindowContent.append(reflectionHeading,reflection);
     }
     introVideo.pause();projectDialog.scrollTop=0;projectDialog.showModal();requestAnimationFrame(()=>{projectDialog.scrollTop=0;projectDialog.querySelector('.project-dialog-close').focus({preventScroll:true})});
