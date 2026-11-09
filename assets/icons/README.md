@@ -7,4 +7,4 @@
 
 - `gemma.png`: Gemma family logo from Google's official documentation: https://ai.google.dev/gemma/images/gemma_sq.png (https://ai.google.dev/gemma/docs). Used to identify Gemma 4; the artwork is the shared Gemma mark.
 - `blueprint.svg`: vector recreation based on the user-provided Unreal Blueprint Class icon reference.
-- `llava-onevision.svg` and `rag.svg`: custom schematic symbols for image/language processing and document retrieval; not official product logos.
+- `llava-onevision.svg` and `rag.svg`: plain text labels identifying LLaVA and RAG; not official product logos.
