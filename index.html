@@ -404,7 +404,12 @@
     }
     /* Compact technology indicators in the intro. */
     .skill-logo-frame--codex img,.stack-icon--codex img{filter:invert(1)}
-    .project-stack-icons .stack-icon--codex,.project-stack-icons .stack-icon--codex:hover{background:#f5f7fb;border-color:#ffffff24;box-shadow:none}
+    .project-stack-icons .stack-icon,.project-stack-icons .stack-icon:hover{background:#f5f7fb;border-color:#ffffff24;color:#17202c;box-shadow:none}
+    .project-stack-icons .stack-icon--blueprint img{width:20px;height:20px;transform:translateY(-4px)}
+    .project-stack-icons .stack-icon--blueprint::after{content:'BP';position:absolute;bottom:3px;font:700 8px/1 var(--mono);color:#17202c}
+    .project-stack-icons{flex-wrap:wrap}
+    .overview-project-stacks.overview-project-stacks--many{display:grid;grid-template-columns:repeat(4,18px)}
+    @media(max-width:720px){.overview-project-stacks.overview-project-stacks--many{grid-template-columns:repeat(4,15px)}}
     .overview-project>span:not(.overview-project-stacks){flex:1}
     .overview-project-stacks{display:flex;align-items:center;gap:4px;margin-left:auto;flex:0 0 auto}
     .overview-project-stack{display:flex;align-items:center;justify-content:center;width:18px;height:18px;flex:0 0 18px;background:#f5f7fb;border:1px solid #ffffff24;border-radius:4px}
@@ -570,8 +575,8 @@
   };
   const projectStackSets={
     'EBON CROWN':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Codex',sharedSkillIcons.codex]],
-    'EXCUTE':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Blueprint',null,'BP']],
-    'PROJECT_SMILE':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Python / Flask',sharedSkillIcons.python],['PyTorch',sharedSkillIcons.pytorch],['Multimodal AI',null,'AI'],['Codex',sharedSkillIcons.codex]],
+    'EXCUTE':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Blueprint','assets/icons/blueprint.svg']],
+    'PROJECT_SMILE':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Python / Flask',sharedSkillIcons.python],['PyTorch',sharedSkillIcons.pytorch],['LLaVA-OneVision','assets/icons/llava-onevision.svg'],['RAG','assets/icons/rag.svg'],['Gemma 4','assets/icons/gemma.png'],['Codex',sharedSkillIcons.codex]],
     'SLAP SQUAD':[['C#',sharedSkillIcons.csharp],['Unity',sharedSkillIcons.unity],['TCP/IP',null,'NET']],
     'KEMET':[['C#',sharedSkillIcons.csharp],['Unity',sharedSkillIcons.unity],['State Pattern',null,'FSM']],
     'TANK BLITZ':[['C++',sharedSkillIcons.cplusplus],['DirectX 11',sharedSkillIcons.directx],['HLSL',null,'HLSL']]
@@ -579,13 +584,13 @@
   document.querySelectorAll('.project').forEach(card=>{
     const title=card.querySelector('.project-content h3').textContent,stacks=projectStackSets[title]||[];
     const row=document.createElement('div');row.className='project-stack-icons';row.setAttribute('aria-label','주요 기술 스택');
-    for(const [label,source,fallback] of stacks){const icon=document.createElement('span');icon.className='stack-icon';if(label==='Codex')icon.classList.add('stack-icon--codex');icon.title=label;icon.setAttribute('aria-label',label);if(source){const image=document.createElement('img');image.src=source;image.alt='';image.addEventListener('error',()=>{image.remove();const glyph=document.createElement('b');glyph.textContent=fallback||label.slice(0,3);icon.append(glyph)});icon.append(image)}else{const glyph=document.createElement('b');glyph.textContent=fallback;icon.append(glyph)}row.append(icon)}
+    for(const [label,source,fallback] of stacks){const icon=document.createElement('span');icon.className='stack-icon';if(label==='Blueprint')icon.classList.add('stack-icon--blueprint');if(label==='Codex')icon.classList.add('stack-icon--codex');icon.title=label;icon.setAttribute('aria-label',label);if(source){const image=document.createElement('img');image.src=source;image.alt='';image.addEventListener('error',()=>{image.remove();const glyph=document.createElement('b');glyph.textContent=fallback||label.slice(0,3);icon.append(glyph)});icon.append(image)}else{const glyph=document.createElement('b');glyph.textContent=fallback;icon.append(glyph)}row.append(icon)}
     card.querySelector('.project-content').append(row);
   });
   document.querySelectorAll('.overview-project').forEach(card=>{
     const title=card.querySelector('strong').textContent;
     const stacks=(projectStackSets[title]||[]).filter(([,source])=>source);
-    const row=document.createElement('span');row.className='overview-project-stacks';row.setAttribute('aria-label','사용 기술');
+    const row=document.createElement('span');row.className='overview-project-stacks';row.setAttribute('aria-label','사용 기술');if(stacks.length>5)row.classList.add('overview-project-stacks--many');
     for(const [label,source] of stacks){
       const icon=document.createElement('span');icon.className='overview-project-stack';if(label==='Codex')icon.classList.add('stack-icon--codex');icon.title=label;icon.setAttribute('role','img');icon.setAttribute('aria-label',label);
       const image=document.createElement('img');image.src=source;image.alt='';image.width=14;image.height=14;icon.append(image);row.append(icon);
