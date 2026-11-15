@@ -452,6 +452,110 @@
       .overview-skill .skill-logo-frame{width:100%;height:auto;max-width:40px;aspect-ratio:1;padding:4px}
       .overview-skill.core .skill-logo-frame:first-child:after{width:13px;height:13px;font-size:7px;top:-6px;left:-5px}
     }
+    /* Intro: compact records, then skills, projects, and AI workflows. */
+    .hero-overview.hero-overview--v2{grid-template-columns:clamp(210px,20vw,250px) minmax(0,1fr);gap:9px 16px;align-items:stretch}
+    .hero-overview--v2>.overview-signature{grid-column:1/-1;grid-row:1}
+    .hero-overview--v2>.overview-profile{grid-column:1;grid-row:2/6;align-self:stretch}
+    .hero-overview--v2>.overview-records{grid-column:2;grid-row:2;display:grid;grid-template-columns:minmax(0,1.8fr) minmax(220px,1fr);gap:9px;align-items:stretch;min-width:0}
+    .hero-overview--v2>.overview-skills{grid-column:2;grid-row:3}
+    .hero-overview--v2>.overview-projects{grid-column:2;grid-row:4}
+    .hero-overview--v2>.overview-ai{grid-column:2;grid-row:5}
+    .hero-overview--v2 .overview-records>.overview-card{grid-column:auto;grid-row:auto;align-self:stretch;padding:12px;transform:none}
+    .hero-overview--v2 .overview-label{font-size:10px;letter-spacing:.1em}
+    .hero-overview--v2 .overview-activities>.overview-label{margin-bottom:10px}
+    .hero-overview--v2 .overview-activity-list{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto auto}
+    .hero-overview--v2 .overview-activity{padding:8px;min-width:0}
+    .hero-overview--v2 .overview-activity time{font-size:10px;margin-bottom:3px}
+    .hero-overview--v2 .overview-activity strong{font-size:11px;line-height:1.4}
+    .hero-overview--v2 .overview-activity small{font-size:9px;line-height:1.45}
+    .hero-overview--v2 .overview-activity--club{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+    .hero-overview--v2 .overview-club-projects{padding:0 0 0 8px;border-left:1px solid #ffffff12;border-top:0}
+    .hero-overview--v2 .overview-club-projects br{display:none}
+    .hero-overview--v2 .overview-club-projects span{display:block}.hero-overview--v2 .overview-club-projects span+span::before{content:''}
+    .hero-overview--v2 .overview-awards .overview-label{margin:0 45px 5px 0}
+    .overview-awards-context{display:block;margin:0 0 9px;color:#91a2b6;font-size:9px;line-height:1.4}
+    .hero-overview--v2 .overview-award-list{grid-template-columns:1fr;gap:0}
+    .hero-overview--v2 .overview-award-list>.overview-item-link{display:grid;grid-template-columns:34px minmax(0,1fr);gap:2px 8px;padding:9px 0;border:0;border-top:1px solid #ffffff16;background:none;font-size:10px}
+    .hero-overview--v2 .overview-award-list b{grid-column:1;grid-row:1/3;margin:0;font-size:11px;line-height:1.6}
+    .hero-overview--v2 .overview-award-list strong{grid-column:2;color:#edf4fc;font-size:11px;line-height:1.5}
+    .hero-overview--v2 .overview-award-list small{grid-column:2;font-size:9px;color:#91a2b6}
+    .hero-overview--v2>.overview-skills,.hero-overview--v2>.overview-projects,.hero-overview--v2>.overview-ai{padding:10px 12px;align-self:stretch}
+    .hero-overview--v2 .intro-reel{width:min(100%,50svh,560px)}
+    .hero-overview--v2 .overview-project-stack{width:15px;height:15px;flex-basis:15px}
+    .hero-overview--v2 .overview-project .overview-project-stack img{width:11px;height:11px}
+    .hero-overview--v2 .overview-project-stacks--many{grid-template-columns:repeat(4,15px)}
+    .hero-overview--v2 .overview-skill-icons{min-height:38px;padding-top:2px;gap:13px;flex-wrap:wrap}
+    .hero-overview--v2 .overview-skill .skill-logo-frame{width:32px;height:32px}
+    .hero-overview--v2 .overview-skill .skill-logo-frame img{width:24px;height:24px}
+    .hero-overview--v2 .overview-project-grid{gap:5px}
+    .hero-overview--v2 .overview-project{padding:5px;gap:6px}
+    .hero-overview--v2 .overview-project>img{width:30px;height:30px;flex-basis:30px}
+    .hero-overview--v2 .overview-project strong{font-size:10px}
+    .hero-overview--v2 .overview-project small{font-size:8px}
+    .overview-ai-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .overview-ai-entry{display:grid;grid-template-columns:25px minmax(0,1fr) 12px;gap:4px 8px;width:100%;padding:10px;border:1px solid #ffffff17;background:#111b2a;text-align:left;color:#b9c8d9;cursor:pointer}
+    .overview-ai-entry:hover{border-color:#8bbaff66;background:#172235}
+    .overview-ai-entry:focus-visible{outline:2px solid #8bbaff;outline-offset:2px}
+    .overview-ai-logo{grid-column:1;grid-row:1/3;width:25px;height:25px;padding:4px;background:#f5f7fb;border-radius:5px;align-self:start}
+    .overview-ai-logo img{display:block;width:100%;height:100%;object-fit:contain;filter:invert(1)}
+    .overview-ai-entry strong{grid-column:2;font-size:11px;color:#edf4fc;line-height:1.4}
+    .overview-ai-role{grid-column:2;color:#8bbaff;font-size:9px;line-height:1.4}
+    .overview-ai-copy{grid-column:1/-1;font-size:10px;line-height:1.6;margin-top:3px}
+    .overview-ai-entry i{grid-column:3;grid-row:1;color:#8bbaff;font:11px var(--mono);font-style:normal}
+    @media(max-width:1100px){
+      .hero-overview--v2>.overview-records{grid-template-columns:minmax(0,1.5fr) minmax(175px,1fr)}
+      .hero-overview--v2 .overview-activity-list{grid-template-columns:1fr;grid-template-rows:auto}
+      .hero-overview--v2 .overview-activity{padding:6px 8px}
+      .hero-overview--v2 .overview-activity small br{display:none}
+      .hero-overview--v2 .overview-activity--club{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+      .hero-overview--v2 .overview-club-projects{border-top:0;border-left:1px solid #ffffff12;padding:0 0 0 8px}
+      .hero-overview--v2 .overview-club-projects span{display:block}
+      .hero-overview--v2 .overview-club-projects span+span::before{content:''}
+    }
+    @media(max-width:720px){
+      .hero-overview.hero-overview--v2{grid-template-columns:minmax(0,32%) minmax(0,1fr);gap:9px}
+      .hero-overview--v2>.overview-profile{grid-column:1;grid-row:2/5;align-self:start}
+      .hero-overview--v2 .intro-reel{width:100%}
+      .hero-overview--v2>.overview-records{grid-column:2;grid-row:2;grid-template-columns:1fr;gap:9px}
+      .hero-overview--v2 .overview-records>.overview-card{padding:10px}
+      .hero-overview--v2>.overview-skills{grid-column:2;grid-row:3;padding:10px}
+      .hero-overview--v2>.overview-projects{grid-column:1/-1;grid-row:5;padding:10px}
+      .hero-overview--v2>.overview-ai{grid-column:1/-1;grid-row:6;padding:10px}
+      .hero-overview--v2 .overview-project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .hero-overview--v2 .overview-skill-icons{gap:10px}
+      .hero-overview--v2 .overview-skill .skill-logo-frame{width:29px;height:29px;padding:4px}
+      .hero-overview--v2 .overview-skill .skill-logo-frame img{width:21px;height:21px}
+      .hero-overview--v2 .overview-activity strong{font-size:10px}
+      .hero-overview--v2 .overview-activity small{font-size:8px}
+      .hero-overview--v2 .overview-activity--club{grid-template-columns:1fr;gap:4px}
+      .hero-overview--v2 .overview-club-projects{border:0;padding:0}
+      .hero-overview--v2 .overview-club-projects span{display:inline}
+      .hero-overview--v2 .overview-club-projects span+span::before{content:' · '}
+      .hero-overview--v2 .overview-award-list strong{font-size:10px}
+      .overview-ai-entry{padding:9px;gap:4px 6px}
+      .overview-ai-copy{font-size:9px}
+    }
+
+    /* Scale a stable landscape composition with the actual browser viewport. */
+    html.wide-intro .top .nav{width:1440px;max-width:none;height:68px;padding:0 28px;zoom:var(--intro-scale,1)}
+    html.wide-intro .hero{min-height:0;padding:calc(12px * var(--intro-scale,1)) 0 calc(14px * var(--intro-scale,1));justify-content:center;align-items:flex-start}
+    html.wide-intro .hero>.wrap{width:1440px;max-width:none;padding:0 28px;flex:0 0 auto;margin:0 auto;zoom:var(--intro-scale,1)}
+    html.wide-intro .hero-overview.hero-overview--v2{grid-template-columns:250px minmax(0,1fr);gap:9px 16px;animation:none}
+    html.wide-intro .hero-overview--v2>.overview-signature{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);grid-template-rows:1fr auto 1fr;column-gap:26px;padding:0 0 10px}
+    html.wide-intro .overview-signature h1{font-size:61px;line-height:1.08}
+    html.wide-intro .hero-overview--v2 .intro-reel{width:448px;max-width:100%;grid-column:2;grid-row:1/4;margin:0}
+    html.wide-intro .hero-overview--v2>.overview-records{grid-template-columns:minmax(0,1.8fr) minmax(220px,1fr)}
+    html.wide-intro .hero-overview--v2 .overview-activity-list{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto auto}
+    html.wide-intro .hero-overview--v2 .overview-activity{padding:8px}
+    html.wide-intro .hero-overview--v2 .overview-activity--club{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+    html.wide-intro .hero-overview--v2 .overview-activity small br{display:initial}
+    html.wide-intro .hero-overview--v2 .overview-club-projects{padding:0 0 0 8px;border-left:1px solid #ffffff12;border-top:0}
+    html.wide-intro .hero-overview--v2 .overview-club-projects span{display:block}
+    html.wide-intro .hero-overview--v2 .overview-club-projects span+span::before{content:''}
+    html.wide-intro .hero-overview--v2 .overview-profile-info{padding:12px;gap:8px}
+    html.wide-intro .hero-overview--v2 .overview-contact span{padding:5px 0}
+    html.wide-intro .hero-overview--v2 .overview-project-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    html.wide-intro .hero-overview--v2 .overview-skill-icons{gap:13px}
   </style>
 </head>
 <body>
@@ -675,6 +779,46 @@
     const target=Array.from(document.querySelectorAll('#project-list > .project')).find(card=>card.querySelector('h3').textContent.trim()===title);
     if(target){target.id=projectIds[title];target.dataset.introTarget='';const link=linkOverviewItem(item,'#'+target.id,title+' 프로젝트로 이동');link.addEventListener('click',()=>{if(target.hidden)document.querySelector('.project-filter[data-filter="all"]')?.click()})}
   }
+  // Compact intro records and surface the two documented AI-assisted workflows.
+  const introOverview=document.querySelector('.hero-overview');introOverview.classList.add('hero-overview--v2');
+  const introRecords=document.createElement('div');introRecords.className='overview-records';
+  activityPanel.before(introRecords);introRecords.append(activityPanel);
+  const introAwards=activityPanel.querySelector('.overview-awards-inline');introAwards.className='overview-card overview-awards';
+  const awardsLabel=introAwards.querySelector('.overview-label');awardsLabel.textContent='AWARDS / 수상';
+  const awardsHeading=document.createElement('a');awardsHeading.className='overview-label';awardsHeading.href='#awards';awardsHeading.textContent=awardsLabel.textContent;awardsLabel.replaceWith(awardsHeading);
+  const awardsContext=document.createElement('small');awardsContext.className='overview-awards-context';awardsContext.textContent='홍익대학교 게임학부 공모전';awardsHeading.after(awardsContext);
+  const awardsMore=document.createElement('a');awardsMore.className='overview-arrow';awardsMore.href='#awards';awardsMore.textContent='MORE ↘';introAwards.append(awardsMore);introRecords.append(introAwards);
+  const awardsDivider=Array.from(document.querySelectorAll('#activities .experience-divider')).find(row=>row.textContent.trim()==='수상');if(awardsDivider){awardsDivider.id='awards';awardsDivider.style.scrollMarginTop='110px'}
+  const clubProjects=activityPanel.querySelector('.overview-club-projects');const clubEntries=clubProjects.innerHTML.split(/<br\s*\/?\s*>/i);clubProjects.replaceChildren(...clubEntries.map(text=>{const span=document.createElement('span');span.textContent=text;return span}));
+  const introAi=document.createElement('div');introAi.className='overview-card overview-ai';introAi.setAttribute('aria-label','프로젝트별 AI 활용 역량');
+  const aiLabel=document.createElement('span');aiLabel.className='overview-label';aiLabel.textContent='AI WORKFLOW / 프로젝트별 AI 활용';const aiGrid=document.createElement('div');aiGrid.className='overview-ai-grid';
+  const introAiItems=[
+    {title:'EBON CROWN',role:'디버깅 · 리팩토링',copy:'상태 초기화와 코드 구조를 분석하고, 재현 조건으로 AI 진단을 검토했습니다.'},
+    {title:'PROJECT_SMILE',role:'연동 구현 · 모델 검증',copy:'Unreal–Python 연동·학습 오류 분석에 활용하고, 모델 결과와 학습 데이터를 검토했습니다.'}
+  ];
+  for(const item of introAiItems){
+    const button=document.createElement('button');button.type='button';button.className='overview-ai-entry';button.setAttribute('aria-label',item.title+' AI 활용 사례 보기');
+    const logo=document.createElement('span');logo.className='overview-ai-logo';const image=document.createElement('img');image.src=sharedSkillIcons.codex;image.alt='';logo.append(image);
+    const title=document.createElement('strong');title.textContent=item.title;const role=document.createElement('span');role.className='overview-ai-role';role.textContent=item.role;const copy=document.createElement('span');copy.className='overview-ai-copy';copy.textContent=item.copy;const arrow=document.createElement('i');arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');button.append(logo,title,role,copy,arrow);
+    button.addEventListener('click',()=>{const card=Array.from(document.querySelectorAll('#project-list > .project')).find(card=>card.querySelector('h3').textContent.trim()===item.title);openProjectDetail(card);projectDialog.querySelector('.project-more-detail').click();requestAnimationFrame(()=>document.getElementById('detail-ai-workflow')?.scrollIntoView({block:'start'}))});aiGrid.append(button);
+  }
+  introAi.append(aiLabel,aiGrid);document.querySelector('.overview-projects').after(introAi);
+  let introFitFrame=0;
+  function fitLandscapeIntro(){
+    const root=document.documentElement;
+    const landscape=innerWidth>=900&&innerWidth>innerHeight;
+    root.classList.toggle('wide-intro',landscape);
+    if(!landscape){root.style.removeProperty('--intro-scale');for(const target of document.querySelectorAll('[data-intro-target],#awards'))target.style.scrollMarginTop='110px';return}
+    const canvas=document.querySelector('.hero>.wrap'),nav=document.querySelector('.top .nav');
+    const frameHeight=canvas.offsetHeight+nav.offsetHeight+27;
+    const scale=Math.min(innerWidth*.94/1440,(innerHeight-12)/frameHeight);
+    root.style.setProperty('--intro-scale',Math.max(.1,scale).toFixed(5));
+    const headerHeight=document.querySelector('.top').getBoundingClientRect().height;
+    for(const target of document.querySelectorAll('[data-intro-target],#awards'))target.style.scrollMarginTop=Math.ceil(headerHeight+18)+'px';
+  }
+  function scheduleIntroFit(){if(!introFitFrame)introFitFrame=requestAnimationFrame(()=>{introFitFrame=0;fitLandscapeIntro()})}
+  fitLandscapeIntro();addEventListener('resize',scheduleIntroFit,{passive:true});addEventListener('load',scheduleIntroFit,{once:true});
+  if(document.fonts)document.fonts.ready.then(scheduleIntroFit);
   const projectFilters=document.querySelector('.project-filters');
   const projectFilterButtons=Array.from(projectFilters.querySelectorAll('.project-filter'));
   const projectCards=Array.from(document.querySelectorAll('#project-list > .project'));
