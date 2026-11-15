@@ -235,7 +235,7 @@
     .overview-points li{position:relative;padding-left:14px;color:#bdcad9;font-size:13px;line-height:1.5}
     .overview-points li:before{content:"";position:absolute;left:0;top:.68em;width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px #8bbaff99}
     .overview-activities{padding:16px 18px;align-self:start}.overview-activity-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#ffffff18;border:1px solid #ffffff18}.overview-activity{background:#111b2a;padding:13px}.overview-activity time{display:block;color:#8bbaff;font:10px var(--mono);margin-bottom:7px}.overview-activity strong{display:block;color:#edf4fc;font-size:13px;margin-bottom:5px}.overview-activity small{display:block;color:#91a2b6;font-size:11px;line-height:1.45}
-    .overview-award-list{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.overview-award-list span{padding:9px 10px;border:1px solid #ffffff17;background:#111b2a;color:#b9c8d9;font-size:10px;line-height:1.45}.overview-award-list b{display:block;color:#8bbaff;font:9px var(--mono);margin-bottom:4px}
+    .overview-award-list{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.overview-award-list :is(span,a){padding:9px 10px;border:1px solid #ffffff17;background:#111b2a;color:#b9c8d9;font-size:10px;line-height:1.45}.overview-award-list b{display:block;color:#8bbaff;font:9px var(--mono);margin-bottom:4px}
     .overview-skills{align-self:start}.overview-skill-icons{display:flex;align-items:center;gap:16px;min-height:44px;padding-top:5px}.overview-skill,.overview-skill .skill-logos{display:contents}.overview-skill .skill-logo-frame{width:40px;height:40px;padding:5px}.skill-logo-frame{position:relative}.skill{position:relative}#skills .skill:nth-child(-n+2):after,.overview-skill.core .skill-logo-frame:first-child:after{content:"★";position:absolute;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:#ffd15b;color:#5b4300;font-size:9px;line-height:1;box-shadow:0 0 10px #ffd15b55}#skills .skill:nth-child(-n+2):after{top:-9px;left:-9px}.overview-skill.core .skill-logo-frame:first-child:after{top:-9px;left:-7px;width:16px;height:16px;font-size:8px}.overview-project-link{display:flex;align-items:center;justify-content:space-between;min-height:67px}.overview-project-link strong{font-size:19px;color:#edf4fc}.overview-project-link i{font:11px var(--mono);font-style:normal;color:#8bbaff}.overview-arrow{position:absolute;right:16px;top:14px;color:#8bbaff;font:12px var(--mono)}.overview-card{position:relative}
     .hero-overview{animation:intro-overview-arrive .58s cubic-bezier(.22,1,.36,1) 1.62s both}@keyframes intro-overview-arrive{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
     .overview-signature{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);grid-template-rows:auto 1fr;align-items:center;column-gap:30px;padding:4px 0 22px}
@@ -271,7 +271,7 @@
     .overview-activities{padding:13px 16px}.overview-activities .overview-label{margin-bottom:9px}
     .overview-activity{padding:9px 11px}.overview-activity time{margin-bottom:3px}.overview-activity strong{font-size:12px;margin-bottom:3px}.overview-activity small{font-size:10px;line-height:1.35}
     .overview-awards,.overview-skills{padding:13px 16px}.overview-awards .overview-label,.overview-skills .overview-label{margin-bottom:9px}
-    .overview-award-list span{padding:7px 9px}.overview-project-link{min-height:54px;padding:13px 16px}
+    .overview-award-list :is(span,a){padding:7px 9px}.overview-project-link{min-height:54px;padding:13px 16px}
     @media(min-width:721px) and (max-width:1000px){.overview-signature h1{font-size:clamp(43px,5vw,52px)}.intro-reel{width:min(100%,510px)}}
     @media(max-width:720px){
       .hero{padding:24px 0 32px}
@@ -296,7 +296,7 @@
       .overview-awards{grid-column:2;grid-row:3;padding:9px}
       .overview-awards .overview-label{margin-bottom:6px;font-size:9px}
       .overview-awards .overview-award-list{gap:4px}
-      .overview-awards .overview-award-list span{padding:5px 4px;font-size:8px}
+      .overview-awards .overview-award-list :is(span,a){padding:5px 4px;font-size:8px}
       .overview-skills,.overview-project-link{grid-column:1/-1}
       .overview-award-list{grid-template-columns:repeat(3,minmax(0,1fr))}
     }
@@ -318,12 +318,12 @@
     .overview-awards-inline{border-top:1px solid #ffffff25;margin-top:11px;padding-top:10px}
     .overview-awards-inline .overview-label{margin-bottom:8px}
     .overview-awards-inline .overview-award-list{gap:0}
-    .overview-awards-inline .overview-award-list span{border:0;background:none;padding:0 12px 0 0}
+    .overview-awards-inline .overview-award-list :is(span,a){border:0;background:none;padding:0 12px 0 0}
     @media(max-width:720px){
       .overview-profile{grid-row:2}
       .overview-awards-inline{margin-top:8px;padding-top:8px}
       .overview-awards-inline .overview-label{font-size:9px;margin-bottom:6px}
-      .overview-awards-inline .overview-award-list span{font-size:8px;padding-right:4px}
+      .overview-awards-inline .overview-award-list :is(span,a){font-size:8px;padding-right:4px}
       .overview-awards-inline .overview-award-list b{font-size:8px;margin-bottom:2px}
     }
     .hero-overview{row-gap:8px}
@@ -354,7 +354,7 @@
     @media(max-width:720px){
       .overview-activity time{font-size:10px}
       .overview-awards-inline .overview-award-list{grid-template-columns:1fr;gap:4px}
-      .overview-awards-inline .overview-award-list span{display:flex;align-items:baseline;gap:7px;font-size:9px}
+      .overview-awards-inline .overview-award-list :is(span,a){display:flex;align-items:baseline;gap:7px;font-size:9px}
       .overview-awards-inline .overview-award-list b{flex:0 0 30px;font-size:9px;margin:0}
     }
     .activity-project-link{color:#8bbaff;text-decoration:underline;text-underline-offset:3px}
@@ -374,7 +374,7 @@
     @media(max-width:800px){.experience-row.has-media.experience-row--award{grid-template-columns:minmax(0,1fr) 195px}.experience-row--award .award-proof{width:120px;height:72px}.experience-row--award .award-certificate{width:56px;height:72px}}
     @media(max-width:540px){.experience-row.has-media.experience-row--award{grid-template-columns:1fr}.experience-row--award .activity-media{grid-column:1;justify-content:flex-start}.experience-row--award .award-proof{width:160px;height:96px}.experience-row--award .award-certificate{width:74px;height:96px}}
     @media(max-width:720px){
-      .overview-awards-inline .overview-award-list span{display:grid;grid-template-columns:30px minmax(0,1fr);column-gap:7px}
+      .overview-awards-inline .overview-award-list :is(span,a){display:grid;grid-template-columns:30px minmax(0,1fr);column-gap:7px}
       .overview-awards-inline .overview-award-list b{grid-row:1/3}
       .overview-awards-inline .overview-award-list strong{grid-column:2;font-size:9px;margin:0}
       .overview-awards-inline .overview-award-list small{grid-column:2;font-size:8px}
@@ -427,6 +427,13 @@
     .project-stack-icons{flex-wrap:wrap}
     .overview-project-stacks.overview-project-stacks--many{display:grid;grid-template-columns:repeat(4,18px)}
     @media(max-width:720px){.overview-project-stacks.overview-project-stacks--many{grid-template-columns:repeat(4,15px)}}
+
+    .overview-item-link{display:block;color:inherit;text-decoration:none}
+    .overview-project.overview-item-link{display:flex}
+    .overview-skill.overview-item-link{display:inline-flex}
+    .hero-overview .overview-item-link:hover{background-color:#ffffff09}
+    .hero-overview a:focus-visible{outline:2px solid #8bbaff;outline-offset:3px}
+    .experience-row[data-intro-target],.skill[data-intro-target],.project[data-intro-target]{scroll-margin-top:110px}
     .overview-project>span:not(.overview-project-stacks){flex:1}
     .overview-project-stacks{display:flex;align-items:center;gap:4px;margin-left:auto;flex:0 0 auto}
     .overview-project-stack{display:flex;align-items:center;justify-content:center;width:18px;height:18px;flex:0 0 18px;background:#f5f7fb;border:1px solid #ffffff24;border-radius:4px}
@@ -614,6 +621,55 @@
     }
     card.append(row);
   });
+
+  // Each overview item links to its own entry, while headings retain section navigation.
+  function linkOverviewItem(element,href,label){
+    const link=document.createElement('a');
+    for(const attribute of element.attributes)link.setAttribute(attribute.name,attribute.value);
+    link.classList.add('overview-item-link');link.href=href;link.setAttribute('aria-label',label);
+    link.append(...element.childNodes);element.replaceWith(link);
+    return link;
+  }
+  function prepareOverviewPanel(selector,sectionHref){
+    const panel=document.querySelector(selector),box=document.createElement('div');
+    for(const attribute of panel.attributes)if(attribute.name!=='href')box.setAttribute(attribute.name,attribute.value);
+    box.append(...panel.childNodes);panel.replaceWith(box);
+    for(const element of [box.querySelector('.overview-label'),box.querySelector('.overview-arrow')]){
+      const link=document.createElement('a');link.className=element.className;link.href=sectionHref;link.append(...element.childNodes);element.replaceWith(link);
+    }
+    return box;
+  }
+  const activityPanel=prepareOverviewPanel('.overview-activities','#activities');
+  const activityDestinations=[
+    ['I2P × O2CUBE','activity-i2p-o2cube'],
+    ['자기주도학습동아리','activity-self-study'],
+    ['기초학습역량강화 프로그램','activity-tutoring'],
+    ['한국게임학회 춘계학술발표대회','activity-game-society']
+  ];
+  for(const [title,id] of activityDestinations){
+    const target=Array.from(document.querySelectorAll('#activities .experience-row:not(.experience-row--award)')).find(row=>row.querySelector('h3')?.textContent.trim()===title);
+    const item=Array.from(activityPanel.querySelectorAll('.overview-activity')).find(row=>row.querySelector('strong')?.textContent.trim()===title);
+    if(target&&item){target.id=id;target.dataset.introTarget='';linkOverviewItem(item,'#'+id,title+' 활동 내용으로 이동')}
+  }
+  for(const item of Array.from(activityPanel.querySelectorAll('.overview-award-list > span'))){
+    const year=item.querySelector('b').textContent.trim();
+    const target=Array.from(document.querySelectorAll('#activities .experience-row--award')).find(row=>row.querySelector('.experience-date')?.textContent.trim()===year);
+    if(target){target.id='award-'+year;target.dataset.introTarget='';linkOverviewItem(item,'#'+target.id,year+'년 '+item.querySelector('small').textContent+' 수상 내용으로 이동')}
+  }
+  const skillPanel=prepareOverviewPanel('.overview-skills','#skills');
+  const skillIds={'C++':'skill-cpp','Unreal Engine 5':'skill-unreal','Unity / C#':'skill-unity','DirectX 11 / HLSL':'skill-directx','Python / PyTorch':'skill-python','Codex':'skill-codex'};
+  for(const skill of document.querySelectorAll('#skills .skill')){
+    const title=skill.querySelector('.skill-copy strong').textContent.trim();
+    const item=Array.from(skillPanel.querySelectorAll('.overview-skill')).find(row=>row.querySelector('img')?.alt===skill.querySelector('img')?.alt);
+    if(skillIds[title]&&item){skill.id=skillIds[title];skill.dataset.introTarget='';linkOverviewItem(item,'#'+skill.id,title+' 스킬 내용으로 이동')}
+  }
+  const projectPanel=prepareOverviewPanel('.overview-projects','#projects');
+  const projectIds={'EBON CROWN':'project-ebon-crown','EXCUTE':'project-excute','PROJECT_SMILE':'project-smile','SLAP SQUAD':'project-slap-squad','KEMET':'project-kemet','TANK BLITZ':'project-tank-blitz'};
+  for(const item of Array.from(projectPanel.querySelectorAll('.overview-project'))){
+    const title=item.querySelector('strong').textContent.trim();
+    const target=Array.from(document.querySelectorAll('#project-list > .project')).find(card=>card.querySelector('h3').textContent.trim()===title);
+    if(target){target.id=projectIds[title];target.dataset.introTarget='';const link=linkOverviewItem(item,'#'+target.id,title+' 프로젝트로 이동');link.addEventListener('click',()=>{if(target.hidden)document.querySelector('.project-filter[data-filter="all"]')?.click()})}
+  }
   const projectFilters=document.querySelector('.project-filters');
   const projectFilterButtons=Array.from(projectFilters.querySelectorAll('.project-filter'));
   const projectCards=Array.from(document.querySelectorAll('#project-list > .project'));
