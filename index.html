@@ -562,10 +562,10 @@
     .skill-category h3{margin:0 0 18px;font-size:19px;font-weight:700;color:var(--text);letter-spacing:-.03em}
     .skill-category .skill-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
     .skill-logo-text{font:700 10px var(--mono);color:#172235}
-    .hero-overview--v2 .overview-skill-icons{display:grid;grid-template-columns:1.4fr 1.05fr .8fr;align-items:start;gap:16px;max-width:none}
-    .overview-skill-group{min-width:0}
-    .overview-skill-group+.overview-skill-group{border-left:1px solid #ffffff18;padding-left:16px}
-    .overview-skill-group-label{display:block;margin-bottom:9px;color:var(--muted);font-size:10px;font-weight:500;line-height:1.4}
+    .hero-overview--v2 .overview-skill-icons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:0;max-width:none}
+    .overview-skill-group{min-width:0;padding:0 14px}
+    .overview-skill-group+.overview-skill-group{border-left:1px solid #ffffff18}
+    .overview-skill-group-label{display:block;margin-bottom:11px;color:var(--muted);font-size:11px;font-weight:500;line-height:1.4}
     .overview-skill-group-icons{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
     @media(max-width:720px){
       .skill-category .skill-list{grid-template-columns:1fr}
@@ -573,7 +573,40 @@
       .overview-skill-group+.overview-skill-group{border-left:0;border-top:1px solid #ffffff18;padding:10px 0 0}
       .overview-skill-group-label{margin-bottom:8px}
     }
-    html.wide-intro .hero-overview--v2 .overview-skill-icons{grid-template-columns:1.4fr 1.05fr .8fr;gap:16px}
+    html.wide-intro .hero-overview--v2 .overview-skill-icons{grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+
+    /* Larger skill marks; equal-width category columns on landscape screens. */
+    #skills .skill-logo-frame{width:60px;height:60px;padding:8px}
+    #skills .skill-logo-text{font-size:12px}
+    .hero-overview--v2 .overview-skill .skill-logo-frame{width:44px;height:44px;max-width:none;padding:6px}
+    .hero-overview--v2 .overview-skill .skill-logo-frame img{width:100%;height:100%}
+    .hero-overview--v2 .overview-skill .skill-logo-text{font-size:10px}
+    @media(max-width:720px){
+      .overview-skill-group{padding:0}
+      .hero-overview--v2 .overview-skill .skill-logo-frame{width:36px;height:36px;padding:5px}
+    }
+    @media(max-width:480px){#skills .skill-logo-frame{width:48px;height:48px;padding:6px}}
+
+    /* Match the main sections to the intro canvas; preserve native zoom reflow. */
+    html.wide-intro main>section:not(.hero)>.wrap{width:1440px;max-width:none;padding:0 28px;zoom:var(--intro-scale,1)}
+    html.wide-intro main>section:not(.hero){padding:calc(88px * var(--intro-scale,1)) 0}
+    html.wide-intro #about .about-grid,html.wide-intro #activities .experience{max-width:none}
+    html.wide-intro #activities .experience-row.has-media{grid-template-columns:220px minmax(0,1fr) 300px}
+    html.wide-intro #activities .activity-media .activity-logo{width:126px;height:126px}
+    html.wide-intro #activities .activity-media .activity-proof{width:90px;height:118px}
+    html.wide-intro #activities .activity-media .award-proof{width:200px;height:118px}
+    html.wide-intro.native-page-zoom .hero>.wrap,
+    html.wide-intro.native-page-zoom .top .nav,
+    html.wide-intro.native-page-zoom main>section:not(.hero)>.wrap{width:min(1440px,calc(100vw / var(--intro-scale,1)))}
+    html.wide-intro.native-page-zoom #activities .experience-row.has-media{grid-template-columns:minmax(0,1fr) 230px}
+    html.wide-intro.native-page-zoom #activities .experience-date{grid-column:1/-1}
+    html.wide-intro.native-page-zoom #activities .activity-media .award-proof{width:140px;height:84px}
+    html.wide-intro.native-page-zoom #activities .activity-media .award-certificate{width:64px;height:84px}
+    html.wide-intro.native-page-zoom .overview-records{grid-template-columns:minmax(0,1fr)!important}
+    html.wide-intro.native-page-zoom .overview-skill-icons{grid-template-columns:1fr!important;gap:12px!important}
+    html.wide-intro.native-page-zoom .overview-skill-group{padding:8px 0}
+    html.wide-intro.native-page-zoom .overview-skill-group+.overview-skill-group{border-left:0;border-top:1px solid #ffffff18}
+    html.wide-intro.native-page-zoom .overview-project-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   </style>
 </head>
 <body>
@@ -775,6 +808,18 @@
     for(const attribute of element.attributes)link.setAttribute(attribute.name,attribute.value);
     link.classList.add('overview-item-link');link.href=href;link.setAttribute('aria-label',label);
     link.append(...element.childNodes);element.replaceWith(link);
+    link.addEventListener('click',event=>{
+      if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+      event.preventDefault();
+      requestAnimationFrame(()=>{
+        const target=document.getElementById(link.hash.slice(1));if(!target)return;
+        const transform=getComputedStyle(target).transform;
+        const revealOffset=transform==='none'?0:new DOMMatrixReadOnly(transform).m42;
+        const parentZoom=parseFloat(getComputedStyle(target.closest('.wrap')||target).zoom)||1;
+        const top=target.getBoundingClientRect().top-revealOffset*parentZoom+scrollY-document.querySelector('.top').getBoundingClientRect().height-18;
+        history.pushState(null,'',link.hash);scrollTo({top:Math.max(0,top),behavior:'smooth'});
+      });
+    });
     return link;
   }
   function prepareOverviewPanel(selector,sectionHref){
@@ -842,17 +887,47 @@
   }
   introAi.append(aiLabel,aiGrid);document.querySelector('.overview-projects').after(introAi);
   let introFitFrame=0;
+  // Keep native browser zoom separate from the window's responsive layout size.
+  const layoutViewport={width:innerWidth,height:innerHeight,pixelRatio:devicePixelRatio||1,outerWidth:outerWidth,outerHeight:outerHeight,screenWidth:screen.width,screenHeight:screen.height,zoom:1};
+  try{
+    const saved=JSON.parse(sessionStorage.getItem('portfolio-layout-viewport'));
+    if(saved&&saved.screenWidth===screen.width&&saved.screenHeight===screen.height&&Math.abs(saved.outerWidth-outerWidth)<24&&Math.abs(saved.outerHeight-outerHeight)<24){
+      layoutViewport.zoom=saved.zoom*((devicePixelRatio||1)/saved.pixelRatio);
+      layoutViewport.frameHeight=saved.frameHeight;
+    }
+  }catch{}
+  function readLayoutViewport(){
+    const pixelRatio=devicePixelRatio||1;
+    const sameScreen=layoutViewport.screenWidth===screen.width&&layoutViewport.screenHeight===screen.height;
+    const sameWindow=Math.abs(layoutViewport.outerWidth-outerWidth)<24&&Math.abs(layoutViewport.outerHeight-outerHeight)<24;
+    if(sameScreen&&sameWindow){
+      const ratio=pixelRatio/layoutViewport.pixelRatio;
+      if(Math.abs(ratio-1)>.01)layoutViewport.zoom*=ratio;
+      else{
+        // Safari page zoom can resize CSS pixels without changing devicePixelRatio.
+        const widthRatio=layoutViewport.width/innerWidth,heightRatio=layoutViewport.height/innerHeight;
+        if(Math.abs(widthRatio-1)>.03&&Math.abs(widthRatio-heightRatio)<.025)layoutViewport.zoom*=widthRatio;
+      }
+    }else if(!sameScreen){layoutViewport.zoom=1}
+    Object.assign(layoutViewport,{width:innerWidth,height:innerHeight,pixelRatio,outerWidth,outerHeight,screenWidth:screen.width,screenHeight:screen.height});
+    try{sessionStorage.setItem('portfolio-layout-viewport',JSON.stringify(layoutViewport))}catch{}
+    return {width:innerWidth*layoutViewport.zoom,height:innerHeight*layoutViewport.zoom,zoom:layoutViewport.zoom};
+  }
   function fitLandscapeIntro(){
-    const root=document.documentElement;
-    const landscape=innerWidth>=900&&innerWidth>innerHeight;
+    const root=document.documentElement,viewport=readLayoutViewport();
+    const landscape=viewport.width>=900&&viewport.width>viewport.height&&innerWidth>=900;
     root.classList.toggle('wide-intro',landscape);
+    root.classList.toggle('native-page-zoom',landscape&&viewport.zoom>1.02);
     if(!landscape){root.style.removeProperty('--intro-scale');for(const target of document.querySelectorAll('[data-intro-target],#awards'))target.style.scrollMarginTop='110px';return}
     const canvas=document.querySelector('.hero>.wrap'),nav=document.querySelector('.top .nav');
-    const frameHeight=canvas.offsetHeight+nav.offsetHeight+27;
-    const scale=Math.min(innerWidth*.94/1440,(innerHeight-12)/frameHeight);
-    root.style.setProperty('--intro-scale',Math.max(.1,scale).toFixed(5));
+    // Use the unzoomed canvas height; enlarged text may reflow without shrinking.
+    if(viewport.zoom<=1.02||!layoutViewport.frameHeight)layoutViewport.frameHeight=canvas.offsetHeight+nav.offsetHeight+27;
+    const fittedScale=Math.min(viewport.width*.94/1440,(viewport.height-12)/layoutViewport.frameHeight);
+    root.style.setProperty('--intro-scale',Math.max(.1,fittedScale).toFixed(5));
+    try{sessionStorage.setItem('portfolio-layout-viewport',JSON.stringify(layoutViewport))}catch{}
+    const scale=parseFloat(root.style.getPropertyValue('--intro-scale'))||1;
     const headerHeight=document.querySelector('.top').getBoundingClientRect().height;
-    for(const target of document.querySelectorAll('[data-intro-target],#awards'))target.style.scrollMarginTop=Math.ceil(headerHeight+18)+'px';
+    for(const target of document.querySelectorAll('[data-intro-target],#awards'))target.style.scrollMarginTop=Math.ceil((headerHeight+18)/scale)+'px';
   }
   function scheduleIntroFit(){if(!introFitFrame)introFitFrame=requestAnimationFrame(()=>{introFitFrame=0;fitLandscapeIntro()})}
   fitLandscapeIntro();addEventListener('resize',scheduleIntroFit,{passive:true});addEventListener('load',scheduleIntroFit,{once:true});
