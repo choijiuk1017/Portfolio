@@ -612,6 +612,16 @@
     .hero-overview--v2>.overview-profile{align-self:start}
     .hero-overview--v2 .overview-profile .hero-art{display:block;height:auto;min-height:0;flex:0 0 auto;padding:0}
     .hero-overview--v2 .overview-profile .hero-art .portrait{display:block;width:100%;height:auto;max-height:none;aspect-ratio:300/389;object-fit:contain;object-position:center;flex:none}
+    /* Fill the desktop profile column with larger existing text, not a stretched photo. */
+    html.wide-intro:not(.native-page-zoom) .hero-overview--v2>.overview-profile{align-self:stretch}
+    html.wide-intro:not(.native-page-zoom) .hero-overview--v2 .overview-profile-info{position:relative;flex:1;display:flex;flex-direction:column;padding:16px;gap:14px;min-height:0}
+    html.wide-intro:not(.native-page-zoom) .hero-overview--v2 .overview-profile .overview-name{font-size:22px;line-height:1.25}
+    html.wide-intro:not(.native-page-zoom) .hero-overview--v2 .overview-name em{font-size:11px;line-height:1.5;letter-spacing:.04em;margin-top:9px}
+    html.wide-intro:not(.native-page-zoom) .hero-overview--v2 .overview-profile .overview-label{font-size:12px}
+    html.wide-intro:not(.native-page-zoom) .hero-overview--v2 .overview-contact{flex:1;grid-template-rows:repeat(4,minmax(0,1fr))}
+    html.wide-intro:not(.native-page-zoom) .hero-overview--v2 .overview-contact span{grid-template-columns:16px 48px minmax(0,1fr);gap:5px;padding:9px 0;font-size:11px;line-height:1.5}
+    html.wide-intro:not(.native-page-zoom) .hero-overview--v2 .overview-contact b{font-size:9px;letter-spacing:.03em}
+    html.wide-intro:not(.native-page-zoom) .hero-overview--v2 .overview-contact svg{width:15px;height:15px}
   </style>
 </head>
 <body>
