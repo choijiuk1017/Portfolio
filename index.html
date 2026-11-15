@@ -607,25 +607,13 @@
     html.wide-intro.native-page-zoom .overview-skill-group{padding:8px 0}
     html.wide-intro.native-page-zoom .overview-skill-group+.overview-skill-group{border-left:0;border-top:1px solid #ffffff18}
     html.wide-intro.native-page-zoom .overview-project-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-    /* Compact portrait at its original 300:389 ratio; give the profile more room. */
+    /* Smaller portrait, preserving the original 300:389 aspect ratio. */
     .hero-overview--v2 .overview-profile .hero-art{height:auto;min-height:0;flex:0 0 auto;display:flex;justify-content:center;align-items:center;padding:12px 0;background:#fff}
     .hero-overview--v2 .overview-profile .hero-art .portrait{display:block;width:66%;max-width:170px;height:auto;max-height:none;aspect-ratio:300/389;object-fit:contain;object-position:center;background:#fff;flex:none}
-    .hero-overview--v2 .overview-profile-info{position:relative;flex:1;display:flex;flex-direction:column;padding:14px;gap:11px}
-    .hero-overview--v2 .overview-profile-summary{margin:0;font-size:11px;line-height:1.75;color:#b7c5d5;animation:none}
-    .overview-profile-focus{display:grid;gap:10px;margin:0;padding:11px 0;border-top:1px solid #ffffff16}
-    .overview-profile-focus>div{display:grid;gap:4px}
-    .overview-profile-focus dt{font-size:10px;font-weight:700;color:#8bbaff}
-    .overview-profile-focus dd{margin:0;font-size:11px;line-height:1.65;color:#d5deeb}
-    .hero-overview--v2 .overview-profile .overview-contact{margin-top:auto}
-    html.wide-intro .hero-overview--v2 .overview-profile-info{padding:14px;gap:11px}
+    .hero-overview--v2 .overview-profile-info{position:relative}
     @media(max-width:720px){
       .hero-overview--v2 .overview-profile .hero-art{padding:8px 0}
       .hero-overview--v2 .overview-profile .hero-art .portrait{width:80%}
-      .hero-overview--v2 .overview-profile-info{padding:9px;gap:9px}
-      .hero-overview--v2 .overview-profile-summary{font-size:10px;line-height:1.65}
-      .overview-profile-focus{gap:9px;padding:9px 0}
-      .overview-profile-focus dt{font-size:9px}
-      .overview-profile-focus dd{font-size:10px;line-height:1.6}
     }
   </style>
 </head>
@@ -675,12 +663,6 @@
       <div class="overview-profile-info">
         <span class="overview-label">PROFILE</span><span class="overview-arrow">ABOUT ↘</span>
         <p class="overview-name">최지욱<em>게임 클라이언트 프로그래머</em></p>
-        <p class="overview-profile-summary">직접 플레이할 수 있는 게임을 만들며 전투·AI·UI 구현 경험을 쌓았습니다.</p>
-        <dl class="overview-profile-focus">
-          <div><dt>주요 구현</dt><dd>전투 시스템 · 캐릭터 제어<br>몬스터 AI · UI</dd></div>
-          <div><dt>개발 경험</dt><dd>개인 게임 개발<br>팀 프로젝트 메인 프로그래밍</dd></div>
-          <div><dt>AI 연동</dt><dd>멀티모달 모델 기반<br>게임 퍼즐 힌트 생성</dd></div>
-        </dl>
         <div class="overview-contact">
           <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3zM3 7l9 7 9-7"/></svg><b>EMAIL</b><i class="overview-contact-value">jiuk5192@gmail.com</i></span>
           <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3l3 5-2 2c1.5 3 3 4.5 6 6l2-2 5 3-1 4c-9 1-18-8-17-17z"/></svg><b>PHONE</b><i class="overview-contact-value">010-8861-5192</i></span>
