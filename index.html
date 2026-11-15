@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" class="intro-lock">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -650,7 +650,7 @@
       .hero-overview--v2 .overview-activity small{font-size:10px;line-height:1.5}
     }
 
-    /* Keep the interface static, including hover, entrances, and scrolling. */
+    /* Keep individual content static; the page entrance is enabled separately. */
     *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
     .reveal{opacity:1!important;transform:none!important;will-change:auto!important}
     .section-head:after{transform:none!important}
@@ -660,9 +660,18 @@
     .project:focus-within .project-visual img,.activity-proof:hover img{transform:none!important}
     .intro-reel-play:hover{transform:translate(-50%,-50%)!important}
     .ebon-gallery-strip{scroll-snap-type:none}
+
+    /* Only the initial page entrance moves; individual content stays static. */
+    .intro-loader{animation:intro-exit .75s cubic-bezier(.76,0,.24,1) .85s forwards!important}
+    .intro-loader:after{animation:intro-line .68s cubic-bezier(.22,1,.36,1) .18s both!important}
+    .intro-loader-inner{animation:intro-copy .55s cubic-bezier(.22,1,.36,1) .08s both!important}
+    .top{animation:nav-arrive .7s cubic-bezier(.22,1,.36,1) 1.05s both!important}
+    .hero-overview{animation:intro-overview-arrive .58s cubic-bezier(.22,1,.36,1) 1.62s both!important}
+    @media(prefers-reduced-motion:reduce){.intro-loader{display:none}.top,.hero-overview{animation:none!important}}
   </style>
 </head>
 <body>
+  <div class="intro-loader" aria-hidden="true"><div class="intro-loader-inner"><span class="intro-loader-kicker">GAME CLIENT PROGRAMMER</span><strong class="intro-loader-name">CHOI JI-UK</strong></div></div>
   
   <header class="top"><nav class="nav wrap" aria-label="주요 메뉴"><a class="brand" href="#home" aria-label="Choi Ji-uk Portfolio 홈"><span class="brand-mark" aria-hidden="true">&lt;/&gt;</span><span class="brand-copy"><span class="brand-name">CHOI JI-UK</span><span class="brand-subtitle">PORTFOLIO</span></span></a><button class="menu" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav-links">☰</button><div class="links" id="nav-links"><a href="#home"><b>01.</b> INTRO</a><a href="#about"><b>02.</b> ABOUT</a><a href="#activities"><b>03.</b> ACTIVITIES</a><a href="#skills"><b>04.</b> SKILLS</a><a href="#projects"><b>05.</b> PROJECTS</a><a class="nav-resume" href="assets/documents/choi-ji-uk-resume.pdf?v=1" download="최지욱_이력서.pdf" type="application/pdf">이력서 다운로드 ↓</a><a class="nav-cta" href="#contact">CONTACT ↗</a></div></nav></header>
   <main>
@@ -790,8 +799,10 @@
     }
     group.append(label,icons);overviewSkillList.append(group);
   }
-  addEventListener('pageshow',()=>requestAnimationFrame(()=>scrollTo(0,0)));document.getElementById('year').textContent=new Date().getFullYear();const viewer=document.getElementById('activity-viewer');document.querySelectorAll('.activity-proof').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();viewer.querySelector('img').src=a.querySelector('img').dataset.fullSrc||a.querySelector('img').src;viewer.querySelector('img').alt=a.querySelector('img').alt;viewer.showModal()}));viewer.querySelector('.viewer-close').addEventListener('click',()=>viewer.close());viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close()});const menu=document.querySelector('.menu'),links=document.querySelector('.links');menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기')});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','메뉴 열기')}));
-  startIntroVideo();
+  addEventListener('pageshow',()=>requestAnimationFrame(()=>scrollTo(0,0)));document.getElementById('year').textContent=new Date().getFullYear();const introLoader=document.querySelector('.intro-loader');const unlockIntroScroll=()=>document.documentElement.classList.remove('intro-lock');introLoader.addEventListener('animationend',event=>{if(event.animationName==='intro-exit')unlockIntroScroll()});setTimeout(unlockIntroScroll,2200);const viewer=document.getElementById('activity-viewer');document.querySelectorAll('.activity-proof').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();viewer.querySelector('img').src=a.querySelector('img').dataset.fullSrc||a.querySelector('img').src;viewer.querySelector('img').alt=a.querySelector('img').alt;viewer.showModal()}));viewer.querySelector('.viewer-close').addEventListener('click',()=>viewer.close());viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close()});const menu=document.querySelector('.menu'),links=document.querySelector('.links');menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기')});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','메뉴 열기')}));
+  introLoader.addEventListener('animationend',event=>{if(event.animationName==='intro-exit')startIntroVideo()});
+  setTimeout(startIntroVideo,2200);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){unlockIntroScroll();startIntroVideo()}
   const header=document.querySelector('.top');let framePending=false;
   const sections=Array.from(document.querySelectorAll('main section[id]'));
   const navLinks=Array.from(document.querySelectorAll('.links a[href^="#"]'));
