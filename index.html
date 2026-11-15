@@ -607,6 +607,10 @@
     html.wide-intro.native-page-zoom .overview-skill-group{padding:8px 0}
     html.wide-intro.native-page-zoom .overview-skill-group+.overview-skill-group{border-left:0;border-top:1px solid #ffffff18}
     html.wide-intro.native-page-zoom .overview-project-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+
+    /* Preserve the source portrait ratio and reduce only its displayed size. */
+    .hero-overview--v2 .overview-profile .hero-art{display:flex;align-items:center;justify-content:center;background:#fff}
+    .hero-overview--v2 .overview-profile .hero-art .portrait{display:block;width:90%;height:auto;max-height:none;aspect-ratio:300/389;object-fit:contain;object-position:center;background:#fff;flex:none}
   </style>
 </head>
 <body>
