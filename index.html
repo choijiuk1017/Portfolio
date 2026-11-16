@@ -725,6 +725,9 @@
     .ai-workflow-case-category{display:block;margin:0 0 7px;color:#8bbaff;font-size:11px;font-weight:500;line-height:1.4}
     .smile-model-journey{display:grid;gap:12px}
     .smile-model-journey>section{padding:20px 22px;border:1px solid #ffffff1c;border-left:3px solid #8bbaff;background:#111824}
+      .ai-workflow-tool{display:grid;gap:12px}
+    .ai-workflow-tool-item{display:flex;align-items:center;gap:10px}
+    .hero-overview--v2 .overview-project-stacks--many{grid-template-columns:repeat(5,15px)}
   </style>
 </head>
 <body>
@@ -897,9 +900,9 @@
     directx:document.querySelector('img[alt="DirectX 11 로고"]')?.src
   };
   const projectStackSets={
-    'EBON CROWN':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Codex',sharedSkillIcons.codex]],
+    'EBON CROWN':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Codex',sharedSkillIcons.codex],['VARCO 3D','assets/icons/varco3d.png']],
     'EXCUTE':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Blueprint','assets/icons/blueprint.svg'],['Codex',sharedSkillIcons.codex]],
-    'PROJECT_SMILE':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Python / Flask',sharedSkillIcons.python],['PyTorch',sharedSkillIcons.pytorch],['LLaVA-OneVision','assets/icons/llava-onevision.svg?v=2'],['RAG','assets/icons/rag.svg?v=2'],['Gemma 4','assets/icons/gemma.png'],['Codex',sharedSkillIcons.codex]],
+    'PROJECT_SMILE':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Python / Flask',sharedSkillIcons.python],['PyTorch',sharedSkillIcons.pytorch],['LLaVA-OneVision','assets/icons/llava-onevision.svg?v=2'],['RAG','assets/icons/rag.svg?v=2'],['Gemma 4','assets/icons/gemma.png'],['Codex',sharedSkillIcons.codex],['VARCO 3D','assets/icons/varco3d.png']],
     'SLAP SQUAD':[['C#',sharedSkillIcons.csharp],['Unity',sharedSkillIcons.unity],['TCP/IP',null,'NET']],
     'KEMET':[['C#',sharedSkillIcons.csharp],['Unity',sharedSkillIcons.unity],['State Pattern',null,'FSM']],
     'TANK BLITZ':[['C++',sharedSkillIcons.cplusplus],['DirectX 11',sharedSkillIcons.directx],['HLSL',null,'HLSL'],['Codex',sharedSkillIcons.codex]]
@@ -2090,6 +2093,12 @@ Projectile --> Collider : collision query`]
       "problem": "공격 종류가 결정된 뒤에도 보스가 가까워지면 행동을 멈췄습니다. 행동 트리 화면과 중단되는 거리 조건을 제시했습니다.",
       "solution": "추적 시퀀스에 붙은 거리 데코레이터와 Abort 조건이 하위 작업을 중단시키는지 검토받고, 공격 판단·실행 분기와 추적 분기를 나누는 방향을 비교했습니다.",
       "result": "AttackType 값이 정해진 것과 그 값을 실행할 분기가 살아 있는 것은 별개로 판단했습니다. 플레이 화면의 거리 변화와 트리 조건을 대조해 검토 범위를 특정했습니다."
+    },
+    {
+      "kind": "asset",
+      "title": "VARCO 3D를 활용한 일부 3D 에셋 제작",
+      "problem": "EBON CROWN에 사용한 일부 3D 에셋을 VARCO 3D로 제작했습니다.",
+      "solution": "코드 분석·구조 검토뿐 아니라 게임에 들어가는 3D 에셋 제작에도 생성형 AI를 활용했습니다."
     }
   ],
   "PROJECT_SMILE": [
@@ -2130,6 +2139,12 @@ Projectile --> Collider : collision query`]
       "problem": "SimpleCNN은 조명 변화에 혼동하고, ResNet은 문·시체를 인식해도 키카드 인식이 약한 차이를 실제 게임 장면에서 관찰했습니다.",
       "solution": "관찰 결과를 전달해 작은 오브젝트의 화면 내 크기, 전처리, 학습 데이터 구성을 원인 후보로 나누고 데이터 보강·분석 영역 조정 방향을 비교했습니다.",
       "result": "모델 이름이나 단일 결과로 우열을 정하지 않고 조명·대상 크기 등 실패 조건을 기준으로 비교했습니다. 확인된 인식 결과와 추가 실험이 필요한 가설을 구분했습니다."
+    },
+    {
+      "kind": "asset",
+      "title": "VARCO 3D를 활용한 일부 3D 에셋 제작",
+      "problem": "PROJECT_SMILE에 사용한 일부 3D 에셋을 VARCO 3D로 제작했습니다.",
+      "solution": "코드 분석·구조 검토뿐 아니라 게임에 들어가는 3D 에셋 제작에도 생성형 AI를 활용했습니다."
     }
   ],
   "EXCUTE": [
@@ -2154,6 +2169,11 @@ Projectile --> Collider : collision query`]
     const cases=projectAiWorkflow[title],intro=introAiItems.find(item=>item.title===title);
     if(!cases||!intro)return;
     aiWorkflowDialog.querySelector('#ai-workflow-title').textContent=title;
+    const toolBox=aiWorkflowDialog.querySelector('.ai-workflow-tool');toolBox.replaceChildren();
+    const toolSets=[['ChatGPT · Codex','assets/icons/codex.png',true]];
+    if(cases.some(item=>item.kind==='asset'))toolSets.push(['VARCO 3D','assets/icons/varco3d.png',false]);
+    for(const [name,source,invert] of toolSets){const tool=document.createElement('span');tool.className='ai-workflow-tool-item';const frame=document.createElement('span');frame.className='skill-logo-frame'+(invert?' skill-logo-frame--codex':'');const image=document.createElement('img');image.src=source;image.alt='';frame.append(image);const label=document.createElement('span');label.textContent=name;tool.append(frame,label);toolBox.append(tool)}
+
     aiWorkflowDialog.querySelector('.ai-workflow-scope').textContent=intro.role;
     aiWorkflowDialog.querySelector('.ai-workflow-description').textContent=intro.method;
     aiWorkflowDialog.querySelector('.ai-workflow-contribution').textContent=intro.scope;
@@ -2162,10 +2182,11 @@ Projectile --> Collider : collision query`]
       const section=document.createElement('section');section.className='ai-workflow-case';
       const heading=document.createElement('div');heading.className='ai-workflow-case-heading';
       const number=document.createElement('span');number.className='ai-workflow-case-number';number.textContent=String(index+1).padStart(2,'0');
-      const headingText=document.createElement('div');headingText.className='ai-workflow-heading-text';const category=document.createElement('span');category.className='ai-workflow-case-category';category.textContent=item.kind==='error'?'오류 분석':'설계·코드 검토';const titleElement=document.createElement('h3');titleElement.textContent=item.title;headingText.append(category,titleElement);heading.append(number,headingText);
+      const headingText=document.createElement('div');headingText.className='ai-workflow-heading-text';const category=document.createElement('span');category.className='ai-workflow-case-category';category.textContent=item.kind==='asset'?'3D 에셋 제작':item.kind==='error'?'오류 분석':'설계·코드 검토';const titleElement=document.createElement('h3');titleElement.textContent=item.title;headingText.append(category,titleElement);heading.append(number,headingText);
       const list=document.createElement('dl');
       const labels=item.kind==='error'?['발생 현상·근거','AI에 맡긴 분석','직접 확인·판단']:['직접 구성한 내용','AI에 맡긴 작업','판단·검토 기준'];
-      for(const [label,value] of [[labels[0],item.problem],[labels[1],item.solution],[labels[2],item.result]]){
+      const rows=item.kind==='asset'?[['제작 내용',item.problem],['AI 활용 범위',item.solution]]:[[labels[0],item.problem],[labels[1],item.solution],[labels[2],item.result]];
+      for(const [label,value] of rows){
         const row=document.createElement('div'),term=document.createElement('dt'),description=document.createElement('dd');term.textContent=label;description.textContent=value;row.append(term,description);list.append(row);
       }
       section.append(heading,list);return section;
