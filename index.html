@@ -714,6 +714,17 @@
     .ai-workflow-contribution{margin:0 0 22px;color:#e1ebf7;font-size:13px;line-height:1.8}
     .ai-workflow-case dl>div{grid-template-columns:105px minmax(0,1fr)}
     @media(max-width:480px){.ai-workflow-case dl>div{grid-template-columns:1fr}}
+      /* Avoid compositing the moving gallery through a blurred, animated second modal. */
+    #project-detail-dialog::backdrop{backdrop-filter:none;background:#050a13e8}
+    #project-detail-dialog[open]{animation:none}
+    #project-dialog.is-under-detail{visibility:hidden}
+    #project-dialog.is-under-detail::backdrop{background:transparent}
+    .ai-workflow-case-heading{align-items:flex-start}
+    .ai-workflow-case-number{padding-top:3px}
+    .ai-workflow-heading-text{min-width:0}
+    .ai-workflow-case-category{display:block;margin:0 0 7px;color:#8bbaff;font-size:11px;font-weight:500;line-height:1.4}
+    .smile-model-journey{display:grid;gap:12px}
+    .smile-model-journey>section{padding:20px 22px;border:1px solid #ffffff1c;border-left:3px solid #8bbaff;background:#111824}
   </style>
 </head>
 <body>
@@ -1898,7 +1909,7 @@ Projectile --> Collider : collision query`]
     {title:'RAG가 다른 구역의 퍼즐 문서를 선택하는 문제',problem:'장면 설명이 짧거나 불명확하면 의미는 비슷하지만 현재 구역과 관계없는 문서가 검색될 수 있었습니다.',solution:'area_id 필터, 여러 search_scenes, Cosine Similarity와 0.55 임계값을 함께 적용하고 상위 문서를 Context로 구성했습니다.',result:'관련 없는 문서가 핵심 힌트 근거로 선택되는 빈도를 줄이고 검색 품질을 조정할 기준을 마련했습니다.'}
   ];
   smileIssues.push({title:'AI 처리 흐름 설명과 실제 코드의 불일치',problem:'설계 설명에서는 검증 단계를 독립된 LangGraph 노드로 표현했지만, 실제 코드에서는 힌트 생성 함수 내부에서 검증을 실행하고 있었습니다.',solution:'문서의 처리 단계와 코드의 함수 호출 흐름을 대조하고, 검증이 힌트 생성 내부 단계로 수행된다는 점을 반영해 설명을 수정했습니다.',result:'구현과 문서의 차이를 바로잡았으며, AI를 활용해 작성한 설명도 실제 코드와 일치하는지 확인해야 한다는 점을 배웠습니다.'});
-  const smileReflection='생성형 AI를 게임에 연결하면서 좋은 결과를 만드는 것만큼 결과의 근거와 형식, 대기 시간과 실패 상황을 함께 설계하는 일이 중요하다는 점을 배웠습니다. 모델 출력은 항상 일정하지 않기 때문에 입력 범위를 제한하고 JSON 검증과 Fallback을 마련해야 게임 시스템 안에서 안정적으로 사용할 수 있었습니다. 또한 UI 좌표부터 이미지 변환, HTTP 통신, 서버 추론과 결과 표시까지 이어지는 전체 흐름을 구현하며 서로 다른 시스템 사이의 데이터 기준과 상태를 명확히 맞추는 습관을 갖게 되었습니다.';
+  const smileReflection='처음에는 이미지 분류 모델을 연결하면 힌트를 만들 수 있을 것으로 접근했지만, 실제 게임 화면에서는 조명과 대상 크기, 분류 라벨이 담을 수 있는 정보의 한계가 드러났습니다. CNN·ResNet의 실패 장면을 비교한 뒤 LLaVA의 장면 설명을 검색에 활용하는 방향으로 바꿨고, 이후에는 생성된 설명과 힌트도 그대로 믿을 수 없다는 점을 경험했습니다. 모델을 바꾸는 것만으로 문제를 끝내기보다 입력·인식·검색·출력을 나눠 확인하고, 게임에서 필요한 정보와 응답 기준을 구체화하는 습관을 배웠습니다.';
   const slapDeepDive=[
     {heading:'로그인부터 결과까지 이어지는 게임 흐름',body:'서버 인증 후 Lobby, Room, Game, Result를 거쳐 다시 Lobby로 돌아오는 전체 흐름을 구현했습니다. 각 화면에서 사용자 목록, 채팅, 방 생성·입장, 플레이어 준비 상태, 게임 시작과 보상 데이터를 서버 응답에 맞춰 갱신했습니다.'},
     {heading:'메시지 타입 기반 네트워크 처리 구조',body:'NetworkConnector는 TCP 연결과 송수신, 메시지 타입 파싱을 담당하고 실제 기능 처리는 등록된 IMessageHandler에 전달하도록 구성했습니다. Login, Lobby, Room, Game Receiver가 필요한 메시지만 구독하게 해 네트워크 연결부와 게임 로직의 결합을 줄였습니다.'},
@@ -2151,7 +2162,7 @@ Projectile --> Collider : collision query`]
       const section=document.createElement('section');section.className='ai-workflow-case';
       const heading=document.createElement('div');heading.className='ai-workflow-case-heading';
       const number=document.createElement('span');number.className='ai-workflow-case-number';number.textContent=String(index+1).padStart(2,'0');
-      const titleElement=document.createElement('h3');titleElement.textContent=(item.kind==='error'?'오류 분석 · ':'설계·코드 검토 · ')+item.title;heading.append(number,titleElement);
+      const headingText=document.createElement('div');headingText.className='ai-workflow-heading-text';const category=document.createElement('span');category.className='ai-workflow-case-category';category.textContent=item.kind==='error'?'오류 분석':'설계·코드 검토';const titleElement=document.createElement('h3');titleElement.textContent=item.title;headingText.append(category,titleElement);heading.append(number,headingText);
       const list=document.createElement('dl');
       const labels=item.kind==='error'?['발생 현상·근거','AI에 맡긴 분석','직접 확인·판단']:['직접 구성한 내용','AI에 맡긴 작업','판단·검토 기준'];
       for(const [label,value] of [[labels[0],item.problem],[labels[1],item.solution],[labels[2],item.result]]){
@@ -2170,6 +2181,78 @@ Projectile --> Collider : collision query`]
     if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)aiWorkflowDialog.close();
   });
   aiWorkflowDialog.addEventListener('close',()=>{document.documentElement.classList.remove('ai-workflow-open');if(introVideoRequested)playIntroVideo()});
+  const projectLearningJourneys={
+  "EBON CROWN": [
+    [
+      "기능 추가 이후에 드러난 책임 집중",
+      "전투·인벤토리·스태미나·UI를 연결해 플레이 가능한 흐름을 만들었지만, 기능이 PlayerCharacter에 모이면서 개별 기능을 바꿀 때 함께 살펴야 할 범위가 커졌습니다. 이후 기능별 컴포넌트로 책임을 나누고, 입력을 중재하는 부분과 실제 기능을 수행하는 부분의 관계를 다시 정리했습니다."
+    ],
+    [
+      "화면에 보이는 동작과 내부 상태를 따로 확인",
+      "공격 입력과 타격 판정을 바로 연결하는 것만으로는 애니메이션의 유효 구간과 피해 시점을 맞출 수 없었습니다. 판정을 Animation Notify와 연결했고, 장비 강화와 레벨 이동에서는 값이 어디에 보관되고 새 객체에 어떻게 복원되는지를 나눠 살폈습니다."
+    ],
+    [
+      "배운 점",
+      "기능이 한 번 동작하는 것과 레벨 이동·장비 교체·연속 행동에서도 상태가 유지되는 것은 다른 문제였습니다. 책임과 데이터 수명을 기준으로 구조를 나누고, 오류가 보이는 함수만이 아니라 값이 만들어지고 전달되는 전체 경로를 확인하는 습관을 배웠습니다."
+    ]
+  ],
+  "EXCUTE": [
+    [
+      "공격 궤적 추적 이후의 중복 피해",
+      "여러 프레임에 걸쳐 무기 궤적을 추적하면서 같은 대상이 반복 감지됐습니다. 타격 위치를 찾는 것만으로는 한 번의 공격을 정의할 수 없었고, 공격 단위로 이미 맞은 대상을 기록해 중복 피해를 제외하도록 바꿨습니다."
+    ],
+    [
+      "패링은 경직 애니메이션만의 문제가 아니었습니다",
+      "패링 성공 후에도 기존 공격 상태와 행동 트리가 유지되면 경직과 공격이 겹칠 수 있었습니다. 공격 몽타주·Trace·AI를 함께 중단하고, 경직 종료 시 상태와 AI를 복구하는 흐름으로 연결했습니다. 범위 공격도 판정 구현에 더해 예고 표시로 대응 시간을 전달했습니다."
+    ],
+    [
+      "배운 점",
+      "액션을 구현할 때는 화면의 모션, 판정, AI 상태와 플레이어가 읽을 수 있는 정보가 함께 맞아야 했습니다. 그래픽 담당자가 만든 캐릭터와 배경을 실제 전투로 연결하며, 개별 기능보다 시작·중단·복귀 과정 전체를 점검하는 시야를 넓혔습니다."
+    ]
+  ],
+  "SLAP SQUAD": [
+    [
+      "연결 성공 이후에 커지는 메시지 처리 범위",
+      "로그인·로비·방·게임 처리를 연결하면서 네트워크 연결부가 각 기능의 세부 동작까지 담당하면 수정 범위가 커진다는 문제가 있었습니다. 메시지 타입별 Handler와 기능별 Sender·Receiver·System으로 역할을 나눴습니다."
+    ],
+    [
+      "같은 캐릭터도 로컬과 원격의 제어 근거가 달랐습니다",
+      "공통 캐릭터 기능을 사용하더라도 로컬 입력과 서버에서 받은 원격 상태를 같은 경로로 다루면 제어가 섞일 수 있었습니다. 입력 기반 로컬 Controller와 수신 패킷 기반 원격 갱신을 구분하고, 피해·체력·사망 상태는 서버 결과를 기준으로 반영했습니다."
+    ],
+    [
+      "배운 점",
+      "네트워크 통신이 된다는 사실만으로 멀티플레이 동작이 완성되는 것은 아니었습니다. 팀에서 클라이언트 개발을 맡으며 어떤 데이터가 어디서 결정되는지, 수신한 결과가 어느 기능으로 전달되는지를 명확히 해야 화면과 게임 상태를 일관되게 유지할 수 있다는 점을 배웠습니다."
+    ]
+  ],
+  "KEMET": [
+    [
+      "행동이 늘어나며 상태 전환을 다시 정리",
+      "순찰·추적·공격과 몬스터별 고유 행동을 추가할수록 조건문과 종료 후 복귀 관계를 파악하기 어려워졌습니다. 행동을 상태 클래스로 나누고 FSM이 현재 상태와 전환을 관리하도록 구성했습니다. 돌진·소환 종료 시에도 이전 상태로 돌아가기보다 현재 거리와 전투 조건을 다시 확인했습니다."
+    ],
+    [
+      "직접 익숙하게 쓰는 조작이 다른 사람에게는 불분명했습니다",
+      "친구에게 실행 빌드를 전달하자 공격·패링 키와 다음 스테이지로 이동하는 방법을 질문받았습니다. 슬라이딩 자체에는 좋은 반응이 있었지만, 기믹 해결에 필요하다는 사실을 알기 전에는 답답했다는 의견도 받았습니다. 조작의 구현과 사용법의 전달은 별도 문제임을 확인했습니다."
+    ],
+    [
+      "완료한 부분과 남은 과제",
+      "전달한 빌드에는 낙사 후 복귀 처리가 없어 종료 방법을 따로 안내해야 했습니다. 피드백 이후 안내·낙사 복귀를 모두 개선했다고 표현하지 않고, 조작 안내·상호작용 단서·실패 후 재시도를 남은 과제로 정리했습니다. 혼자 개발할 때 익숙함 때문에 놓치는 부분을 외부 플레이로 확인하는 경험이 됐습니다."
+    ]
+  ],
+  "TANK BLITZ": [
+    [
+      "화면에 모델을 그린 뒤에 드러난 중복 관리",
+      "모델마다 버퍼·텍스처·셰이더 생성과 해제를 따로 작성하면서 같은 코드가 반복됐습니다. 공통 모델 계층과 로딩 모듈, 자원 관리자를 나누며 자원의 소유와 해제 위치를 정리했습니다."
+    ],
+    [
+      "로컬 데이터가 화면의 결과와 같지는 않았습니다",
+      "이동·회전·크기를 적용한 뒤에는 로컬 AABB와 화면의 모델 위치가 어긋났습니다. 꼭짓점을 World Matrix로 변환해 월드 AABB를 다시 계산했습니다. Skybox도 고정 위치에 두면 카메라 이동에 따라 경계가 드러나 카메라 위치를 따르도록 바꿨습니다."
+    ],
+    [
+      "배운 점",
+      "상용 엔진이 처리해 주던 렌더링·좌표 변환·충돌을 직접 연결하면서, ‘보이는 결과’와 그 결과를 만드는 데이터 기준을 함께 확인하는 경험을 쌓았습니다. 문제를 개별 API 호출보다 좌표 공간·자원 수명·프레임 갱신 흐름으로 나눠 보는 습관을 배웠습니다."
+    ]
+  ]
+};
   function openProjectDetail(card){
     const title=card.querySelector('.project-content h3').textContent;
     projectDialog.querySelector('#project-dialog-title').textContent=title;
@@ -2224,6 +2307,7 @@ Projectile --> Collider : collision query`]
       detailContent.deepDive.forEach((item,index)=>{const button=document.createElement('button');button.type='button';button.textContent=String(index+1).padStart(2,'0')+' · '+item.heading;button.addEventListener('click',()=>document.getElementById('detail-step-'+index)?.scrollIntoView({behavior:'smooth',block:'start'}));overviewNav.append(button)});
 
       if(title==='KEMET'){const button=document.createElement('button');button.type='button';button.textContent='PLAYTEST · 외부 플레이 피드백';button.addEventListener('click',()=>document.getElementById('detail-playtest')?.scrollIntoView({behavior:'smooth',block:'start'}));overviewNav.append(button)}
+      if(title==='PROJECT_SMILE'||projectLearningJourneys[title]){const link=document.createElement('button');link.type='button';link.textContent=title==='PROJECT_SMILE'?'시행착오 · 모델 선택의 변화':'시행착오와 배운 점';link.addEventListener('click',()=>document.getElementById('detail-model-journey').scrollIntoView({behavior:'smooth',block:'start'}));overviewNav.prepend(link)}
       overview.append(overviewTitle,overviewNav);detailWindowContent.append(overview);
       if(title==='EBON CROWN'){
         const umlSet=document.createElement('div');umlSet.className='ebon-uml-set';
@@ -2240,6 +2324,18 @@ Projectile --> Collider : collision query`]
         const umlSet=document.createElement('div');umlSet.className='ebon-uml-set';
         for(const [panelTitle,source] of projectUmlPanels[title])umlSet.append(createProjectUmlPanel(panelTitle,source));
         detailWindowContent.append(umlSet);
+      }
+      if(title==='PROJECT_SMILE'){
+        const historyHeading=document.createElement('h3');historyHeading.id='detail-model-journey';historyHeading.textContent='시행착오 · CNN·ResNet에서 LLaVA까지';
+        const history=document.createElement('div');history.className='smile-model-journey';
+        for(const [title,body] of [["1. CNN·ResNet으로 장면 분류부터 시작","초기에는 게임 화면을 문·시체·키카드 등의 클래스로 분류하고, 그 결과와 구역 정보로 퍼즐 문서를 찾는 방식을 시도했습니다. 먼저 이미지 분류와 게임 힌트가 연결되는 전체 흐름을 만들어 보는 데 집중했습니다."],["2. 실제 게임 화면에서 분류의 한계를 확인","SimpleCNN은 조명이 달라지면 혼동했고, ResNet도 문·시체와 달리 화면에서 작게 보이는 키카드의 인식이 약했습니다. 모델을 바꾸는 것만으로 모든 장면이 해결되지 않았고, 분류 라벨 하나만으로는 화면 안의 단서와 주변 상황을 충분히 설명하기 어렵다는 한계도 있었습니다."],["3. 필요한 정보를 다시 정의하고 LLaVA로 전환","힌트 검색에 필요한 것은 오브젝트의 이름뿐 아니라 장면에서 무엇이 보이고 어떤 상황인지에 대한 설명이라고 판단했습니다. LLaVA-OneVision으로 화면을 문장으로 설명하고, 그 설명을 퍼즐 문서와 비교해 검색 근거로 사용하는 방향으로 구조를 바꿨습니다."],["4. 모델 교체 뒤에도 남은 문제를 분리","LLaVA를 사용해도 장면을 잘못 설명하거나 검색 문서가 어긋날 수 있었고, 힌트 생성 과정에서는 정답을 직접 말하거나 개발자용 표현을 섞는 문제가 있었습니다. 장면 설명·검색 근거·최종 힌트를 따로 확인하며 구역 필터, 학습 예시와 프롬프트를 조정했습니다."],["배운 점","이 과정을 통해 모델 이름이나 단일 인식 결과보다 게임에서 필요한 정보와 실패 조건을 먼저 정의해야 한다는 점을 배웠습니다. 한 번의 모델 교체로 완성하려 하기보다 입력·인식·검색·표현 단계로 문제를 나누고, 실제 게임 장면을 기준으로 다음 수정 방향을 정하는 방식으로 접근하게 되었습니다."]]){const section=document.createElement('section');const h4=document.createElement('h4');h4.textContent=title;const p=document.createElement('p');p.textContent=body;section.append(h4,p);history.append(section)}
+        detailWindowContent.append(historyHeading,history);
+      }
+      if(projectLearningJourneys[title]){
+        const learningHeading=document.createElement('h3');learningHeading.id='detail-model-journey';learningHeading.textContent='시행착오와 배운 점';
+        const learning=document.createElement('div');learning.className='smile-model-journey';
+        for(const [label,body] of projectLearningJourneys[title]){const section=document.createElement('section');const h4=document.createElement('h4');h4.textContent=label;const p=document.createElement('p');p.textContent=body;section.append(h4,p);learning.append(section)}
+        detailWindowContent.append(learningHeading,learning);
       }
       const heading=document.createElement('h3');heading.textContent='구현 내용';detailWindowContent.append(heading);
       const implementationGrid=document.createElement('div');implementationGrid.className='detail-implementation-grid';
@@ -2275,7 +2371,8 @@ Projectile --> Collider : collision query`]
   projectDialog.addEventListener('close',()=>{projectDialog.querySelector('.ebon-gallery-stage video')?.pause();if(introVideoRequested)playIntroVideo()});
   projectDialog.querySelector('.project-dialog-close').addEventListener('click',()=>projectDialog.close());
   projectDialog.addEventListener('click',event=>{if(event.target===projectDialog)projectDialog.close()});
-  projectDialog.querySelector('.project-more-detail').addEventListener('click',()=>{projectDialog.querySelector('.ebon-gallery-stage video')?.pause();projectDetailDialog.scrollTop=0;projectDetailDialog.showModal()});
+  projectDialog.querySelector('.project-more-detail').addEventListener('click',()=>{projectDialog.querySelectorAll('video').forEach(video=>video.pause());projectDialog.classList.add('is-under-detail');projectDetailDialog.scrollTop=0;projectDetailDialog.showModal()});
+  projectDetailDialog.addEventListener('close',()=>{projectDialog.classList.remove('is-under-detail');if(projectDialog.open)projectDialog.querySelector('.project-more-detail').focus({preventScroll:true})});
   projectDetailDialog.querySelector('.project-detail-window-close').addEventListener('click',()=>projectDetailDialog.close());
   projectDetailDialog.addEventListener('click',event=>{if(event.target===projectDetailDialog)projectDetailDialog.close()});
   umlViewer.querySelector('.viewer-close').addEventListener('click',()=>umlViewer.close());
