@@ -986,8 +986,8 @@
   const introAiItems=[
   {
     "title": "EBON CROWN",
-    "role": "컴포넌트 분리 · 이펙트 풀링",
-    "copy": "직접 작성한 구조와 코드로 책임 분리·재사용 설계를 검토받았습니다.",
+    "role": "구조 검토 · 상태 복원 · 보스 BT",
+    "copy": "책임 분리·풀링 구조를 검토하고 상태 복원·목록 누락·보스 행동 오류를 분석했습니다.",
     "scope": "1인 개발 · 게임플레이 구현",
     "method": "기존 코드와 설계 의도를 제공하고, AI의 구조 리뷰를 리팩토링 판단에 활용했습니다."
   },
@@ -2051,19 +2051,34 @@ Projectile --> Collider : collision query`]
       "title": "플레이어 컴포넌트 분리 — 책임과 의존성 검토",
       "problem": "전투·인벤토리·스태미나·UI가 PlayerCharacter에 집중된 기존 구조를 바탕으로 기능별 책임을 나누는 리팩토링을 진행했습니다.",
       "solution": "기존 코드와 분리 방향을 제시하고, 기능 경계와 참조 관계에 대한 검토를 맡겼습니다. 컴포넌트를 늘렸을 때 생기는 관리 비용과 결합 관계도 함께 비교했습니다.",
-      "result": "기능을 나누는 목적을 유지보수와 변경 범위로 설명하고, 실제 프로젝트 구조에 맞는 경계를 판단했습니다. AI는 설계 검토에 활용하고, 적용 배경·구현 과정·장단점은 직접 작성한 보고서를 기준으로 정리했습니다."
+      "result": "전투·인벤토리 등 각 기능의 변경 범위와 참조 관계를 기준으로 분리 경계를 판단했습니다. 클래스 수를 늘리는 것 자체보다 특정 기능 수정이 다른 시스템에 미치는 영향을 줄이는 데 초점을 맞췄습니다."
     },
     {
       "title": "스킬 이펙트 풀링 — 기존 전투 구조를 유지하는 개선",
       "problem": "스킬 사용 때마다 이펙트를 생성하던 SpawnSkillEffect 흐름을 재사용 가능한 풀 구조로 변경했습니다.",
-      "solution": "기존 생성 코드와 SkillData의 SpawnType을 바탕으로, 사전 생성·미사용 객체 선택·재생 후 반환 흐름과 패턴 적용 설명을 검토받았습니다.",
-      "result": "전투 판정과 스킬 데이터는 유지하면서 이펙트 관리 방식에 변경을 한정했습니다. AI가 제시한 성능 문제 표현은 실제 측정 근거와 구분하고, 확인된 변화인 객체 재사용 구조를 중심으로 설명했습니다."
+      "solution": "기존 생성 코드와 SkillData의 SpawnType을 제공하고, 사전 생성·미사용 객체 선택·재생 후 반환 흐름이 기존 스킬 실행 구조와 맞는지 검토받았습니다.",
+      "result": "전투 판정과 스킬 데이터는 유지하면서 이펙트 생성·반환 방식에 변경을 한정했습니다. 기존 SpawnType에 따른 출력 위치를 풀링 구조에서도 유지하는 것을 적용 기준으로 삼았습니다."
     },
     {
-      "title": "리팩토링 결과 검토 — 패턴을 적용한 이유와 한계 설명",
-      "problem": "직접 작성한 패턴 적용 보고서와 구조도를 제공하고, 실제 구현과 설명이 일치하는지 검토를 요청했습니다.",
-      "solution": "Component·Object Pool의 적용 배경, 기존 문제, 변경 과정, 결과, 장단점 사이에 모순이나 중복이 있는지 확인하도록 했습니다.",
-      "result": "문장만 다듬는 데 그치지 않고 기존 구조와 변경한 구조의 차이가 드러나도록 수정 방향을 지정했습니다. 측정하지 않은 FPS 개선 수치는 넣지 않고, 책임 분리와 재사용 방식의 변화를 근거로 제시했습니다."
+      "kind": "error",
+      "title": "레벨 이동 후 인벤토리·강화 수치 초기화",
+      "problem": "OpenLevel 이후 인벤토리와 무기 강화 수치가 초기화되는 현상을 확인했습니다. PlayerCharacter·GameInstance·인벤토리 캐시·이동 메뉴 코드를 함께 제공했습니다.",
+      "solution": "이동 전 데이터 보관 → 새 레벨의 객체 생성 → 인벤토리 복원 경로를 추적하도록 했습니다. 강화 수치가 캐시에 포함되는지, 복원 시 참조하는 데이터가 최신인지 확인할 지점을 나눴습니다.",
+      "result": "레벨 이동으로 새로 생성되는 객체와 계속 유지되는 데이터를 구분해 분석 범위를 잡았습니다. 강화 값이 사라지는 현상만 보지 않고 보관·복원 양쪽을 대조하는 방식으로 원인 후보를 좁혔습니다."
+    },
+    {
+      "kind": "error",
+      "title": "세이브 포인트 목록 누락 — AI 가설을 재현 조건으로 교정",
+      "problem": "여러 세이브 포인트를 발견해도 이동 메뉴에는 하나만 표시되는 현상이 있었습니다. AI는 ID 중복이나 레벨 이동 시 초기화를 원인으로 제시했습니다.",
+      "solution": "등록 함수와 목록 갱신 흐름을 검토하게 하고, ID가 서로 다르며 레벨 이동 없이도 발생한다는 실제 조건을 추가로 전달했습니다.",
+      "result": "재현 조건과 맞지 않는 가설은 배제하도록 요청했습니다. AI가 제시한 원인을 그대로 채택하지 않고, 실제 발생 조건을 기준으로 등록·보관·UI 목록 갱신 경로를 다시 살폈습니다."
+    },
+    {
+      "kind": "error",
+      "title": "보스 행동 중단 — 거리 조건과 실행 분기 분리",
+      "problem": "공격 종류가 결정된 뒤에도 보스가 가까워지면 행동을 멈췄습니다. 행동 트리 화면과 중단되는 거리 조건을 제시했습니다.",
+      "solution": "추적 시퀀스에 붙은 거리 데코레이터와 Abort 조건이 하위 작업을 중단시키는지 검토받고, 공격 판단·실행 분기와 추적 분기를 나누는 방향을 비교했습니다.",
+      "result": "AttackType 값이 정해진 것과 그 값을 실행할 분기가 살아 있는 것은 별개로 판단했습니다. 플레이 화면의 거리 변화와 트리 조건을 대조해 검토 범위를 특정했습니다."
     }
   ],
   "PROJECT_SMILE": [
@@ -2090,6 +2105,20 @@ Projectile --> Collider : collision query`]
       "problem": "장면·검색 근거·응답으로 구성한 힌트 학습 예시를 생성형 AI로 작성하고 실제 생성 결과와 대조했습니다.",
       "solution": "원하는 문체와 장면별 근거를 전달해 데이터 초안을 만들게 하고, 결론만 말하거나 행동을 지시하는 예시를 수정하도록 반복 요청했습니다.",
       "result": "‘분위기 조성’ 같은 개발자용 설명이 독백에 섞이는 결과를 발견하고 문서와 예시의 수정 기준을 제시했습니다. 문장이 자연스러운지보다 플레이어가 관찰할 수 있는 정보인지, 스스로 추론할 여지가 있는지를 기준으로 선별했습니다."
+    },
+    {
+      "kind": "error",
+      "title": "LoRA 학습 오류 — 데이터와 전처리 코드의 필드 불일치",
+      "problem": "LoRA 학습 중 전처리 단계에서 오류가 발생해 Traceback과 학습 코드를 함께 제공했습니다.",
+      "solution": "오류가 난 호출과 필드 접근을 추적하고, scene·rag 등 실제 학습 예시의 필드와 프롬프트 생성 함수가 기대하는 필드를 대조하도록 했습니다. 필드 누락 처리의 코드 수정안을 지원받았습니다.",
+      "result": "모델 자체의 문제로 단정하지 않고 학습 입력 → 전처리 → 프롬프트 생성 경계에서 확인했습니다. 오류 로그와 실제 데이터 형식을 함께 제시해 수정 대상을 구체화했습니다."
+    },
+    {
+      "kind": "error",
+      "title": "장면 인식 한계 — 모델별 실패 조건 비교",
+      "problem": "SimpleCNN은 조명 변화에 혼동하고, ResNet은 문·시체를 인식해도 키카드 인식이 약한 차이를 실제 게임 장면에서 관찰했습니다.",
+      "solution": "관찰 결과를 전달해 작은 오브젝트의 화면 내 크기, 전처리, 학습 데이터 구성을 원인 후보로 나누고 데이터 보강·분석 영역 조정 방향을 비교했습니다.",
+      "result": "모델 이름이나 단일 결과로 우열을 정하지 않고 조명·대상 크기 등 실패 조건을 기준으로 비교했습니다. 확인된 인식 결과와 추가 실험이 필요한 가설을 구분했습니다."
     }
   ],
   "EXCUTE": [
@@ -2122,9 +2151,10 @@ Projectile --> Collider : collision query`]
       const section=document.createElement('section');section.className='ai-workflow-case';
       const heading=document.createElement('div');heading.className='ai-workflow-case-heading';
       const number=document.createElement('span');number.className='ai-workflow-case-number';number.textContent=String(index+1).padStart(2,'0');
-      const titleElement=document.createElement('h3');titleElement.textContent=item.title;heading.append(number,titleElement);
+      const titleElement=document.createElement('h3');titleElement.textContent=(item.kind==='error'?'오류 분석 · ':'설계·코드 검토 · ')+item.title;heading.append(number,titleElement);
       const list=document.createElement('dl');
-      for(const [label,value] of [['직접 구성한 내용',item.problem],['AI에 맡긴 작업',item.solution],['판단·검토 기준',item.result]]){
+      const labels=item.kind==='error'?['발생 현상·근거','AI에 맡긴 분석','직접 확인·판단']:['직접 구성한 내용','AI에 맡긴 작업','판단·검토 기준'];
+      for(const [label,value] of [[labels[0],item.problem],[labels[1],item.solution],[labels[2],item.result]]){
         const row=document.createElement('div'),term=document.createElement('dt'),description=document.createElement('dd');term.textContent=label;description.textContent=value;row.append(term,description);list.append(row);
       }
       section.append(heading,list);return section;
