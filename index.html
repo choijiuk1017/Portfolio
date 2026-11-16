@@ -900,7 +900,7 @@
     directx:document.querySelector('img[alt="DirectX 11 로고"]')?.src
   };
   const projectStackSets={
-    'EBON CROWN':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Codex',sharedSkillIcons.codex],['VARCO 3D','assets/icons/varco3d.png']],
+    'EBON CROWN':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Codex',sharedSkillIcons.codex],['Meshy','assets/icons/meshy.webp']],
     'EXCUTE':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Blueprint','assets/icons/blueprint.svg'],['Codex',sharedSkillIcons.codex]],
     'PROJECT_SMILE':[['C++',sharedSkillIcons.cplusplus],['Unreal Engine 5',sharedSkillIcons.unreal],['Python / Flask',sharedSkillIcons.python],['PyTorch',sharedSkillIcons.pytorch],['LLaVA-OneVision','assets/icons/llava-onevision.svg?v=2'],['RAG','assets/icons/rag.svg?v=2'],['Gemma 4','assets/icons/gemma.png'],['Codex',sharedSkillIcons.codex],['VARCO 3D','assets/icons/varco3d.png']],
     'SLAP SQUAD':[['C#',sharedSkillIcons.csharp],['Unity',sharedSkillIcons.unity],['TCP/IP',null,'NET']],
@@ -2096,9 +2096,10 @@ Projectile --> Collider : collision query`]
     },
     {
       "kind": "asset",
-      "title": "VARCO 3D를 활용한 일부 3D 에셋 제작",
-      "problem": "EBON CROWN에 사용한 일부 3D 에셋을 VARCO 3D로 제작했습니다.",
-      "solution": "코드 분석·구조 검토뿐 아니라 게임에 들어가는 3D 에셋 제작에도 생성형 AI를 활용했습니다."
+      "title": "Meshy를 활용한 일부 3D 에셋 제작",
+      "problem": "EBON CROWN에 사용한 일부 3D 에셋을 Meshy로 제작했습니다.",
+      "solution": "코드 분석·구조 검토뿐 아니라 게임에 들어가는 3D 에셋 제작에도 생성형 AI를 활용했습니다.",
+      "tool": "Meshy"
     }
   ],
   "PROJECT_SMILE": [
@@ -2144,7 +2145,8 @@ Projectile --> Collider : collision query`]
       "kind": "asset",
       "title": "VARCO 3D를 활용한 일부 3D 에셋 제작",
       "problem": "PROJECT_SMILE에 사용한 일부 3D 에셋을 VARCO 3D로 제작했습니다.",
-      "solution": "코드 분석·구조 검토뿐 아니라 게임에 들어가는 3D 에셋 제작에도 생성형 AI를 활용했습니다."
+      "solution": "코드 분석·구조 검토뿐 아니라 게임에 들어가는 3D 에셋 제작에도 생성형 AI를 활용했습니다.",
+      "tool": "VARCO 3D"
     }
   ],
   "EXCUTE": [
@@ -2171,7 +2173,7 @@ Projectile --> Collider : collision query`]
     aiWorkflowDialog.querySelector('#ai-workflow-title').textContent=title;
     const toolBox=aiWorkflowDialog.querySelector('.ai-workflow-tool');toolBox.replaceChildren();
     const toolSets=[['ChatGPT · Codex','assets/icons/codex.png',true]];
-    if(cases.some(item=>item.kind==='asset'))toolSets.push(['VARCO 3D','assets/icons/varco3d.png',false]);
+    for(const tool of new Set(cases.filter(item=>item.kind==='asset').map(item=>item.tool))){if(tool==='Meshy')toolSets.push(['Meshy','assets/icons/meshy.webp',false]);if(tool==='VARCO 3D')toolSets.push(['VARCO 3D','assets/icons/varco3d.png',false])}
     for(const [name,source,invert] of toolSets){const tool=document.createElement('span');tool.className='ai-workflow-tool-item';const frame=document.createElement('span');frame.className='skill-logo-frame'+(invert?' skill-logo-frame--codex':'');const image=document.createElement('img');image.src=source;image.alt='';frame.append(image);const label=document.createElement('span');label.textContent=name;tool.append(frame,label);toolBox.append(tool)}
 
     aiWorkflowDialog.querySelector('.ai-workflow-scope').textContent=intro.role;
